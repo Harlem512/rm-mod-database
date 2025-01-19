@@ -1,0 +1,77 @@
+### hat and glasses (Red)
+0 hat dark
+1 hat light
+2 brim dark
+3 brim light
+4 glasses band
+5 pupil
+6 glasses lens
+
+### Book (blue)
+7 book superdark
+8 book dark
+9 book
+10 book light
+11 book page
+
+### Hair (brown)
+12 hair dark
+13 hair light
+14 UNUSED
+
+### Waistband (orange)
+15 band dark
+16 band mid
+17 band light
+
+### Shoulder/neck (magenta)
+18 neck dark
+19 neck light
+20 shoulder strap
+21 shoulder dark
+22 shoulder
+
+### Skin (tan)
+23 face darkest
+24 face dark
+25 face light
+26 Hand dark
+27 Hand mid
+28 Hand light
+
+### Arms (cyan)
+29 main arm dark
+30 main arm light
+31 main arm band
+32 inner arm dark
+33 inner arm light
+34 inner arm band
+35 Sleeve
+
+### Dress (blue)
+36 dress top dark
+37 dress top light
+38 dress bot dark
+39 dress bot light
+40 dress triangle
+41 dress flare dark
+42 dress flare
+
+### Shoes (pink)
+43 shoe dark
+44 shoe light
+45 shoe bottom
+46 shoe lace
+
+### Legs (green)
+47 leg blacked out
+48 leg thigh
+49 leg knee shade
+50 leg knee
+51 leg bottom shade
+52 leg bottom stripe
+53 leg bottom
+
+### Misc
+54 UNUSED
+55 hair trail

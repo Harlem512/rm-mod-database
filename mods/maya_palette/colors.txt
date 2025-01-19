@@ -1,0 +1,69 @@
+### Leg (Blue)
+0 Thigh light
+1 Thigh
+2 Thigh dark
+3 Stripe 1
+4 Stripe 1 dark
+5 Stripe 2
+6 Stripe 2 dark
+7 Stripe 3
+8 Stripe 3 dark
+### Shoe (Purple)
+9 Normal
+10 Shade 1
+11 Shade 2
+### Dress (Magneta)
+12 Stripe
+13 Normal
+14 Shade 1
+15 Shade 2
+### Hoodie (Pink)
+16 Hoodie light
+17 Hoodie
+18 Hoodie dark
+### Main arm (Red)
+19 Light
+20 Normal
+21 Alternate normal
+22 Shade 1
+23 Shade 2
+24 Shade 3
+### Throw arm (Tan)
+25 Very light
+26 Light
+27 Normal
+28 Dark
+### Hair (Greens)
+29 Normal
+30 Shade 1
+31 Shade 2
+32 Highlight
+33 Highlight dark
+### Eyes (Cyan
+34 Normal
+35 Closed
+36 Pupil
+### Ears (Orange)
+37 Normal (tips)
+38 Dark (bottom)
+### Face (Orange)
+39 Normal
+40 Shade 1 (forehead, around eyes)
+41 Shade 2 (neck)
+### Hand (Brown)
+42 Fingers
+43 Alt fingers
+44 Palm shade 1
+45 Throw fingers
+46 Shade 2
+47 Shade 3
+48 Throw thumb
+### Splash colors (Dark pink)
+49 Unused
+50 Tea Heart
+51 Shoelace
+52 Dress Button
+53 Sleeve button
+### Scarf (Dark Purple)
+54 Scarf uncharged
+55 Scarf charged
