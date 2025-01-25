@@ -20,7 +20,7 @@
   "ameli_palette": {
     "name": "ameli_palette",
     "display": "Ameli Palette",
-    "description": "Obtain witchy drip. Lets you customize the colors used by Ameli.",
+    "description": "Obtain witchy drip. Lets you customize the colors used by Ameli.\n\nEdit `mods/rmml/maya_palette/palette.png` with your colors, similar to Fern. Example palettes and a list of what each color means is included.",
     "author": "Harlem512",
     "version": 2,
     "type": "zip",
@@ -29,7 +29,7 @@
   "maya_palette": {
     "name": "maya_palette",
     "display": "Maya Palette",
-    "description": "Obtain slashy drip. Lets you customize the colors used by Maya.",
+    "description": "Obtain slashy drip. Lets you customize the colors used by Maya.\n\nEdit `mods/rmml/maya_palette/palette.png` with your colors, similar to Fern. Example palettes and a list of what each color means is included.",
     "author": "Harlem512",
     "version": 2,
     "type": "zip",
