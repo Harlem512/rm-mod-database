@@ -15,7 +15,7 @@ Each mod is installed and managed separately, but can be installed together.
 
 # Minify!
 
-![Minify](assets/minfy.png)
+![Minify](assets/minify.png)
 
 Makes Fern 50% smaller and 30% faster. Applies to _all_ Fern saves, yes all of them.
 
