@@ -2,7 +2,7 @@
 
 Data source for [Rusted Moss Mod Loader](https://github.com/Harlem512/rm-mod-manager). Most of these mods can be downloaded in-game using Rusted Moss Mod Manager. You can check out my [modding documentation](https://harlem512.github.io/rm-docs/) for information on how any of this works or how to install RMML.
 
-Here's all the (publically) included mods:
+Here's all the (publicly) included mods:
 
 # Maya and Ameli Palette
 
