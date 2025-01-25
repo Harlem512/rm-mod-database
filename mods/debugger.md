@@ -2,6 +2,23 @@ Harlem512's debugger. Requires enabling `odebugger_new` by modifying the `data.w
 
 ```sp
 global.rmml.dev = true
+
+global.debug_unclamp_cam = false
+
+global.deb_trans = {}
+
+global.deb_trans_add = fun (roomA, roomB, _left, _right, _top, _bot) {
+  if !global.deb_trans[roomA] {
+    global.deb_trans[roomA] = {}
+  }
+
+  global.deb_trans[roomA][roomB] = {
+    left: _left,
+    right: _right,
+    top: _top,
+    bottom: _bot,
+  }
+}
 ```
 
 # controller
@@ -9,96 +26,79 @@ global.rmml.dev = true
 ## create
 
 ```sp
-global.debug_unclamp_cam = false
+let debugger = instance_create_depth(0, 0, -1000, odebugger_new, {
+  persistent: true
+})
+
+-- remove garbage debug options
+let i = 0
+while i < array_length(debugger.debug_data) {
+  let data = debugger.debug_data[i]
+  match data[1] {
+    -- E
+    case "Refresh" { array_delete(debugger.debug_data, i, 1) }
+    -- O
+    case "Log" { array_delete(debugger.debug_data, i, 1) }
+    -- P
+    case "Reset save" { array_delete(debugger.debug_data, i, 1) }
+    -- J
+    case "RLive" { array_delete(debugger.debug_data, i, 1) }
+    -- B
+    case "Undo room keys" { array_delete(debugger.debug_data, i, 1) }
+    -- D
+    case "text" { array_delete(debugger.debug_data, i, 1) }
+    -- V
+    case "Live" { array_delete(debugger.debug_data, i, 1) }
+    else { i += 1}
+  }
+}
+
+debugger.debug_add_function("J", "Player", "[c_red]", fun (a0, a1) {
+  if a1 {
+    if global.maya_mode {
+      global.maya_mode = false
+      global.ameli_mode_ = true
+    } else if global.ameli_mode_ {
+      global.ameli_mode_ = false
+    } else {
+      global.maya_mode = true
+    }
+  }
+})
+debugger.debug_add_function("V", "Cam unclamp", "[c_red]", fun (a0, a1) {
+  if a1 {
+    global.debug_unclamp_cam = !global.debug_unclamp_cam
+  }
+})
+debugger.debug_add_function("O", "Quickboot", "[c_red]", fun (a0, a1) {
+  if a1 {
+    global.gamestate = 22
+    game_restart()
+    global.deb_quickboot = true
+  }
+})
+debugger.debug_add_function("P", "_Reset Dev", "[c_red]", fun (a0, a1) {
+  if a1 {
+    file_delete(map_get_string(8))
+    global.gamestate = 22
+    game_restart()
+    global.deb_quickboot = true
+  }
+})
+debugger.debug_add_function("B", "Debug Names", "[c_red]", fun (a0, a1) {
+  if a1 {
+    global.deb_names = !global.deb_names
+  }
+})
 ```
 
 ## room_start
 
 ```catspeak
--- if global.map_data_ != undefined {
---   global.rmml.log(json_stringify(global.map_data_))
---   global.rmml.log(ds_grid_write(global.map_grid_))
---   let str = "{"
---   let x = 0
---   while x < array_length(global.map_data_) {
---     str += "\"" + string(x) + "\":{"
---     let y = 0
---     while y < array_length(global.map_data_[x]) {
---       d = global.map_data_[x][y]
---       str += "\"" + string(y) + "\":" + json_encode(d) + ","
---       y += 1
---     }
---     str += "},"
---     x += 1
---   }
---   str += "}"
---   global.rmml.log(str)
--- }
-
-if instance_number(odebugger_new) == 0 {
-  let debugger = instance_create_depth(0, 0, -1000, odebugger_new)
-  debugger.persistent = true
-
-  -- remove garbage debug options
-  let i = 0
-  while i < array_length(debugger.debug_data) {
-    let data = debugger.debug_data[i]
-    match data[1] {
-      -- E
-      case "Refresh" { array_delete(debugger.debug_data, i, 1) }
-      -- O
-      case "Log" { array_delete(debugger.debug_data, i, 1) }
-      -- P
-      case "Reset save" { array_delete(debugger.debug_data, i, 1) }
-      -- J
-      case "RLive" { array_delete(debugger.debug_data, i, 1) }
-      -- B
-      case "Undo room keys" { array_delete(debugger.debug_data, i, 1) }
-      -- D
-      case "text" { array_delete(debugger.debug_data, i, 1) }
-      -- V
-      case "Live" { array_delete(debugger.debug_data, i, 1) }
-      else { i += 1}
-    }
-  }
-
-  debugger.debug_add_function("J", "Player", "[c_red]", fun (a0, a1) {
-    if a1 {
-      if global.maya_mode {
-        global.maya_mode = false
-        global.ameli_mode_ = true
-      } else if global.ameli_mode_ {
-        global.ameli_mode_ = false
-      } else {
-        global.maya_mode = true
-      }
-    }
-  })
-  debugger.debug_add_function("V", "Cam unclamp", "[c_red]", fun (a0, a1) {
-    if a1 {
-      global.debug_unclamp_cam = !global.debug_unclamp_cam
-    }
-  })
-  debugger.debug_add_function("O", "Quickboot", "[c_red]", fun (a0, a1) {
-    if a1 {
-      global.gamestate = 22
-      game_restart()
-      global.deb_quickboot = true
-    }
-  })
-  debugger.debug_add_function("P", "_Reset Dev", "[c_red]", fun (a0, a1) {
-    if a1 {
-      file_delete(map_get_string(8))
-      global.gamestate = 22
-      game_restart()
-      global.deb_quickboot = true
-    }
-  })
-  debugger.debug_add_function("B", "Debug Names", "[c_red]", fun (a0, a1) {
-    if a1 {
-      global.deb_names = !global.deb_names
-    }
-  })
+-- add room transitions
+let data = {}
+with oroom_transition {
+  global.deb_trans_add(self.target_room, room_get(), self.x - self.bbox_left, self.x - self.bbox_right, self.y - self.bbox_top, self.y - self.bbox_bottom)
 }
 ```
 
@@ -150,6 +150,15 @@ if global.debug_draw_hitboxes__ {
   draw_set_color(c_yellow)
   with oroom_transition {
     draw_rectangle(self.bbox_left, self.bbox_top, self.bbox_right, self.bbox_bottom, true)
+    draw_text(self.x, self.y, string([self.dir, self.marg, self.y_off]))
+
+    -- adjacent rooms
+    if global.deb_trans[room_get()] {
+      let data = global.deb_trans[room_get()][self.target_room]
+      if data {
+        draw_rectangle(self.x+data.left, self.y+data.top, self.x+data.right, self.y+data.bottom, true)
+      }
+    }
   }
 
   with oplayer {
