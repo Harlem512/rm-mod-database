@@ -1,0 +1,74 @@
+{
+  "rmml.meow": {
+    "name": "rmml.meow",
+    "display": "Rusted Moss Mod Loader",
+    "description": "Invisible middleware that loads mods (It's already installed)",
+    "author": "Harlem512",
+    "version": 6,
+    "type": "meow",
+    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1/rmml.meow"
+  },
+  "rmmm.md": {
+    "name": "rmmm.md",
+    "display": "Rusted Moss Mod Manager",
+    "description": "Manages mod installations and downloads mods.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1/rmmm.md"
+  },
+  "ameli_palette": {
+    "name": "ameli_palette",
+    "display": "Ameli Palette",
+    "description": "Obtain witchy drip. Lets you customize the colors used by Ameli.\n\nEdit `mods/rmml/maya_palette/palette.png` with your colors, similar to Fern. Example palettes and a list of what each color means is included.",
+    "author": "Harlem512",
+    "version": 2,
+    "type": "zip",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/pals-2/ameli_palette.zip"
+  },
+  "maya_palette": {
+    "name": "maya_palette",
+    "display": "Maya Palette",
+    "description": "Obtain slashy drip. Lets you customize the colors used by Maya.\n\nEdit `mods/rmml/maya_palette/palette.png` with your colors, similar to Fern. Example palettes and a list of what each color means is included.",
+    "author": "Harlem512",
+    "version": 2,
+    "type": "zip",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/pals-2/maya_palette.zip"
+  },
+  "minify.md": {
+    "name": "minify.md",
+    "display": "Minify!",
+    "description": "Makes Fern 50% smaller and 30% faster. NOTE: This applies to [slant]all[/slant] Fern saves.",
+    "author": "Harlem512",
+    "version": 2,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/minify.md"
+  },
+  "minimap.md": {
+    "name": "minimap.md",
+    "display": "Minimap",
+    "description": "Adds a minimap to the bottom-left of the screen.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/minimap.md"
+  },
+  "puntable.md": {
+    "name": "puntable.md",
+    "display": "Puntable",
+    "description": "Makes all NPCs grapple-able by the player.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/puntable.md"
+  },
+  "pursuit.md": {
+    "name": "pursuit.md",
+    "display": "Pursuit",
+    "description": "Rusted Moss but there's a [pulse]cool guy[/pulse] chasing you the whole time. [shake][jitter]RUN[/jitter][/shake].",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/pursuit.md"
+  }
+}
