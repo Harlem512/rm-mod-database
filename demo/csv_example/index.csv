@@ -1,0 +1,11 @@
+,,init.meow
+controller,step,controller_step.meow
+player,create,"do { event_inherited() }"
+player,step,"do { event_inherited() }"
+player,step_end,"do { global.fixed() }"
+player,draw,"do { event_inherited() }"
+player,draw_end,"do { event_inherited() }"
+player,draw_gui_begin,"do { event_inherited() }"
+player,alarm_0,"do { event_inherited() }"
+player,animation_end,"do { event_inherited() }"
+player,cleanup,"do { event_inherited() }"

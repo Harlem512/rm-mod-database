@@ -1,6 +1,8 @@
 # Rusted Moss Mod Database
 
-Data source for [Rusted Moss Mod Loader](https://github.com/Harlem512/rm-mod-manager). Most of these mods can be downloaded in-game using Rusted Moss Mod Manager. You can check out my [modding documentation](https://harlem512.github.io/rm-docs/) for information on how any of this works or how to install RMML.
+Data source for [Rusted Moss Mod Manager](https://github.com/Harlem512/rm-mod-manager). Most of these mods can be downloaded in-game, once it's installed.
+
+You can check out my [modding documentation](https://harlem512.github.io/rm-docs/) for information on how this works or how to install RMML. Example mods are included in the `demo` folder.
 
 Here's all the (publicly) included mods:
 

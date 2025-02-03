@@ -1,0 +1,6 @@
+with oplayer {
+  if self.object_index == oplayer {
+    instance_change(omod_player, false)
+    self.mod_name = global.rmml_current_mod
+  }
+}
