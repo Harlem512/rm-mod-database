@@ -36,3 +36,9 @@ Makes all NPCs grapple-able by the player.
 ![Pursuit](assets/pursuit.png)
 
 Rusted Moss but there's a _cool guy_ chasing you the whole time. **_RUN_**.
+
+# Checklist
+
+![Checklist](assets/checklist.png)
+
+Adds icons to the map for each pickup you haven't collected. Works with Minimap and intended for [Archipelago randomizer](https://github.com/dgrossmann144/Archipelago).
