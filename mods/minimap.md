@@ -31,6 +31,13 @@ if global.map_data_ != undefined and !global.trinket_active_[1] and !global.debu
     with ogame {
       map_draw()
     }
+    if global.checklist_draw {
+      global.checklist_draw(
+        global.map_draw_offset_x_,
+        global.map_draw_offset_y_,
+        global.map_data_
+      )
+    }
     global.map_draw_offset_x_ = moffset_x
     global.map_draw_offset_y_ = moffset_y
 

@@ -6,6 +6,8 @@ dist/
 # get from here https://github.com/katsaii/catspeak-lang/blob/06734ff95ae947d1fd2ba677a061c3c24725e529/docs-gen/catlog/highlight.py
 highlight.py
 # don't copy rmmm's build tools
-build.py
+/build.py
 # dev tools
 test-server.bat
+data/
+codegen.meow
