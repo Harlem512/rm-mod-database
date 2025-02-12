@@ -49,7 +49,7 @@
     "display": "Minimap",
     "description": "Adds a minimap to the bottom-left of the screen.",
     "author": "Harlem512",
-    "version": 1,
+    "version": 1.1,
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/minimap.md"
   },
@@ -70,5 +70,14 @@
     "version": 1,
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/pursuit.md"
+  },
+  "checklist.md": {
+    "name": "checklist.md",
+    "display": "Checklist",
+    "description": "Adds icons to the map for each pickup you haven't collected. Works with Minimap and intended for Archipelago randomizer.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/checklist/checklist.md"
   }
 }
