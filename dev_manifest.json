@@ -83,7 +83,7 @@
   "archipelago": {
     "name": "archipelago",
     "display": "Archipelago Client",
-    "description": "The Archipelago Client for use with the Archipelago randomizer. View setup/usage information at https://github.com/dgrossmann144/ RustedMossArchipelagoClient",
+    "description": "The Archipelago Client for use with the Archipelago randomizer. View setup/usage information at https://github.com/dgrossmann144/\nRustedMossArchipelagoClient",
     "author": "MrL",
     "version": 1.0,
     "type": "zip",
