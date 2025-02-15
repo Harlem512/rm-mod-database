@@ -6,6 +6,10 @@ You can check out my [modding documentation](https://harlem512.github.io/rm-docs
 
 Here's all the (publicly) included mods:
 
+# Archipelago Client (MrL)
+
+The Archipelago Client for use with the [Archipelago randomizer](https://archipelago.gg/). View setup/usage information at [MrL's repo](https://github.com/dgrossmann144/RustedMossArchipelagoClient).
+
 # Maya and Ameli Palette
 
 ![Ameli Palette](assets/ameli_thumbnail.png)
@@ -41,4 +45,4 @@ Rusted Moss but there's a _cool guy_ chasing you the whole time. **_RUN_**.
 
 ![Checklist](assets/checklist.png)
 
-Adds icons to the map for each pickup you haven't collected. Works with Minimap and intended for [Archipelago randomizer](https://github.com/dgrossmann144/Archipelago).
+Adds icons to the map for each pickup you haven't collected. Works with Minimap!
