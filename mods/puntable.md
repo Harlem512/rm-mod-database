@@ -3,6 +3,7 @@
 ## room_start
 
 ```sp
+let i = instance_number(par_npc) - 1
 while i >= 0 {
   let npc = instance_find(par_npc, i)
   if !npc.__punt {

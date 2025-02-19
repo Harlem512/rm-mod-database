@@ -58,7 +58,7 @@
     "display": "Puntable",
     "description": "Makes all NPCs grapple-able by the player.",
     "author": "Harlem512",
-    "version": 1,
+    "version": 1.1,
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/puntable.md"
   },
