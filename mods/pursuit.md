@@ -4,7 +4,7 @@
 ## room_start
 
 ```sp
-if !global.save_data {
+if global.save_data == -1 {
   return
 }
 
