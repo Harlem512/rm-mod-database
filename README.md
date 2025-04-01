@@ -46,3 +46,9 @@ Rusted Moss but there's a _cool guy_ chasing you the whole time. **_RUN_**.
 ![Checklist](assets/checklist.png)
 
 Adds icons to the map for each pickup you haven't collected. Works with Minimap!
+
+# Gimmick
+
+![Gimmick](assets/gimmick.png)
+
+Aprils Fools joke mod for 2025. Replaces (most) movement upgrades with additional mid-air jumps and forces the player to use the bolt caster.

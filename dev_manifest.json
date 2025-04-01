@@ -74,7 +74,7 @@
   "checklist.md": {
     "name": "checklist.md",
     "display": "Checklist",
-    "description": "Adds icons to the map for each pickup you haven't collected. Works with Minimap and intended for Archipelago randomizer.",
+    "description": "Adds icons to the map for each pickup you haven't collected. Works with Minimap and barely works with the Archipelago randomizer.",
     "author": "Harlem512",
     "version": 1,
     "type": "md",
