@@ -19,6 +19,25 @@ global.deb_trans_add = fun (roomA, roomB, _left, _right, _top, _bot) {
     bottom: _bot,
   }
 }
+
+global.dump_tilemap = fun (tilemap) {
+  let dump = []
+  -- tilemap id
+  let tid = layer_tilemap_get_id(tilemap)
+  let tile_width = tilemap_get_width(tid)
+  let tile_height = tilemap_get_height(tid)
+  let x = 0
+  while x < tile_width {
+    dump[x] = []
+    let y = 0
+    while y < tile_height {
+      dump[x][y] = tile_get_index(tilemap_get(tid, x, y))
+      y += 1
+    }
+    x += 1
+  }
+  return dump
+}
 ```
 
 # controller

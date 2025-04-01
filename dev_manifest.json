@@ -88,5 +88,14 @@
     "version": 1.0,
     "type": "zip",
     "url": "https://github.com/dgrossmann144/RustedMossArchipelagoClient/releases/download/v1.0.1/RustedMossArchipelagoClient.zip"
+  },
+  "gimmick.md": {
+    "name": "gimmick.md",
+    "display": "Gimmick",
+    "description": "Rusted Moss but Good. Or so they say.",
+    "author": "Harlem512",
+    "version": 1.0,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/gimmick/gimmick.md"
   }
 }
