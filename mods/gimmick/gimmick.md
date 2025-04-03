@@ -133,6 +133,37 @@ with oenemy_swamp_wall {
   instance_destroy(self)
 }
 
+-- replace the verse 2 box with fun :)
+with oenemy_box_boss {
+  if self.ani_timer > 330 {
+    let inst = instance_create_depth(
+      self.x, self.y, self.depth,
+      oenemy_puppet_big
+    )
+    -- keeps the arena working properly
+    inst.arena_spawn = true
+    -- boss-level hp
+    inst.hp *= 3
+    -- remove the hyper shield
+    inst.hyper_shield = false
+    instance_destroy(self)
+    -- fix the camera
+    with ocamera {
+      self.camera_state = 1
+    }
+  }
+}
+
+-- make shielded enemies vulnerable
+with par_enemy {
+  if self.hyper_shield and self.arena_spawn {
+    -- remove hyper shield
+    self.hyper_shield = false
+    -- boost hp
+    self.hp = 800
+  }
+}
+
 -- apply jumps
 with oplayer {
   let x = self.x
