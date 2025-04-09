@@ -92,10 +92,19 @@
   "gimmick.md": {
     "name": "gimmick.md",
     "display": "Gimmick",
-    "description": "Rusted Moss but Good. Or so they say.",
+    "description": "\"Rusted Moss but Good,\" April Fools 2025 mod.\nReplaces Fern's movement abilities with mid-air jumps.",
     "author": "Harlem512",
     "version": 1.1,
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/gimmick/gimmick.md"
+  },
+  "palette_editor": {
+    "name": "palette_editor",
+    "display": "Palette Editor",
+    "description": "Get that look you've ever wanted without exiting the game!\nWorks with Ameli and Maya palette mods (installed separately).",
+    "author": "Snowill",
+    "version": 0.2,
+    "type": "zip",
+    "url": "https://github.com/Iciclis/RustedMoss-PaletteEditor/releases/download/v0.2/palette_editor.zip"
   }
 }

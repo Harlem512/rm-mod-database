@@ -4,11 +4,15 @@ Data source for [Rusted Moss Mod Manager](https://github.com/Harlem512/rm-mod-ma
 
 You can check out my [modding documentation](https://harlem512.github.io/rm-docs/) for information on how this works or how to install RMML. Example mods are included in the `demo` folder.
 
-Here's all the (publicly) included mods:
+Here's all the (publicly) included mods and their authors:
 
 # Archipelago Client (MrL)
 
 The Archipelago Client for use with the [Archipelago randomizer](https://archipelago.gg/). View setup/usage information at [MrL's repo](https://github.com/dgrossmann144/RustedMossArchipelagoClient).
+
+# Palette Editor (Snowill)
+
+In-game editor for character palettes. Supports Maya and Ameli Palette (installed separately). More information available at [Snowill's repo](https://github.com/Iciclis/RustedMoss-PaletteEditor).
 
 # Maya and Ameli Palette
 
