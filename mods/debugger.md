@@ -38,6 +38,50 @@ global.dump_tilemap = fun (tilemap) {
   }
   return dump
 }
+
+global.dump_layers = fun () {
+  global.rmml.log("LAYYYYY")
+  let layers = layer_get_all()
+  let i = 0
+  while i < array_length(layers) {
+    global.rmml.log(["LAYER", layer_get_name(layers[i])])
+    let tilemap_id = layer_tilemap_get_id(layers[i])
+    global.rmml.log([
+      tilemap_get_x(tilemap_id), tilemap_get_y(tilemap_id),
+      tilemap_get_tileset(tilemap_id),
+      tilemap_get_width(tilemap_id), tilemap_get_height(tilemap_id),
+    ])
+    let dump = global.dump_tilemap(layers[i])
+    global.rmml.log(dump)
+    i += 1
+  }
+}
+
+global.tilemap_load = fun (tilemap_id, data) {
+  let x = 0
+  while x < array_length(data) {
+    let y = 0
+    while y < array_length(data[x]) {
+      tilemap_set(tilemap_id, data[x][y], x, y)
+      y += 1
+    }
+    x += 1
+  }
+}
+
+global.rebuild_cameras = fun (room) {
+  let i = 0
+  while i < 8 {
+    if room_get_camera(room, i) == -1 {
+      room_set_camera(
+        room, i
+        global.__c
+        -- camera_create_view(0, 0, room_width_get(), room_height_get())
+      )
+    }
+    i += 1
+  }
+}
 ```
 
 # controller
@@ -138,7 +182,7 @@ if global.debug_draw_hitboxes__ {
   -- main box
   draw_set_color(c_blue)
   -- position-bounds
-  -- draw_rectangle(-32, -64, room_width_get() + 32, room_height_get() + 64, true)
+  draw_rectangle(-32, -64, room_width_get() + 32, room_height_get() + 64, true)
   -- bbox-bounds
   with oplayer {
     draw_rectangle(
