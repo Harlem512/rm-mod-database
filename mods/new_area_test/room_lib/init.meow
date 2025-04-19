@@ -18,6 +18,11 @@ global.room_lib = {
       depth, name, tile_set_id, width, height, tiles
     })
   },
+  inst: fun (room_id, x, y, depth, obj, var_struct) {
+    array_push(global.room_lib.__rooms[room_id].inst, {
+      x, y, depth, obj, var_struct
+    })
+  },
   load_tilemap: fun (tilemap_id, data) {
     let x = 0
     while x < array_length(data) {
@@ -32,9 +37,10 @@ global.room_lib = {
   __add_raw: fun (new_room, map_x, map_y) {
     global.room_lib.__rooms[new_room] = {
       map_x, map_y,
-      tiles: []
+      tiles: [],
+      inst: [],
     }
     room_set_camera(new_room, 0, global.room_lib.__camera)
     return new_room
-  }
+  },
 }

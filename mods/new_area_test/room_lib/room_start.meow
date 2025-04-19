@@ -44,3 +44,12 @@ while i >= 0 {
   i -= 1
 }
 
+-- add instances
+i = 0
+let len = array_length(data.inst)
+while i < len {
+  let inst = data.inst[i]
+  instance_create_depth(inst.x, inst.y, inst.depth, inst.obj, inst.var_struct)
+  i += 1
+}
+
