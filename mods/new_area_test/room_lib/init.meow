@@ -1,0 +1,40 @@
+global.room_lib = {
+  -- room data
+  __rooms: {},
+  __init: false,
+  __camera: camera_create(),
+  dupe: fun (dupe_id, map_x, map_y) {
+    let new_room = room_duplicate(dupe_id)
+    return global.room_lib.__add_raw(new_room, map_x, map_y)
+  },
+  add: fun (width, height, map_x, map_y) {
+    let new_room = room_add()
+    room_set_width(new_room, width)
+    room_set_height(new_room, height)
+    return global.room_lib.__add_raw(new_room, map_x, map_y)
+  },
+  tile: fun (room_id, depth, name, tile_set_id, width, height, tiles) {
+    array_push(global.room_lib.__rooms[room_id].tiles, {
+      depth, name, tile_set_id, width, height, tiles
+    })
+  },
+  load_tilemap: fun (tilemap_id, data) {
+    let x = 0
+    while x < array_length(data) {
+      let y = 0
+      while y < array_length(data[x]) {
+        tilemap_set(tilemap_id, data[x][y], x, y)
+        y += 1
+      }
+      x += 1
+    }
+  },
+  __add_raw: fun (new_room, map_x, map_y) {
+    global.room_lib.__rooms[new_room] = {
+      map_x, map_y,
+      tiles: []
+    }
+    room_set_camera(new_room, 0, global.room_lib.__camera)
+    return new_room
+  }
+}
