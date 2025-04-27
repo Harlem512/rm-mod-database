@@ -30,16 +30,33 @@ if !data { return }
 -- add tile maps
 let i = array_length(data.tiles) - 1
 while i >= 0 {
+  -- unpack data struct
   let tile_data = data.tiles[i]
+  let width = tile_data.width
+  let height = tile_data.height
 
+  -- build layer
   let layer = layer_create(tile_data.depth, tile_data.name)
   let tilemap = layer_tilemap_create(
       layer,
       0,0,
       tile_data.tile_set_id,
-      tile_data.width, tile_data.height
+      width, height
   )
-  global.room_lib.load_tilemap(tilemap, tile_data.tiles)
+
+  -- place tiles
+  let ar = tile_data.tiles
+  let j = 0
+  let y = 0
+  while y < height {
+    let x = 0
+    while x < width {
+      tilemap_set(tilemap, ar[j], x, y)
+      j += 1
+      x += 1
+    }
+    y += 1
+  }
   
   i -= 1
 }

@@ -285,6 +285,7 @@ if global.deb_names {
 
 ```sp
 with ocamera {
+   global.rmml.log("hi")
   if global.debug_unclamp_cam {
     self.clamp_pos = false
   } else {
@@ -293,6 +294,11 @@ with ocamera {
 }
 with oplayer {
   -- global.hlogger.dump_objects()
+}
+
+global.rmml.log("--------------")
+with -3 {
+  global.rmml.log(object_get_name(self.object_index))
 }
 ```
 
