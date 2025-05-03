@@ -1,6 +1,11 @@
 Harlem512's debugger. Requires enabling `odebugger_new` by modifying the `data.win` file.
 
 ```sp
+global.rmml.log(ds_map_find_value(global.dialouge_map_, "seer_second_upgrade_part_1"))
+global.rmml.log(ds_map_find_value(global.dialouge_map_, "seer_second_upgrade_part_2"))
+global.rmml.log(ds_map_find_value(global.dialouge_map_, "seer_third_upgrade"))
+global.rmml.log(ds_map_find_value(global.dialouge_map_, "seer_fourth_upgrade"))
+
 global.rmml.dev = true
 
 global.debug_unclamp_cam = false
@@ -173,6 +178,7 @@ debugger.debug_add_function("J", "Player", "[c_red]", fun (a0, a1) {
 debugger.debug_add_function("V", "Cam unclamp", "[c_red]", fun (a0, a1) {
   if a1 {
     global.debug_unclamp_cam = !global.debug_unclamp_cam
+    global.light_bg_toggle_grass = !global.light_bg_toggle_grass
   }
 })
 debugger.debug_add_function("O", "Quickboot", "[c_red]", fun (a0, a1) {
@@ -285,7 +291,6 @@ if global.deb_names {
 
 ```sp
 with ocamera {
-   global.rmml.log("hi")
   if global.debug_unclamp_cam {
     self.clamp_pos = false
   } else {
@@ -296,10 +301,10 @@ with oplayer {
   -- global.hlogger.dump_objects()
 }
 
-global.rmml.log("--------------")
-with -3 {
-  global.rmml.log(object_get_name(self.object_index))
-}
+-- global.rmml.log("--------------")
+-- with -3 {
+--   global.rmml.log(object_get_name(self.object_index))
+-- }
 ```
 
 ## draw_begin
