@@ -38,6 +38,91 @@ global.dump_tilemap = fun (tilemap) {
   }
   return dump
 }
+
+global.dump_layers = fun () {
+  global.rmml.log(["LAYYYYY", room_get(), room_get_name(room_get())])
+  let layers = layer_get_all()
+  let i = 0
+  while i < array_length(layers) {
+    -- global.rmml.log(["LAYER", layer_get_name(layers[i]), layer_get_depth(layers[i])])
+    let tilemap_id = layer_tilemap_get_id(layers[i])
+    -- global.rmml.log([
+    --   tilemap_get_x(tilemap_id), tilemap_get_y(tilemap_id),
+    --   tilemap_get_tileset(tilemap_id),
+    --   tilemap_get_width(tilemap_id), tilemap_get_height(tilemap_id),
+    -- ])
+    let dump = global.dump_tilemap(layers[i])
+    -- global.rmml.log(dump)
+
+    global.rmml.log(
+      "global.room_lib.tile("
+      + "<<REPLACE>>, "
+      + string(layer_get_depth(layers[i]))
+      + ", \""
+      + layer_get_name(layers[i])
+      + "\", "
+      + string(tilemap_get_tileset(tilemap_id))
+      + ", "
+      + string(tilemap_get_width(tilemap_id))
+      + ", "
+      + string(tilemap_get_height(tilemap_id))
+      + ", "
+      + string(global.dump_tilemap(layers[i]))
+      + ")"
+    )
+    i += 1
+  }
+}
+
+global.tilemap_load = fun (tilemap_id, data) {
+  let x = 0
+  while x < array_length(data) {
+    let y = 0
+    while y < array_length(data[x]) {
+      tilemap_set(tilemap_id, data[x][y], x, y)
+      y += 1
+    }
+    x += 1
+  }
+}
+
+global.rebuild_cameras = fun (room, camera) {
+  let i = 0
+  while i < 8 {
+    if room_get_camera(room, i) == -1 {
+      room_set_camera(
+        room, i
+        camera
+        -- global.__c
+        -- camera_create_view(0, 0, room_width_get(), room_height_get())
+      )
+    }
+    i += 1
+  }
+}
+
+global.dump_camera = fun (camera_id) {
+  global.rmml.log({
+    view_x: camera_get_view_x(camera_id),
+    view_y: camera_get_view_y(camera_id),
+    view_width: camera_get_view_width(camera_id),
+    view_height: camera_get_view_height(camera_id),
+    camera_get_view_target: camera_get_view_target(camera_id),
+  })
+}
+
+global.deb = {
+  _log: [],
+  log: fun (text, label, run) {
+    array_push(global.deb._log, {
+      label,
+      text,
+      run: if run == undefined { true } else { run }
+    })
+  },
+  clear: fun () { global.deb._log = [] },
+  should_clear: true,
+}
 ```
 
 # controller
@@ -138,7 +223,7 @@ if global.debug_draw_hitboxes__ {
   -- main box
   draw_set_color(c_blue)
   -- position-bounds
-  -- draw_rectangle(-32, -64, room_width_get() + 32, room_height_get() + 64, true)
+  draw_rectangle(-32, -64, room_width_get() + 32, room_height_get() + 64, true)
   -- bbox-bounds
   with oplayer {
     draw_rectangle(
@@ -205,9 +290,6 @@ with ocamera {
     self.clamp_pos = true
   }
 }
-with oplayer {
-  -- global.hlogger.dump_objects()
-}
 ```
 
 ## draw_begin
@@ -218,4 +300,22 @@ if global.debug_unclamp_cam {
     self.draw_catacombs_light = false
   }
 }
+```
+
+## draw_gui_end
+
+```sp
+let y = 0
+while y < array_length(global.deb._log) and y < 100 {
+  let log = global.deb._log[y]
+  let text = log.text
+  let run = log.run
+  let label = log.label
+  if run and typeof(text) == "method" {
+    text = text()
+  }
+  draw_text(0, y * 10, string(label) + ": " + string(text))
+  y += 1
+}
+if global.deb.should_clear { global.deb.clear() }
 ```
