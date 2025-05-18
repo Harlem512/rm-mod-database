@@ -106,5 +106,14 @@
     "version": 0.2,
     "type": "zip",
     "url": "https://github.com/Iciclis/RustedMoss-PaletteEditor/releases/download/v0.2.1/palette_editor.zip"
+  },
+  "ghost_mp": {
+    "name": "ghost_mp",
+    "display": "Ghost Multiplayer",
+    "description": "BETA THIS IS MOSTLY UNTESTED. IF YOU FIND ISSUES PLEASE MESSAGE ME ON DISCORD.\n\nAdds (bad) multiplayer to Rusted Moss.",
+    "author": "Harlem512",
+    "version": 0.1,
+    "type": "zip",
+    "url": ""
   }
 }

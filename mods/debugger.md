@@ -20,6 +20,50 @@ global.deb_trans_add = fun (roomA, roomB, _left, _right, _top, _bot) {
   }
 }
 
+global.time = {
+  _window_index: 0,
+  _window: array_create(60, 0),
+  _total: 0,
+  _start: 0,
+  start: fun () {
+    global.time._start = get_timer();
+  },
+  end: fun (label) {
+    let diff = get_timer() - global.time._start
+    
+    global.time._total += diff
+    global.time._total -= global.time._window[global.time._window_index]
+    global.time._window[global.time._window_index] = diff
+    global.time._window_index = (global.time._window_index + 1) % 60
+
+    global.deb.log(global.time._total / 60, label)
+  }
+}
+
+global.dump = {
+  ds_map: fun (map) {
+    let keys = ds_map_keys_to_array(map)
+    let str = string(map) + ": ds_map = {\n"
+    let i = array_length(keys) - 1
+    while i >= 0 {
+      let val = ds_map_find_value(map, keys[i])
+      str += string(keys[i]) + ":" + string(val) + "\n"
+      i -= 1
+    }
+    global.rmml.log(str + "}")
+  },
+  buffer: fun (buffer) {
+    let size = buffer_get_size(buffer)
+    let str = string(buffer) + ": buffer = {\n"
+    let i = 0
+    while i < size {
+      str += string(buffer_peek(buffer, i, buffer_u8)) + "\n"
+      i += 1
+    }
+    global.rmml.log(str + "}")
+  },
+}
+
 global.dump_tilemap = fun (tilemap) {
   let dump = []
   -- tilemap id
@@ -164,8 +208,10 @@ debugger.debug_add_function("J", "Player", "[c_red]", fun (a0, a1) {
       global.ameli_mode_ = true
     } else if global.ameli_mode_ {
       global.ameli_mode_ = false
+      global.maya_mode = false
     } else {
       global.maya_mode = true
+      global.ameli_mode_ = false
     }
   }
 })

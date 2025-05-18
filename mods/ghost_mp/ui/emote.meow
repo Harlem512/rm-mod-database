@@ -1,0 +1,85 @@
+-- MARK: Map
+if global.rm_mp.show_players_on_map and global.map_data_ != undefined {
+  let game = instance_find(ogame)
+  -- if the map is open
+  if game and game.draw_map and global.map_ui_state == 0 {
+    let num_rooms = array_length(global.map_data_)
+    let all = global.rm_mp.player_peers
+    let user_ids = variable_struct_get_names(all)
+    let i = array_length(user_ids) - 1
+    while i >= 0 {
+      let inst = all[user_ids[i]]
+      i -= 1
+      -- validate instance exists and the room is valid (part 1)
+      if !instance_exists(inst) or inst.room >= num_rooms or inst.room == room_get() { continue }
+      let map_data = global.map_data_[inst.room]
+      -- more room validation checks
+      if  map_data != -1 and map_data[0] != -1 {
+        -- draw the map icon
+        draw_sprite(
+          global.rm_mp.sprites_map[inst.character], 1,
+          map_data[0].xx * 8 - global.map_draw_offset_x_,
+          map_data[0].yy * 8 - global.map_draw_offset_y_,
+        )
+      }
+    }
+  }
+}
+
+-- MARK: Emotes
+
+let last_character = global.rm_mp.player_last_character
+
+-- only render emote wheel if there's a player
+if instance_number(oplayer) == 0 or last_character == -1 { return }
+
+-- hide wheel if the button isn't pressed
+if !keyboard_check(global.rm_mp.emote_button) {
+  if self.selected_emote != -1 {
+    global.rm_mp.emote_packet = self.selected_emote
+    global.rm_mp.emote_self = self.selected_emote
+    global.rm_mp.emote_self_timer = 100
+    self.selected_emote = -1
+  }
+  return
+}
+
+-- set rendering x/y
+if keyboard_check_pressed(global.rm_mp.emote_button) {
+  self.wheel_x = global.mouse_gui_x_
+  self.wheel_y = global.mouse_gui_y_
+}
+
+self.selected_emote = if point_distance(
+  self.wheel_x, self.wheel_y,
+  global.mouse_gui_x_, global.mouse_gui_y_
+) > 20 {
+  (
+    point_direction(
+      self.wheel_x, self.wheel_y,
+      global.mouse_gui_x_, global.mouse_gui_y_
+    ) // 60 + 5
+  ) % 6
+} else {
+  -1
+}
+
+let sprites_emote = global.rm_mp.sprites_emote[last_character]
+
+let i = 0
+while i < 6 {
+  let color = if self.selected_emote == i { c_white } else { c_gray }
+  draw_sprite_ext(
+    sweapon_select, 0, 
+    self.wheel_x, self.wheel_y,
+    1.2, 1.2, i * 60,
+    color, 1
+  )
+  draw_sprite_ext(
+    sprites_emote[6], sprites_emote[i],
+    self.wheel_x - 16 + lengthdir_x(50, i * 60 + 90),
+    self.wheel_y - 16 + lengthdir_y(50, i * 60 + 90),
+    1, 1, 0, color, 1
+  )
+  i += 1
+}

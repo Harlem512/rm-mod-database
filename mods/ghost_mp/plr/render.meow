@@ -1,0 +1,554 @@
+-- skip rendering if rooms don't match
+if room_get() != self.room { return }
+
+-- bwave function
+let bwave = fun (percent) {
+  return round(wave(-1, 0, 4, (percent + self.wave_offset) % 1))
+}
+
+-- x-flip
+let draw_xscale = if self.aim_dir > 120 { 1 } else { -1 }
+
+-- aim direction
+-- [0, 240] w/ dependency on x-flip
+-- [-90,90] independent of look angle
+let aim_dir = abs(self.aim_dir - 120) * 3 / 2 - 90
+let dx = self.dx
+let dy = self.dy
+let crouching = self.crouching and dy == 0 and dx == 0
+let wall_hug = if dy == 0 and dx == 0 { self.wall_hug } else { 0 }
+
+-- MARK: Leg Type
+-- 0: idle
+-- 1: run
+-- 2: crouch
+-- 3: jump
+let legs_type = 0
+if dy != 0 {
+  legs_type = 3
+  if dy < -1 {
+    self.legs_index = 0
+  } else if dy < 0 {
+    self.legs_index = 1
+  } else if dy < 1 {
+    self.legs_index = 2
+  } else {
+    self.legs_index = 3
+  }
+} else if dx != 0 {
+  legs_type = 1
+  -- update running
+  self.legs_index += dx / 14
+  self.legs_index = self.legs_index % 8
+} else if crouching {
+  legs_type = 2
+  self.legs_index = 4
+} else {
+  self.legs_index = 0
+}
+
+-- constants
+let x = self.x
+let y = self.y
+let hhp_ = 0
+let y_off = if aim_dir > 0 { aim_dir / 37 } else { aim_dir / 137 }
+
+-- MARK: ===INIT===
+match self.character {
+  -- fern
+  case 0 {
+    x += 2 * draw_xscale
+    if crouching {
+      y += 7
+    }
+  }
+  -- maya
+  case 1 {
+    x -= draw_xscale
+    if crouching {
+      y += 10
+    }
+  }
+  -- ameli
+  case 2 {
+    hhp_ = if dy == 0 { -self.body_tilt * 1.1 } else { -self.body_tilt * 0.5 }
+    x += 2 * draw_xscale - hhp_ * 3
+    y += if crouching { 2 } else { -4 }
+  }
+}
+
+-- MARK: Grapple
+if self.hook_x != -255 {
+  let col = draw_get_color()
+  draw_set_color(c_orange)
+  draw_line(x, y - 22, self.hook_x, self.hook_y)
+  draw_set_color(col)
+}
+
+-- MARK: Shader Start
+shader_replace_simple_set_hook(shd_palette)
+texture_set_stage(
+  global.main_shader_palette_pointer,
+  sprite_get_texture(
+    if self.palette != undefined { self.palette } else { self.safe_palette },
+    0
+  )
+)
+-- fixes ameli palette bug
+if global.ameli_mode_ {
+  shader_set_uniform_f_array(shader_get_uniform(shd_palette, "palette_uvs"), [0,0, 1,1])
+}
+
+-- renderer
+-- in a loop so we can use break to skip to the end
+while true {
+  -- MARK: Wall Hug
+  if wall_hug != 0 {
+    draw_sprite_ext(
+      self.wall_hug_sprite, 0,
+      self.x, self.y,
+      wall_hug, 1, 0, c_white, 1
+    )
+    break
+  }
+
+  match self.character {
+    -- MARK: ===FERN===
+    case 0 {
+      if legs_type == 1 {
+        y_off -= [
+          2, 1, 0, 1,
+        ][floor(abs(self.legs_index)) % 4]
+      }
+
+      -- MARK: Back arm
+      draw_sprite_ext(
+        splayer_hand_inner_palette, 0,
+        x - 4 * draw_xscale,
+        y - 24 + bwave(0.89) + y_off,
+        draw_xscale, 1, aim_dir * draw_xscale, c_white, 1
+      )
+
+      -- MARK: Body 1
+      draw_sprite_ext(splayer_jacket_back_palette, 0,
+        x + draw_xscale - (
+          if aim_dir > 0 { aim_dir / 25 } else { -aim_dir / 80 }
+        ) * draw_xscale,
+        y - 8 + y_off * 0.4 + bwave(0.87),
+        draw_xscale, 1, 0, c_white, 1
+      )
+
+      -- MARK: Legs
+
+      -- legs
+      draw_sprite_ext(
+        global.rm_mp.sprites_legs[self.character][legs_type],
+        abs(self.legs_index),
+        x, y + (if crouching { -7 } else { 0 }),
+        draw_xscale, 1, 0, c_white, 1
+      )
+
+      -- MARK: Body 2
+      let body_bwave = bwave(0.88)
+      draw_sprite_ext(
+        splayer_body_palette, max(0, aim_dir / 90 * 13.9),
+        x + (if aim_dir < -30 { -aim_dir / 80 * draw_xscale } else { 0 }),
+        y - 10 + y_off * 0.5 + body_bwave,
+        draw_xscale, 1, 0, c_white, 1
+      )
+      let body_xx = if aim_dir > 0 { aim_dir / 40 } else { aim_dir / 80 }
+      draw_sprite_ext(
+        splayer_hoodie_palette, 0,
+        x - 8 * draw_xscale - body_xx * 1.5 * draw_xscale,
+        y - 22 + y_off * 1.4 + body_bwave,
+        draw_xscale, 1, 0, c_white, 1
+      )
+      draw_sprite_ext(
+        splayer_jacket_front_palette, 0,
+        x + 1 * draw_xscale - body_xx * draw_xscale,
+        y - 8 + y_off + body_bwave,
+        draw_xscale, 1, 0, c_white, 1
+      )
+
+      -- MARK: Head
+      let head_x = round(x - 1 * draw_xscale
+        - (if aim_dir > 0 { aim_dir / 10 } else { aim_dir / 50 })
+        * draw_xscale - sign(dx)
+      )
+      let head_y = round(y - 25 + y_off + bwave(0.92) + crouching)
+      let head_index = if aim_dir < -40 { 0 } else if aim_dir < 25 { 1 } else if aim_dir < 55 { 2 } else { 3 }
+      let eyes = if aim_dir < -40 { splayer_eyes_down_palette } else if aim_dir < 25 { splayer_eyes_mid_palette } else if aim_dir < 55 { splayer_eyes_mid_up_palette } else { splayer_eyes_up_palette }
+
+      draw_sprite_ext(
+        splayer_head_palette, head_index,
+        head_x, head_y,
+        draw_xscale, 1, 0, c_white, 1
+      )
+      draw_sprite_ext(eyes, 0,
+        head_x, head_y,
+        draw_xscale, 1, 0, c_white, 1
+      )
+
+      -- MARK: Gun
+      let aidir = (aim_dir // 2) * 2
+      let gun_bwave = bwave(0.88)
+      match self.weapon {
+        case 2 {
+          draw_sprite_ext(
+            splayer_gun_rail, 0,
+            x - 4 * draw_xscale,
+            y - 24 + gun_bwave + y_off,
+            draw_xscale, 1, aim_dir * draw_xscale, c_white, 1
+          )
+        }
+        case 0 {
+          draw_sprite_ext(
+            splayer_gun_pistol, 1,
+            x - 4 * draw_xscale,
+            y - 24 + gun_bwave + y_off,
+            draw_xscale, 1, aim_dir * draw_xscale, c_white, 1
+          )
+        }
+        case 1 {
+          draw_sprite_ext(
+            splayer_gun_shotgun, 1,
+            x - 4 * draw_xscale,
+            y - 24 + gun_bwave + y_off,
+            draw_xscale, 1, aim_dir * draw_xscale, c_white, 1
+          )
+        }
+        case 5 {
+          draw_sprite_ext(
+            splayer_gun_small, 0,
+            x - 5 * draw_xscale - aim_dir / 80,
+            y - 24 + gun_bwave + y_off,
+            draw_xscale, 1, aidir * draw_xscale, c_white, 1
+          )
+        }
+        case 3 {
+          draw_sprite_ext(
+            splayer_gun_sniper, 1,
+            x - 4 * draw_xscale,
+            y - 24 + gun_bwave + y_off,
+            draw_xscale, 1, aim_dir * draw_xscale, c_white, 1
+          )
+        }
+        case 4 {
+          draw_sprite_ext(
+            splayer_gun_grenade, 0,
+            x - 4 * draw_xscale,
+            y - 24 + gun_bwave + y_off,
+            draw_xscale, 1, aim_dir * draw_xscale, c_white, 1
+          )
+        }
+      }
+      -- MARK: gun arm
+      let arm_bwave = bwave(0.9)
+
+      if self.weapon == 5 {
+        draw_sprite_ext(
+          splayer_hand_outer_pistol_palette, 2,
+          x - 5 * draw_xscale - aim_dir / 80,
+          y - 24 + arm_bwave + y_off,
+          draw_xscale, 1, aidir * draw_xscale, c_white, 1
+        )
+        draw_sprite_ext(
+          splayer_hand_outer_pistol_palette, 1,
+          x - 5 * draw_xscale - aim_dir / 34 * draw_xscale,
+          y - 24 + arm_bwave + y_off,
+          draw_xscale, 1, aidir * draw_xscale, c_white, 1
+        )
+        draw_sprite_ext(
+          splayer_hand_outer_pistol_palette, 0,
+          x - 5 * draw_xscale - aim_dir / 30 * draw_xscale,
+          y - 23 + arm_bwave + y_off,
+          draw_xscale, 1, aidir * draw_xscale, c_white, 1
+        )
+      } else {
+        draw_sprite_ext(
+          splayer_hand_outer_palette, 2,
+          x - 5 * draw_xscale,
+          y - 24 + arm_bwave + y_off,
+          draw_xscale, 1, aidir * draw_xscale, c_white, 1
+        )
+        draw_sprite_ext(
+          splayer_hand_outer_palette, 1,
+          x - 5 * draw_xscale - aim_dir / 40 * draw_xscale,
+          y - 24 + arm_bwave + y_off,
+          draw_xscale, 1, aidir * draw_xscale, c_white, 1
+        )
+        draw_sprite_ext(
+          splayer_hand_outer_palette, 0,
+          x - 5 * draw_xscale - aim_dir / 30 * draw_xscale,
+          y - 23 + y_off + arm_bwave,
+          draw_xscale, 1, aidir * draw_xscale * 1.2, c_white, 1
+        )
+      }
+    }
+    -- MARK: ===MAYA===
+    case 1 {
+      -- cache placeholder
+      let pal = global.rm_mp.sprites_palette_placeholders_maya
+
+      -- load palettes :)
+      body = if pal { pal.body } else { splayer_maya_body }
+      body_upper = if pal { pal.body_upper } else { splayer_maya_body_upper }
+      eyes_down = if pal { pal.eyes_down } else { splayer_maya_eyes_down }
+      eyes_mid = if pal { pal.eyes_mid } else { splayer_maya_eyes_mid }
+      eyes_mid_up = if pal { pal.eyes_mid_up } else { splayer_maya_eyes_mid_up }
+      eyes_up = if pal { pal.eyes_up } else { splayer_maya_eyes_up }
+      hand_inner = if pal { pal.hand_inner } else { splayer_maya_hand_inner }
+      hand_outer = if pal { pal.hand_outer } else { splayer_maya_hand_outer }
+      head = if pal { pal.head } else { splayer_maya_head }
+      legs = if pal { pal.legs } else { splayer_maya_legs }
+      legs_crouching = if pal { pal.legs_crouching } else { splayer_maya_legs_crouching }
+      legs_jump = if pal { pal.legs_jump } else { splayer_maya_legs_jump }
+      legs_run = if pal { pal.legs_run } else { splayer_maya_legs_run }
+      
+      -- body offset
+      let body_offset = if legs_type == 1 {
+        [0, 0, -2, 1, 5, 5, 5, 3][floor(abs(self.legs_index))]
+      } else { 0 }
+      y -= body_offset
+
+      -- MARK: back arm
+      draw_sprite_ext(
+        splayer_maya_hand_inner, 0,
+        x - 4 * draw_xscale + draw_xscale * 3,
+        y - 28 + bwave(0.89) + y_off,
+        draw_xscale, 1, 
+        aim_dir * draw_xscale * 0.2 + dy * 0.5 + (min(abs(dx), 2)) * 10 * draw_xscale,
+        c_white, 1
+      )
+
+      -- MARK: head
+      let head_x = round(x - 4 * draw_xscale
+        - (if aim_dir > 0 { aim_dir / 10 } else { aim_dir / 30 })
+        * draw_xscale * 0.5 + draw_xscale * 3)
+      let head_y = round(y - 27 + y_off * 0.5 + bwave(0.92) + crouching - 1)
+      let head_index = if aim_dir < -40 { 0 } else if aim_dir < 25 { 1 } else if aim_dir < 55 { 2 } else { 3 }
+      let eyes = if aim_dir < -40 { splayer_maya_eyes_down } else if aim_dir < 25 { splayer_maya_eyes_mid } else if aim_dir < 55 { splayer_maya_eyes_mid_up } else { splayer_maya_eyes_up }
+      draw_sprite_ext(
+        splayer_maya_head, head_index,
+        head_x, head_y,
+        draw_xscale, 1, 0, c_white, 1
+      )
+      draw_sprite_ext(eyes, 0, head_x, head_y, draw_xscale, 1, 0, c_white, 1)
+
+      -- MARK: legs
+      draw_sprite_ext(
+        global.rm_mp.sprites_legs[self.character][legs_type],
+        abs(self.legs_index),
+        x + draw_xscale * 2.5, y + body_offset + (if crouching { -10 } else { 0 }),
+        draw_xscale, 1, 0, c_white, 1
+      )
+
+      -- MARK: body
+      let body_bwave = bwave(0.88)
+      let ind = if aim_dir >= 0 { (aim_dir / 90 * 13.9) // 2} else { 0 }
+      let ex = if aim_dir < -30 { -aim_dir / 80 * draw_xscale } else { 0 }
+      draw_sprite_ext(
+        splayer_maya_body_upper, ind,
+        x + ex + draw_xscale * 3,
+        y - 10 + y_off * 0.5 + body_bwave - 1,
+        draw_xscale, 1, -draw_xscale * 0, c_white, 1
+      )
+      if (legs_type != 1) {
+        draw_sprite_ext(
+          splayer_maya_body, ind,
+          x + ex + draw_xscale * 3,
+          y - 10 + y_off * 0.5 + body_bwave - 1,
+          draw_xscale, 1, -draw_xscale * 0, c_white, 1
+        )
+      }
+
+      -- MARK: sword
+      let arm_dir_ = aim_dir * 0.6 - (min(abs(dx), 3)) * 8
+      let sword_bwave1 = bwave(0.88)
+      let sword_angle = arm_dir_ * draw_xscale
+        * (if arm_dir_ > 0 { 1 } else { 0.4 })
+        - 60 * draw_xscale + (min((dx * 0.1), 5)) * 10
+      draw_sprite_ext(
+        splayer_maya_sword, 1,
+        x - draw_xscale + lengthdir_x(14, (arm_dir_ * draw_xscale + -90)),
+        y - 26 + y_off + sword_bwave1 + lengthdir_y(14, (arm_dir_ * draw_xscale + -90)),
+        draw_xscale, 1, sword_angle, c_gray, 1
+      )
+      draw_sprite_ext(
+        splayer_maya_hand_outer, 0,
+        x - draw_xscale,
+        y - 27 + y_off + bwave(0.9),
+        draw_xscale, 1, (arm_dir_ * draw_xscale), c_white, 1
+      )
+    }
+    -- MARK: ===AMELI===
+    case 2 {
+      if self.flying {
+        -- MARK: flying
+        self.sprite_index = sameli_witch_flying
+        self.image_xscale = draw_xscale
+        draw_self()
+        break
+      }
+
+      let nhh = -self.body_tilt
+
+      if legs_type == 1 {
+        y_off -= [
+          2, 1, 0, 1,
+        ][floor(abs(self.legs_index)) % 4]
+      }
+
+      -- MARK: arm 1
+      draw_sprite_ext(
+        sameli_witch_arm_inner, 2,
+        x - (if aim_dir > 0 { aim_dir / 35 } else { aim_dir / 30 }) * draw_xscale
+          + 6 * hhp_,
+        y - 26 + bwave(0.89) + y_off,
+        draw_xscale, 1,
+        aim_dir * draw_xscale * 0.4 + dy * 0.5 + min(abs(dx), 2) * 15 * draw_xscale,
+        c_white, 1
+      )
+
+      -- MARK: hat & head
+      let head_x = x + - 2 * draw_xscale
+          - (if aim_dir > 0 { aim_dir / 10 } else { aim_dir / 30 })
+          * draw_xscale * 0.5
+          + hhp_ * 6
+      let head_y = y - 26 + y_off * 1 + bwave(0.92) + crouching - 1
+      let hat_y = round(head_y - (max(0, (dy * 0.75))))
+      draw_sprite_ext(
+        sameli_witch_hat, 1,
+        round(head_x + hhp_),
+        hat_y,
+        draw_xscale, 1, hhp_ * 8, c_white, 1
+      )
+      draw_sprite_ext(
+        sameli_witch_head, 
+        if aim_dir < -40 { 0 } else if aim_dir < 25 { 1 } else if aim_dir < 55 { 2 } else { 3 },
+        round(head_x), round(head_y),
+        draw_xscale, 1, 0, c_white, 1
+      )
+      draw_sprite_ext(sameli_witch_hat, 0,
+        round(head_x + hhp_), hat_y,
+        draw_xscale, 1, hhp_ * 8, c_white, 1
+      )
+
+      -- MARK: body 1
+      let body_bwave = bwave(0.88)
+      let ex = if aim_dir < -30 { -aim_dir / 80 * draw_xscale } else { 0 }
+      let skirt_vsp_offset = clamp(dy * 0.5, -2, 2)
+      draw_sprite_ext(
+        sameli_witch_skirt, 2,
+        x + ex + hhp_ * 1,
+        y - 13 + y_off * 0.5 + body_bwave - 1 - skirt_vsp_offset * 0.5,
+        draw_xscale, 1, -hhp_ * 15,
+        c_white, 1
+      )
+
+      -- MARK: legs
+      draw_sprite_ext(
+        global.rm_mp.sprites_legs[self.character][legs_type],
+        abs(self.legs_index),
+        x - draw_xscale,
+        y + (if crouching { -2 } else { 4 }),
+        draw_xscale, 1, 0, merge_colour(c_white, c_black, 0.3), 1
+      )
+
+      -- MARK: body 2
+      draw_sprite_ext(
+        sameli_witch_bow, 0,
+        x + ex + nhh - draw_xscale * 1,
+        y - 15 + y_off * 0.5 + body_bwave - 1,
+        draw_xscale, 1, -nhh * 20, merge_colour(c_white, c_gray, 0.5), 1
+      )
+      draw_sprite_ext(
+        sameli_witch_skirt, 0,
+        x + ex + hhp_,
+        y - 13 + y_off * 0.5 + body_bwave - 1 - skirt_vsp_offset,
+        draw_xscale, 1, -hhp_ * 20, c_white, 1
+      )
+      draw_sprite_ext(
+        sameli_witch_torso,
+        if aim_dir >= 0 { (aim_dir / 90 * 13.9) // 2} else { 0 },
+        x + ex + nhh,
+        y - 10 + y_off * 0.5 + body_bwave - 1,
+        draw_xscale, 1, -nhh * 20, c_white, 1
+      )
+
+      -- MARK: front arm
+      let arm_x = x - 4 * draw_xscale + hhp_ * 6
+        - (if aim_dir < -30 { -aim_dir / 80 * draw_xscale } else { 0 })
+        * draw_xscale * 0.5
+      let arm_y = y - 24 + y_off + bwave(0.9)
+      let arm_angle = (aim_dir * 0.6 - min(abs(dx), 3) * 12) * draw_xscale
+      draw_sprite_ext(
+        sameli_witch_arm_outer, 0,
+        arm_x, arm_y,
+        draw_xscale, 1, arm_angle, c_white, 1
+      )
+      draw_sprite_ext(
+        sameli_witch_arm_outer, 1,
+        arm_x, arm_y,
+        draw_xscale, 1, arm_angle, c_white, 1
+      )
+    }
+    -- MARK: ===DEBUG===
+    case -1 {
+      let aim_radians = (self.aim_dir - 120) / 120 * 3.14159
+      let aim_x = sin(aim_radians) * 10
+      let aim_y = cos(aim_radians) * 10
+      draw_rectangle(self.last_x - 8, self.last_y - 8, self.last_x + 8, self.last_y + 8, true)
+      draw_rectangle(self.x - 2, self.y - 2, self.x + 2, self.y + 2, true)
+      draw_rectangle(self.next_x - 4, self.next_y - 4, self.next_x + 4, self.next_y + 4, true)
+
+      draw_line(self.x, self.y, self.x + aim_x, self.y + aim_y)
+
+      if self.hook_x != -255 {
+        draw_line(self.x, self.y, self.hook_x, self.hook_y)
+      }
+    }
+  }
+  break
+}
+
+-- MARK: Shader end
+-- fixes ameli palette bug
+if global.ameli_mode_ {
+  shader_set_uniform_f_array(shader_get_uniform(shd_palette, "palette_uvs"), [0,0, 0,0])
+}
+if !global.rmml.__mod_controllers.palette_editor {
+  texture_set_stage(
+    global.main_shader_palette_pointer,
+    global.palette_texture
+  )
+}
+shader_replace_simple_reset_hook()
+
+-- MARK: Player Name
+-- check if the name is set and blindfold isn't equipped (or debug ui disable)
+if self.name != undefined and !global.trinket_active_[1] and !global.debug_ui_ {
+  let align = draw_get_halign()
+  let col = draw_get_color()
+  draw_set_color(c_white)
+  draw_set_halign(fa_center)
+  draw_text(x, y - self.name_offset, self.name)
+  draw_set_halign(align)
+  draw_set_color(col)
+}
+
+-- MARK: Emote
+if self.emote != -1 {
+  let scale = clamp(sin(self.emote_timer * pi / 100) * 4, 0, 1)
+  let sprites_emote = global.rm_mp.sprites_emote[self.character]
+  draw_sprite_ext(
+    sprites_emote[6], sprites_emote[self.emote],
+    x - scale * 17,
+    y - self.name_offset - scale * 17,
+    scale, scale, 0, c_white, 1
+  )
+  if self.emote_timer == 1 {
+    self.emote = -1
+  }
+  self.emote_timer -= 1
+}

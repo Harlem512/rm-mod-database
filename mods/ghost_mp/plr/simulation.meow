@@ -1,0 +1,36 @@
+self.since_last_packet += 1
+self.lerp_counter += 1
+
+if self.next_x == undefined { return }
+
+self.dx = self.x
+self.dy = self.y
+
+-- lerp
+if self.lerp_counter <= self.time_to_lerp {
+  let lerp_p = self.lerp_counter / self.time_to_lerp
+  self.x = lerp(self.last_x, self.next_x, lerp_p)
+  self.y = lerp(self.last_y, self.next_y, lerp_p)
+
+  -- lerp the radius
+  -- if distance between A and B is greater than half circle:
+  if abs(self.last_aim - self.next_aim) > 120 {
+    -- 10 - 230 => 250 - 230
+    -- 230 - 10 => 230 - 250
+    let next_bigger = self.last_aim < self.next_aim
+    let last_aim = if next_bigger { self.last_aim + 240 } else { self.last_aim }
+    let next_aim = if !next_bigger { self.next_aim + 240 } else { self.next_aim }
+
+    -- lerp the abs values
+    let lerp_wrong = lerp(last_aim, next_aim, lerp_p)
+    -- add sign back
+    self.aim_dir = lerp_wrong % 240
+  } else {
+    self.aim_dir = lerp(self.last_aim, self.next_aim, lerp_p)
+  }
+}
+
+self.dx -= self.x
+self.dy -= self.y
+
+self.body_tilt = clamp(lerp(self.body_tilt, self.dx, 0.15), -1, 1)

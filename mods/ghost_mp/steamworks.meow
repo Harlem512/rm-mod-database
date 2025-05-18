@@ -1,0 +1,531 @@
+-- MARK: Steam API
+global._steam_get_persona_name = external_define("Steamworks_x64.dll", "steam_get_persona_name", dll_cdecl, ty_string, 0)
+global._steam_get_user_steam_id = external_define("Steamworks_x64.dll", "steam_get_user_steam_id", dll_cdecl, ty_real, 0)
+global._steam_get_user_persona_name = external_define("Steamworks_x64.dll", "steam_get_user_persona_name", dll_cdecl, ty_real, 1, ty_real)
+global._steam_lobby_activate_invite_overlay = external_define("Steamworks_x64.dll", "steam_lobby_activate_invite_overlay", dll_cdecl, ty_real, 0)
+global._steam_lobby_create = external_define("Steamworks_x64.dll", "steam_lobby_create", dll_cdecl, ty_real, 2, ty_real, ty_real)
+global._steam_lobby_get_lobby_id = external_define("Steamworks_x64.dll", "steam_lobby_get_lobby_id", dll_cdecl, ty_real, 0)
+global._steam_lobby_get_member_count = external_define("Steamworks_x64.dll", "steam_lobby_get_member_count", dll_cdecl, ty_real, 0)
+global._steam_lobby_get_member_id = external_define("Steamworks_x64.dll", "steam_lobby_get_member_id", dll_cdecl, ty_real, 1, ty_real)
+global._steam_lobby_join_id = external_define("Steamworks_x64.dll", "steam_lobby_join_id", dll_cdecl, ty_real, 1, ty_real)
+global._steam_net_packet_get_data = external_define("Steamworks_x64.dll", "steam_net_packet_get_data", dll_cdecl, ty_real, 1, ty_real)
+global._steam_net_packet_get_sender_id = external_define("Steamworks_x64.dll", "steam_net_packet_get_sender_id", dll_cdecl, ty_real, 0)
+global._steam_net_packet_get_size = external_define("Steamworks_x64.dll", "steam_net_packet_get_size", dll_cdecl, ty_real, 0)
+global._steam_net_packet_receive = external_define("Steamworks_x64.dll", "steam_net_packet_receive", dll_cdecl, ty_real, 1, ty_real)
+global._steam_net_packet_send = external_define("Steamworks_x64.dll", "steam_net_packet_send", dll_cdecl, ty_real, 5, ty_real, ty_real, ty_real, ty_real, ty_real)
+
+global.steam_get_persona_name = fun () { external_call(global._steam_get_persona_name) }
+global.steam_get_user_steam_id = fun () { external_call(global._steam_get_user_steam_id) }
+global.steam_get_user_persona_name = fun (steamID) { external_call(global._steam_get_user_persona_name, steamID) }
+global.steam_lobby_activate_invite_overlay = fun () { external_call(global._steam_lobby_activate_invite_overlay) }
+global.steam_lobby_create = fun (type, max_members) { external_call(global._steam_lobby_create, type, max_members) }
+global.steam_lobby_get_lobby_id = fun () { external_call(global._steam_lobby_get_lobby_id) }
+global.steam_lobby_get_member_count = fun () { external_call(global._steam_lobby_get_member_count) }
+global.steam_lobby_get_member_id = fun (index) { external_call(global._steam_lobby_get_member_id, index) }
+global.steam_lobby_join_id = fun (lobby_id) { external_call(global._steam_lobby_join_id, lobby_id) }
+global.steam_net_packet_get_data = fun (buffer) { external_call(global._steam_net_packet_get_data, buffer) }
+global.steam_net_packet_get_sender_id = fun () { external_call(global._steam_net_packet_get_sender_id) }
+global.steam_net_packet_get_size = fun () { external_call(global._steam_net_packet_get_size) }
+global.steam_net_packet_receive = fun (channel) { external_call(global._steam_net_packet_receive, channel) }
+global.steam_net_packet_send = fun (user_id, buffer, size, packet_type, channel) { external_call(global._steam_net_packet_send, user_id, buffer, size, packet_type, channel) }
+
+-- load config options
+-- these are stored into rm_mp as-is
+ini_open("mods/rmml/ghost_mp/config.ini")
+let emote_button = ini_read_real("ghost_mp", "emote_button", 'O')
+let enable_palette_packets = ini_read_real("ghost_mp", "enable_palette_packets", 1)
+let show_players_on_map = ini_read_real("ghost_mp", "show_players_on_map", 1)
+ini_close()
+
+-- MARK: ==MP Struct==
+global.rm_mp = {
+  -- this is the main mp handler
+  -- contains most helpers and persistent data
+  
+  -- MARK: EMOTES
+  -- button to open the emote wheel
+  emote_button,
+  -- emote to send on the next packet
+  emote_packet: -1,
+  -- personal emote timer, used to display our emotes
+  emote_self_timer: 0,
+  -- personal emote, used to display our emotes
+  emote_self: -1,
+
+  -- MARK: NETCODE
+  -- current frame, used to prevent spamming the network
+  frames: 0,
+  -- network buffer
+  -- ALL network operations (incoming / outgoing) use this
+  net_buffer: buffer_create(450, buffer_fixed, 1),
+  -- runs the callback function after running the async function
+  -- global.rm_mp.then(
+  --   global.steam_lobby_activate_invite_overlay(),
+  --   fun (data) { global.rmml.log(data) },
+  -- )
+  then: fun (id, cb) {
+    with osteam_handler {
+      ds_map_set(self.req_callbacks, id, cb)
+    }
+  },
+  -- broadcasts the network buffer to all users in the lobby
+  broadcast: fun (size) {
+    let net_buffer = global.rm_mp.net_buffer
+    let i = global.steam_lobby_get_member_count() - 1
+    let my_id = global.steam_get_user_steam_id()
+    while i >= 0 {
+      let id = global.steam_lobby_get_member_id(i)
+      i -= 1
+      -- DEBUG: LOOPBACK
+      -- if id == my_id { continue }
+      global.steam_net_packet_send(
+        id, net_buffer,
+        size, 0, 0,
+      )
+    }
+    -- reset buffer
+    buffer_fill(net_buffer, 1, buffer_u8, 0, 450)
+  },
+  -- MARK: build palette packet
+  build_character_packet: fun () {
+    let character = global.rm_mp.player_last_character
+    let net_buffer = global.rm_mp.net_buffer
+    buffer_seek(net_buffer, buffer_seek_start, 0)
+    buffer_write(net_buffer, buffer_u8, 0x02)
+
+    let pal_spr = if global.rm_mp.enable_palette_packets {
+      let palette_path = global.rm_mp.get_palette_path(character)
+      -- create the temp sprite (if the path exists)
+      if palette_path != undefined and file_exists(palette_path) {
+        sprite_add(palette_path, 1, false, false, 0, 0)
+      } else { -1 }
+    } else { -1 }
+
+    if pal_spr {
+      -- create temp surface
+      let surf = surface_create(2, 56)
+      surface_set_target(surf)
+      -- draw sprite
+      draw_sprite(pal_spr, 0, 0, 0)
+      -- dump surface into the buffer
+      buffer_get_surface(net_buffer, surf, 1)
+      -- clean up data
+      surface_reset_target()
+      surface_free(surf)
+      sprite_delete(pal_spr)
+    } else {
+      -- fill buffer with zeros
+      buffer_fill(net_buffer, 1, buffer_u8, 0, 448)
+      buffer_seek(net_buffer, buffer_seek_start, 449)
+    }
+
+    -- send palette
+    buffer_write(
+      net_buffer, buffer_u8,
+      (character + 1) | (!(!pal_spr) << 7)
+    )
+  },
+  -- MARK: peer sync
+  -- ensures each peer in the lobby has an instance
+  sync_peers: fun (user_id) {
+    let new_map = {}
+    let player_peers = global.rm_mp.player_peers
+    let my_id = global.steam_get_user_steam_id()
+    let i = global.steam_lobby_get_member_count() - 1
+    while i >= 0 {
+      let user_id = global.steam_lobby_get_member_id(i)
+      i -= 1
+      -- DEBUG: LOOPBACK
+      -- if user_id == my_id { continue }
+
+      if instance_exists(player_peers[user_id]) {
+        -- keep old fake player
+        new_map[user_id] = player_peers[user_id]
+        struct_remove(player_peers, user_id)
+      } else {
+        let cached_character_id = global.rm_mp.player_cache_character[user_id]
+        let character_id = if cached_character_id { cached_character_id } else { 0 }
+        -- add new fake player
+        -- MARK: PEER INIT
+        new_map[user_id] = instance_create_depth(0,0,1, omod_instance, {
+          persistent: true,
+
+          ---- network/lerp state
+          -- time since the last packet (ticks up)
+          since_last_packet: 0,
+          -- number of frames the last packet took
+          time_to_lerp: 0,
+          -- ticking timer for lerp
+          lerp_counter: 0,
+          -- body tilt, slow lerp around dx
+          body_tilt: 0,
+          -- tracks run cycle
+          legs_index: 0,
+          -- tracks emote timer
+          emote_timer: 0,
+
+          -- peer information
+          user_id: user_id,
+          name: undefined,
+          name_offset: global.rm_mp.get_name_offset(character_id),
+
+          ---- networked information:
+          -- last foreign position
+          last_x: undefined,
+          last_y: undefined,
+          -- next foreign position
+          next_x: undefined,
+          next_y: undefined,
+          -- aim direction
+          -- [0, 240]
+          last_aim: undefined,
+          next_aim: undefined,
+          aim_dir: 0,
+          -- hook position
+          hook_x: -255,
+          hook_y: -255,
+          room: 0,
+          -- 0: fern, 1: maya, 2: ameli
+          character: character_id,
+          -- crouching
+          crouching: false,
+          -- wall hug state
+          wall_hug: 0,
+          -- weapon
+          weapon: 0,
+          -- emote to display
+          emote: -1,
+
+          -- wall hug sprites
+          wall_hug_sprite: global.rm_mp.get_wallhug_sprite(character_id),
+          -- custom palette
+          palette: global.rm_mp.player_cache_palette[user_id],
+          -- default palette
+          safe_palette: global.rm_mp.sprites_default_palette[character_id],
+          -- wave offset
+          wave_offset: (user_id % 100) / 100,
+        })
+        -- get user name
+        global.rm_mp.then(
+          global.steam_get_user_persona_name(user_id),
+          fun (raw) {
+            if raw.data == undefined
+                or raw.data.steamid == undefined
+                or raw.data.persona_name == undefined {
+              return
+            }
+            let inst = global.rm_mp.player_peers[raw.data.steamid]
+            if instance_exists(inst) {
+              inst.name = raw.data.persona_name
+            }
+          }
+        )
+
+        -- send this peer's palette/character to the new player
+        -- IFF this peer is playing
+        -- eg Peer A joins Peer B
+        -- if Peer B is already playing, send Peer A its palette
+        -- Peer A is not playing, so Peer A should not broadcast
+        if global.rm_mp.player_last_character != -1 {
+          global.rm_mp.build_character_packet()
+          -- send to only the new client
+          global.steam_net_packet_send(
+            user_id, global.rm_mp.net_buffer,
+            450, 0, 0,
+          )
+        }
+      }
+    }
+    -- remove extra players
+    let excess_ids = variable_struct_get_names(player_peers)
+    i = array_length(excess_ids) - 1
+    while i >= 0 {
+      let id = excess_ids[i]
+      let excess_inst = player_peers[id]
+      -- destroy sprite
+      if excess_inst.palette { sprite_delete(excess_inst.palette) }
+      -- remove from caches
+      global.rm_mp.player_cache_character[id] = undefined
+      global.rm_mp.player_cache_palette[id] = undefined
+      -- destroy instance
+      instance_destroy(excess_inst)
+      i -= 1
+    }
+
+    global.rm_mp.player_peers = new_map
+  },
+  -- these next two are responsible for handling coming steam async events
+  -- `osteam_handler` intercepts these events, but doesn't do anything to them
+  -- so this code lets us hook into it for evil purposes (joining lobbies)
+  -- internal callback handler
+  _global_cb_recycle: fun () {
+    global.rm_mp.then(undefined, global.rm_mp._global_cb)
+  },
+  -- callback handler
+  _global_cb: fun (raw) {
+    let response = raw.data
+    match response.event_type {
+      case "lobby_join_requested" {
+        global.steam_lobby_join_id(response.lobby_id)
+      }
+    }
+    global.rm_mp._global_cb_recycle()
+  },
+
+
+  -- MARK: PLAYERS
+  -- tracks the current player states
+
+  -- caches character id/palette so it persists when the game restarts
+  player_cache_character: {},
+  player_cache_palette: {},
+  -- tracks our previous character id
+  player_last_character: -1,
+  -- true if the player fell since the last broadcast
+  player_fell: false,
+  -- peer instances
+  -- struct, maps user_id to an instance
+  player_peers: {},
+  -- MARK: get pal file
+  -- gets the path to the palette
+  get_palette_path: fun (character) {
+    match character {
+      -- fern
+      case 0 {
+        -- check if palette editor is installed, and use that palette instead
+        if global.rmml.__mod_controllers.palette_editor {
+          return "mods/rmml/palette_editor/saved_palettes/palette_fern.png"
+        }
+        -- load from ini
+        if !directory_exists("Fern_custom") { return undefined }
+        let ini_path = working_directory_get() + "/Fern_custom/enable_custom.ini"
+        if !file_exists(ini_path) { return undefined }
+        ini_open(ini_path)
+        let enabled = ini_read_real("meta", "enabled", false)
+        let custom_palette_file = ini_read_string("meta", "palette_file", "palette_data_custom")
+        ini_close()
+        if !enabled { return undefined }
+        let f = working_directory_get() + "/Fern_custom/" + custom_palette_file
+        return f
+      }
+      -- maya
+      case 1 {
+        -- if maya palette isn't installed, skip
+        if !global.rmml.__mod_controllers.maya_palette { return undefined }
+        -- if palette editor is installed, and use that palette instead
+        return if global.rmml.__mod_controllers.palette_editor {
+          "mods/rmml/palette_editor/saved_palettes/palette_maya.png"
+        -- use default palette
+        } else { "mods/rmml/maya_palette/palette.png" }
+      }
+      -- ameli
+      case 2 {
+        -- if ameli palette isn't installed, skip
+        if !global.rmml.__mod_controllers.ameli_palette { return undefined }
+        -- check if palette editor is installed, and use that palette instead
+        return if global.rmml.__mod_controllers.palette_editor {
+          "mods/rmml/palette_editor/saved_palettes/palette_ameli.png"
+        -- use default palette
+        } else { "mods/rmml/ameli_palette/palette.png" }
+      }
+    }
+  },
+  -- gets the wallhug sprite for the character
+  get_wallhug_sprite: fun (character) {
+    match character {
+      case 1 {
+        if global.rm_mp.sprites_palette_placeholders_maya != undefined {
+          global.rm_mp.sprites_palette_placeholders_maya.wallhug_still
+        } else {
+          splayer_maya_wallhug_still
+        }
+      }
+      case 2 { 
+        if global.rm_mp.sprites_palette_placeholders_ameli != undefined {
+          global.rm_mp.sprites_palette_placeholders_ameli.wallhug_still
+        } else {
+          splayer_witch_ameli_wallhug_still
+        }
+      }
+      else { splayer_wallhug_still }
+    }
+  },
+  -- gets the offset for the player name for a character
+  -- used when rendering emotes and player names
+  get_name_offset: fun (character) {
+    match character { 
+      case 1 { 53 }
+      case 2 { 57 }
+      else { 50 }
+    }
+  },
+
+
+  -- MARK: CONSTANT DATA
+  -- read-only character data
+  -- contains names and sprites
+
+  -- character names for the player menu
+  character_names: [
+    "Fern", "Maya", "Ameli"
+  ],
+  -- emote sprites
+  -- 0: happy
+  -- 1: derp
+  -- 2: angry
+  -- 3: cry
+  -- 4: evil
+  -- 5: cringe
+  sprites_emote: [
+    [
+      2, 29, 26, 24, 6, 8,
+      sface_player
+    ], [
+      2, 3, 1, 6, 9, 4,
+      sface_boss_0
+    ], [
+      8, 2, 1, 9, 10, 11,
+      sface_boss_books
+    ],
+  ],
+  -- default palettes
+  sprites_default_palette: [
+    sprite_add("mods/rmml/ghost_mp/pal/fern.png", 1, false, false, 0, 0),
+    sprite_add("mods/rmml/ghost_mp/pal/maya.png", 1, false, false, 0, 0),
+    sprite_add("mods/rmml/ghost_mp/pal/ameli.png", 1, false, false, 0, 0),
+  ],
+  -- map sprites
+  sprites_map: [
+    smap_player, smap_player_maya, smap_player_ameli
+  ],
+  -- leg sprites
+  sprites_legs: [
+    [
+      splayer_legs_palette,
+      splayer_legs_run_palette,
+      splayer_legs_crouching_palette,
+      splayer_legs_jump_palette,
+    ],
+    [
+      splayer_maya_legs,
+      splayer_maya_legs_run,
+      splayer_maya_legs_crouching,
+      splayer_maya_legs_jump,
+    ],
+    [
+      smaya_legs_idle,
+      smaya_legs_run,
+      splayer_maya_legs_crouching,
+      splayer_legs_jump_ameli,
+    ]
+  ],
+  -- wall hug sprites
+  -- compared against to check if the player is wall hugging
+  sprites_wallhug: {
+    [splayer_wallhug_palette]: true,
+    [splayer_wallhug_still_palette]: true,
+    [splayer_wallhug]: true,
+    [splayer_wallhug_still]: true,
+    [splayer_maya_wallhug]: true,
+    [splayer_maya_wallhug_still]: true,
+    [splayer_witch_ameli_wallhug]: true,
+    [splayer_witch_ameli_wallhug_still]: true,
+  },
+  -- palette sprites
+  -- ameli and maya palette bake the palette into the sprite, so we need to load
+  -- the palette placeholder sprites manually
+  -- HOWEVER palette editor does this for us (kinda)
+  -- this gets loaded in the controller create so it always runs after ameli/maya
+  -- palette
+  sprites_palette_placeholders_maya: undefined,
+  sprites_palette_placeholders_ameli: undefined,
+
+
+  -- MARK: MISC
+  -- true if the map should show player locations
+  show_players_on_map,
+  -- true if palettes should be read/sent by this peer
+  enable_palette_packets,
+  key_get_name: fun (key) {
+    if key > 48 and key < 91 { return chr(key) }
+    match key {
+      case 8 { return "Backspace" }
+      case 9 { return "Tab" }
+      case 13 { return "Enter" }
+      case 16 { return "Shift" }
+      case 17 { return "Ctrl" }
+      case 18 { return "Alt" }
+      case 19 { return "Pause/Break" }
+      case 20 { return "CAPS" }
+      case 27 { return "Esc" }
+      case 33 { return "Page Up" }
+      case 34 { return "Page Down" }
+      case 35 { return "End" }
+      case 36 { return "Home" }
+      case 37 { return "Left Arrow" }
+      case 38 { return "Up Arrow" }
+      case 39 { return "Right Arrow" }
+      case 40 { return "Down Arrow" }
+      case 45 { return "Insert" }
+      case 46 { return "Delete" }
+      case 96 { return "Numpad 0" }
+      case 97 { return "Numpad 1" }
+      case 98 { return "Numpad 2" }
+      case 99 { return "Numpad 3" }
+      case 100 { return "Numpad 4" }
+      case 101 { return "Numpad 5" }
+      case 102 { return "Numpad 6" }
+      case 103 { return "Numpad 7" }
+      case 104 { return "Numpad 8" }
+      case 105 { return "Numpad 9" }
+      case 106 { return "Numpad *" }
+      case 107 { return "Numpad +" }
+      case 109 { return "Numpad -" }
+      case 110 { return "Numpad ." }
+      case 111 { return "Numpad /" }
+      case 112 { return "F1" }
+      case 113 { return "F2" }
+      case 114 { return "F3" }
+      case 115 { return "F4" }
+      case 116 { return "F5" }
+      case 117 { return "F6" }
+      case 118 { return "F7" }
+      case 119 { return "F8" }
+      case 120 { return "F9" }
+      case 121 { return "F10" }
+      case 122 { return "F11" }
+      case 123 { return "F12" }
+      case 144 { return "Num Lock" }
+      case 145 { return "Scroll Lock" }
+      case 186 { return " }" }
+      case 187 { return "=" }
+      case 188 { return "," }
+      case 189 { return "-" }
+      case 190 { return "." }
+      case 191 { return "\\" }
+      case 192 { return "`" }
+      case 219 { return "/" }
+      case 220 { return "[" }
+      case 221 { return "]" }
+      case 222 { return "'" }
+      else { return "No Key" }
+    }
+  }
+}
+
+-- MARK: ==ShaderInit==
+if !global.player_use_shader {
+  shader_replace_simple_set_hook(shd_palette)
+  -- col_num = sprite_height
+  shader_set_uniform_f(shader_get_uniform(shd_palette, "col_num"), 56)
+  -- pal_num = sprite_width
+  shader_set_uniform_f(shader_get_uniform(shd_palette, "pal_num"), 2)
+  -- index = 1
+  shader_set_uniform_f(shader_get_uniform(shd_palette, "pal_index"), 1)
+  -- palette_uvs = sprite_get_uvs(palette)
+  shader_set_uniform_f_array(shader_get_uniform(shd_palette, "palette_uvs"), [0,0, 1,1])
+
+  global.main_shader_palette_pointer = shader_get_sampler_index(shd_palette, "palette")
+  global.palette_texture = sprite_get_texture(splayer_palette_, 0)
+  shader_replace_simple_reset_hook()
+}

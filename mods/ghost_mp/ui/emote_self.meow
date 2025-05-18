@@ -1,0 +1,21 @@
+-- MARK: Emote
+with oplayer {
+  let rm_mp = global.rm_mp
+  if rm_mp.emote_self != -1 {
+    let character = rm_mp.player_last_character
+    let name_offset = rm_mp.get_name_offset(character)
+
+    let scale = clamp(sin(rm_mp.emote_self_timer * pi / 100) * 4, 0, 1)
+    let sprites_emote = rm_mp.sprites_emote[character]
+    draw_sprite_ext(
+      sprites_emote[6], sprites_emote[rm_mp.emote_self],
+      self.x - scale * 17,
+      self.y - name_offset - scale * 17,
+      scale, scale, 0, c_white, 1
+    )
+    if rm_mp.emote_self_timer == 1 {
+      rm_mp.emote_self = -1
+    }
+    rm_mp.emote_self_timer -= 1
+  }
+}
