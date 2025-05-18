@@ -23,6 +23,8 @@ Lets you customize the color palette for Maya and Ameli, like you can with Fern.
 
 Each mod is installed and managed separately, but can be installed together.
 
+# Ghost Multiplayer
+
 # Minify!
 
 ![Minify](assets/minify.png)

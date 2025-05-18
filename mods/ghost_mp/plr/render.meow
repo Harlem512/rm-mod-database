@@ -94,10 +94,8 @@ texture_set_stage(
     0
   )
 )
--- fixes ameli palette bug
-if global.ameli_mode_ {
-  shader_set_uniform_f_array(shader_get_uniform(shd_palette, "palette_uvs"), [0,0, 1,1])
-}
+-- set palette UVs
+shader_set_uniform_f_array(global.rm_mp.palette_uv_uniform, [0,0, 1,1])
 
 -- renderer
 -- in a loop so we can use break to skip to the end
@@ -290,7 +288,7 @@ while true {
       -- cache placeholder
       let pal = global.rm_mp.sprites_palette_placeholders_maya
 
-      -- load palettes :)
+      -- set all of the sprites
       body = if pal { pal.body } else { splayer_maya_body }
       body_upper = if pal { pal.body_upper } else { splayer_maya_body_upper }
       eyes_down = if pal { pal.eyes_down } else { splayer_maya_eyes_down }
@@ -300,10 +298,6 @@ while true {
       hand_inner = if pal { pal.hand_inner } else { splayer_maya_hand_inner }
       hand_outer = if pal { pal.hand_outer } else { splayer_maya_hand_outer }
       head = if pal { pal.head } else { splayer_maya_head }
-      legs = if pal { pal.legs } else { splayer_maya_legs }
-      legs_crouching = if pal { pal.legs_crouching } else { splayer_maya_legs_crouching }
-      legs_jump = if pal { pal.legs_jump } else { splayer_maya_legs_jump }
-      legs_run = if pal { pal.legs_run } else { splayer_maya_legs_run }
       
       -- body offset
       let body_offset = if legs_type == 1 {
@@ -313,7 +307,7 @@ while true {
 
       -- MARK: back arm
       draw_sprite_ext(
-        splayer_maya_hand_inner, 0,
+        hand_inner, 0,
         x - 4 * draw_xscale + draw_xscale * 3,
         y - 28 + bwave(0.89) + y_off,
         draw_xscale, 1, 
@@ -327,9 +321,9 @@ while true {
         * draw_xscale * 0.5 + draw_xscale * 3)
       let head_y = round(y - 27 + y_off * 0.5 + bwave(0.92) + crouching - 1)
       let head_index = if aim_dir < -40 { 0 } else if aim_dir < 25 { 1 } else if aim_dir < 55 { 2 } else { 3 }
-      let eyes = if aim_dir < -40 { splayer_maya_eyes_down } else if aim_dir < 25 { splayer_maya_eyes_mid } else if aim_dir < 55 { splayer_maya_eyes_mid_up } else { splayer_maya_eyes_up }
+      let eyes = if aim_dir < -40 { eyes_down } else if aim_dir < 25 { eyes_mid } else if aim_dir < 55 { eyes_mid_up } else { eyes_up }
       draw_sprite_ext(
-        splayer_maya_head, head_index,
+        head, head_index,
         head_x, head_y,
         draw_xscale, 1, 0, c_white, 1
       )
@@ -348,14 +342,14 @@ while true {
       let ind = if aim_dir >= 0 { (aim_dir / 90 * 13.9) // 2} else { 0 }
       let ex = if aim_dir < -30 { -aim_dir / 80 * draw_xscale } else { 0 }
       draw_sprite_ext(
-        splayer_maya_body_upper, ind,
+        body_upper, ind,
         x + ex + draw_xscale * 3,
         y - 10 + y_off * 0.5 + body_bwave - 1,
         draw_xscale, 1, -draw_xscale * 0, c_white, 1
       )
       if (legs_type != 1) {
         draw_sprite_ext(
-          splayer_maya_body, ind,
+          body, ind,
           x + ex + draw_xscale * 3,
           y - 10 + y_off * 0.5 + body_bwave - 1,
           draw_xscale, 1, -draw_xscale * 0, c_white, 1
@@ -375,7 +369,7 @@ while true {
         draw_xscale, 1, sword_angle, c_gray, 1
       )
       draw_sprite_ext(
-        splayer_maya_hand_outer, 0,
+        hand_outer, 0,
         x - draw_xscale,
         y - 27 + y_off + bwave(0.9),
         draw_xscale, 1, (arm_dir_ * draw_xscale), c_white, 1
@@ -383,13 +377,25 @@ while true {
     }
     -- MARK: ===AMELI===
     case 2 {
+      -- cache placeholder
+      let pal = global.rm_mp.sprites_palette_placeholders_ameli
+
       if self.flying {
         -- MARK: flying
-        self.sprite_index = sameli_witch_flying
+        self.sprite_index = if pal { pal.flying } else { sameli_witch_flying }
         self.image_xscale = draw_xscale
         draw_self()
         break
       }
+
+      -- load palettes :)
+      arm_inner = if pal { pal.arm_inner } else { sameli_witch_arm_inner }
+      arm_outer = if pal { pal.arm_outer } else { sameli_witch_arm_outer }
+      bow = if pal { pal.bow } else { sameli_witch_bow }
+      hat = if pal { pal.hat } else { sameli_witch_hat }
+      head = if pal { pal.head } else { sameli_witch_head }
+      skirt = if pal { pal.skirt } else { sameli_witch_skirt }
+      torso = if pal { pal.torso } else { sameli_witch_torso }
 
       let nhh = -self.body_tilt
 
@@ -401,7 +407,7 @@ while true {
 
       -- MARK: arm 1
       draw_sprite_ext(
-        sameli_witch_arm_inner, 2,
+        arm_inner, 2,
         x - (if aim_dir > 0 { aim_dir / 35 } else { aim_dir / 30 }) * draw_xscale
           + 6 * hhp_,
         y - 26 + bwave(0.89) + y_off,
@@ -418,18 +424,18 @@ while true {
       let head_y = y - 26 + y_off * 1 + bwave(0.92) + crouching - 1
       let hat_y = round(head_y - (max(0, (dy * 0.75))))
       draw_sprite_ext(
-        sameli_witch_hat, 1,
+        hat, 1,
         round(head_x + hhp_),
         hat_y,
         draw_xscale, 1, hhp_ * 8, c_white, 1
       )
       draw_sprite_ext(
-        sameli_witch_head, 
+        head, 
         if aim_dir < -40 { 0 } else if aim_dir < 25 { 1 } else if aim_dir < 55 { 2 } else { 3 },
         round(head_x), round(head_y),
         draw_xscale, 1, 0, c_white, 1
       )
-      draw_sprite_ext(sameli_witch_hat, 0,
+      draw_sprite_ext(hat, 0,
         round(head_x + hhp_), hat_y,
         draw_xscale, 1, hhp_ * 8, c_white, 1
       )
@@ -439,7 +445,7 @@ while true {
       let ex = if aim_dir < -30 { -aim_dir / 80 * draw_xscale } else { 0 }
       let skirt_vsp_offset = clamp(dy * 0.5, -2, 2)
       draw_sprite_ext(
-        sameli_witch_skirt, 2,
+        skirt, 2,
         x + ex + hhp_ * 1,
         y - 13 + y_off * 0.5 + body_bwave - 1 - skirt_vsp_offset * 0.5,
         draw_xscale, 1, -hhp_ * 15,
@@ -457,19 +463,19 @@ while true {
 
       -- MARK: body 2
       draw_sprite_ext(
-        sameli_witch_bow, 0,
+        bow, 0,
         x + ex + nhh - draw_xscale * 1,
         y - 15 + y_off * 0.5 + body_bwave - 1,
         draw_xscale, 1, -nhh * 20, merge_colour(c_white, c_gray, 0.5), 1
       )
       draw_sprite_ext(
-        sameli_witch_skirt, 0,
+        skirt, 0,
         x + ex + hhp_,
         y - 13 + y_off * 0.5 + body_bwave - 1 - skirt_vsp_offset,
         draw_xscale, 1, -hhp_ * 20, c_white, 1
       )
       draw_sprite_ext(
-        sameli_witch_torso,
+        torso,
         if aim_dir >= 0 { (aim_dir / 90 * 13.9) // 2} else { 0 },
         x + ex + nhh,
         y - 10 + y_off * 0.5 + body_bwave - 1,
@@ -483,12 +489,12 @@ while true {
       let arm_y = y - 24 + y_off + bwave(0.9)
       let arm_angle = (aim_dir * 0.6 - min(abs(dx), 3) * 12) * draw_xscale
       draw_sprite_ext(
-        sameli_witch_arm_outer, 0,
+        arm_outer, 0,
         arm_x, arm_y,
         draw_xscale, 1, arm_angle, c_white, 1
       )
       draw_sprite_ext(
-        sameli_witch_arm_outer, 1,
+        arm_outer, 1,
         arm_x, arm_y,
         draw_xscale, 1, arm_angle, c_white, 1
       )
@@ -527,14 +533,10 @@ shader_replace_simple_reset_hook()
 
 -- MARK: Player Name
 -- check if the name is set and blindfold isn't equipped (or debug ui disable)
-if self.name != undefined and !global.trinket_active_[1] and !global.debug_ui_ {
-  let align = draw_get_halign()
-  let col = draw_get_color()
-  draw_set_color(c_white)
-  draw_set_halign(fa_center)
-  draw_text(x, y - self.name_offset, self.name)
-  draw_set_halign(align)
-  draw_set_color(col)
+if global.rm_mp.show_names and self.name != undefined and !global.trinket_active_[1] and !global.debug_ui_ {
+  scribble(self.name)
+    .align(1, 0)
+    .draw(x, y - self.name_offset)
 }
 
 -- MARK: Emote

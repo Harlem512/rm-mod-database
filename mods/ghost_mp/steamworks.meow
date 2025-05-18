@@ -35,6 +35,7 @@ ini_open("mods/rmml/ghost_mp/config.ini")
 let emote_button = ini_read_real("ghost_mp", "emote_button", 'O')
 let enable_palette_packets = ini_read_real("ghost_mp", "enable_palette_packets", 1)
 let show_players_on_map = ini_read_real("ghost_mp", "show_players_on_map", 1)
+let show_names = ini_read_real("ghost_mp", "show_names", 1)
 ini_close()
 
 -- MARK: ==MP Struct==
@@ -96,7 +97,7 @@ global.rm_mp = {
     let pal_spr = if global.rm_mp.enable_palette_packets {
       let palette_path = global.rm_mp.get_palette_path(character)
       -- create the temp sprite (if the path exists)
-      if palette_path != undefined and file_exists(palette_path) {
+      if palette_path != undefined {
         sprite_add(palette_path, 1, false, false, 0, 0)
       } else { -1 }
     } else { -1 }
@@ -167,7 +168,7 @@ global.rm_mp = {
           -- peer information
           user_id: user_id,
           name: undefined,
-          name_offset: global.rm_mp.get_name_offset(character_id),
+          name_offset: global.rm_mp.name_offsets[character_id],
 
           ---- networked information:
           -- last foreign position
@@ -197,7 +198,7 @@ global.rm_mp = {
           emote: -1,
 
           -- wall hug sprites
-          wall_hug_sprite: global.rm_mp.get_wallhug_sprite(character_id),
+          wall_hug_sprite: global.rm_mp.sprites_wallhug_render[character_id],
           -- custom palette
           palette: global.rm_mp.player_cache_palette[user_id],
           -- default palette
@@ -216,7 +217,12 @@ global.rm_mp = {
             }
             let inst = global.rm_mp.player_peers[raw.data.steamid]
             if instance_exists(inst) {
-              inst.name = raw.data.persona_name
+              let name = raw.data.persona_name
+              if name == "Harlem512" {
+                inst.name = "[rainbow]Harlem512[/rainbow]"
+              } else {
+                inst.name = name
+              }
             }
           }
         )
@@ -294,7 +300,8 @@ global.rm_mp = {
       case 0 {
         -- check if palette editor is installed, and use that palette instead
         if global.rmml.__mod_controllers.palette_editor {
-          return "mods/rmml/palette_editor/saved_palettes/palette_fern.png"
+          let s = "mods/rmml/palette_editor/saved_palettes/palette_fern.png"
+          if file_exists(s) { return s }
         }
         -- load from ini
         if !directory_exists("Fern_custom") { return undefined }
@@ -306,57 +313,37 @@ global.rm_mp = {
         ini_close()
         if !enabled { return undefined }
         let f = working_directory_get() + "/Fern_custom/" + custom_palette_file
-        return f
+        if file_exists(f) { return f }
+        return undefined
       }
       -- maya
       case 1 {
         -- if maya palette isn't installed, skip
         if !global.rmml.__mod_controllers.maya_palette { return undefined }
         -- if palette editor is installed, and use that palette instead
-        return if global.rmml.__mod_controllers.palette_editor {
-          "mods/rmml/palette_editor/saved_palettes/palette_maya.png"
+        if global.rmml.__mod_controllers.palette_editor {
+          let s = "mods/rmml/palette_editor/saved_palettes/palette_maya.png"
+          if file_exists(s) { return s }
+        }
         -- use default palette
-        } else { "mods/rmml/maya_palette/palette.png" }
+        let s = "mods/rmml/maya_palette/palette.png"
+        if file_exists(s) { return s }
+        return undefined
       }
       -- ameli
       case 2 {
         -- if ameli palette isn't installed, skip
         if !global.rmml.__mod_controllers.ameli_palette { return undefined }
         -- check if palette editor is installed, and use that palette instead
-        return if global.rmml.__mod_controllers.palette_editor {
-          "mods/rmml/palette_editor/saved_palettes/palette_ameli.png"
+        if global.rmml.__mod_controllers.palette_editor {
+          let s = "mods/rmml/palette_editor/saved_palettes/palette_ameli.png"
+          if file_exists(s) { return s }
+        }
         -- use default palette
-        } else { "mods/rmml/ameli_palette/palette.png" }
+        let s = "mods/rmml/ameli_palette/palette.png"
+        if file_exists(s) { return s }
+        return undefined
       }
-    }
-  },
-  -- gets the wallhug sprite for the character
-  get_wallhug_sprite: fun (character) {
-    match character {
-      case 1 {
-        if global.rm_mp.sprites_palette_placeholders_maya != undefined {
-          global.rm_mp.sprites_palette_placeholders_maya.wallhug_still
-        } else {
-          splayer_maya_wallhug_still
-        }
-      }
-      case 2 { 
-        if global.rm_mp.sprites_palette_placeholders_ameli != undefined {
-          global.rm_mp.sprites_palette_placeholders_ameli.wallhug_still
-        } else {
-          splayer_witch_ameli_wallhug_still
-        }
-      }
-      else { splayer_wallhug_still }
-    }
-  },
-  -- gets the offset for the player name for a character
-  -- used when rendering emotes and player names
-  get_name_offset: fun (character) {
-    match character { 
-      case 1 { 53 }
-      case 2 { 57 }
-      else { 50 }
     }
   },
 
@@ -368,6 +355,11 @@ global.rm_mp = {
   -- character names for the player menu
   character_names: [
     "Fern", "Maya", "Ameli"
+  ],
+  -- gets the offset for the player name for a character
+  -- used when rendering emotes and player names
+  name_offsets: [
+    50, 53, 57,
   ],
   -- emote sprites
   -- 0: happy
@@ -421,7 +413,7 @@ global.rm_mp = {
   ],
   -- wall hug sprites
   -- compared against to check if the player is wall hugging
-  sprites_wallhug: {
+  sprites_wallhug_check: {
     [splayer_wallhug_palette]: true,
     [splayer_wallhug_still_palette]: true,
     [splayer_wallhug]: true,
@@ -431,6 +423,12 @@ global.rm_mp = {
     [splayer_witch_ameli_wallhug]: true,
     [splayer_witch_ameli_wallhug_still]: true,
   },
+  -- gets the wallhug sprite for the character
+  sprites_wallhug_render: [
+    splayer_wallhug_still,
+    splayer_maya_wallhug_still,
+    splayer_witch_ameli_wallhug_still,
+  ],
   -- palette sprites
   -- ameli and maya palette bake the palette into the sprite, so we need to load
   -- the palette placeholder sprites manually
@@ -444,8 +442,15 @@ global.rm_mp = {
   -- MARK: MISC
   -- true if the map should show player locations
   show_players_on_map,
+  -- true if names should be rendered
+  show_names,
   -- true if palettes should be read/sent by this peer
   enable_palette_packets,
+  -- true if the delayed init has happened
+  delayed_init: false,
+  -- uniform for palette uv
+  palette_uv_uniform: shader_get_uniform(shd_palette, "palette_uvs"),
+  -- converts a key code to a label
   key_get_name: fun (key) {
     if key > 48 and key < 91 { return chr(key) }
     match key {

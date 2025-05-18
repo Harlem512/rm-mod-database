@@ -71,6 +71,11 @@ while global.steam_net_packet_receive() {
         inst.last_x = next_x
         inst.last_y = next_y
         inst.last_aim = next_aim
+        -- set lerp positions, in case multiple packets arrive on the
+        -- same frame
+        inst.x = next_x
+        inst.y = next_y
+        inst.aim_dir = next_aim
       } else {
         -- update last with current lerp position
         inst.last_x = inst.x
@@ -124,7 +129,7 @@ while global.steam_net_packet_receive() {
       -- read buffer data
       let data = buffer_peek(net_buffer, 449, buffer_u8)
 
-      let character = (data & 3) - 1
+      let character = clamp((data & 3) - 1, 0, 3)
 
       -- delete old palette
       if inst.palette {
@@ -153,8 +158,8 @@ while global.steam_net_packet_receive() {
       }
       
       inst.character = character
-      inst.name_offset = global.rm_mp.get_name_offset(character)
-      inst.wall_hug_sprite = global.rm_mp.get_wallhug_sprite(character)
+      inst.name_offset = global.rm_mp.name_offsets[character]
+      inst.wall_hug_sprite = global.rm_mp.sprites_wallhug_render[character]
 
       -- cache character / palette
       global.rm_mp.player_cache_character[sender] = character
@@ -179,7 +184,7 @@ with oplayer {
   global.rm_mp.frames = 0
 
   -- MARK: Position
-  let is_hugging = global.rm_mp.sprites_wallhug[self.sprite_index] != undefined
+  let is_hugging = global.rm_mp.sprites_wallhug_check[self.sprite_index] != undefined
 
   buffer_seek(net_buffer, buffer_seek_start, 0)
   buffer_write(net_buffer, buffer_u8, 0x01)

@@ -7,13 +7,16 @@ self.selected_emote = -1
 global.rm_mp.player_peers = {}
 
 -- if in a lobby, broadcast that we're back on the main menu
-if global.steam_lobby_get_lobby_id() == 0 {
+if global.steam_lobby_get_lobby_id() != 0 {
   let net_buffer = global.rm_mp.net_buffer
   buffer_seek(net_buffer, buffer_seek_start, 0)
   buffer_write(net_buffer, buffer_u8, 0x01)
   buffer_write(net_buffer, buffer_u16, room_get())
   global.rm_mp.broadcast(3)
 }
+
+-- run delayed init
+if global.rm_mp.delayed_init { return }
 
 if global.rmml.__mod_controllers.palette_editor {
   -- if palette editor is installed and ameli palette is installed,
@@ -28,9 +31,7 @@ if global.rmml.__mod_controllers.palette_editor {
   }
 } else {
   -- if palette editor isn't installed, we need to load the backup palettes
-  if global.rmml.__mod_controllers.maya_palette
-    and global.rm_mp.sprites_palette_placeholders_maya == undefined
-  {
+  if global.rmml.__mod_controllers.maya_palette {
     global.rm_mp.sprites_palette_placeholders_maya = {
       body: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_body.png", 8, false, false, 16, 19),
       body_upper: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_body_upper.png", 8, false, false, 16, 19),
@@ -41,16 +42,22 @@ if global.rmml.__mod_controllers.palette_editor {
       hand_inner: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_hand_inner.png", 2, false, false, 11, 10),
       hand_outer: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_hand_outer.png", 4, false, false, 14, 12),
       head: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_head.png", 4, false, false, 15, 14),
-      legs: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_legs.png", 2, false, false, 12, 15),
-      legs_crouching: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_legs_crouching.png", 5, false, false, 16, 15),
-      legs_jump: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_legs_jump.png", 4, false, false, 13, 14),
-      legs_run: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_legs_run.png", 8, false, false, 21, 28),
-      wallhug_still: sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_wallhug_still.png", 1, false, false, 22, 47),
     }
+    -- set legs
+    global.rm_mp.sprites_legs[1] = [
+      -- idle
+      sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_legs.png", 2, false, false, 12, 15),
+      -- run
+      sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_legs_run.png", 8, false, false, 21, 28),
+      -- crouch
+      sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_legs_crouching.png", 5, false, false, 16, 15),
+      -- jump
+      sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_legs_jump.png", 4, false, false, 13, 14),
+    ]
+    -- set wall hug
+    global.rm_mp.sprites_wallhug_render[1] = sprite_add("mods/rmml/maya_palette/DO_NOT_TOUCH/splayer_maya_wallhug_still.png", 1, false, false, 22, 47)
   }
-  if global.rmml.__mod_controllers.ameli_palette
-    and global.rm_mp.sprites_palette_placeholders_ameli == undefined
-  {
+  if global.rmml.__mod_controllers.ameli_palette {
     global.rm_mp.sprites_palette_placeholders_ameli = {
       arm_inner: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/sameli_witch_arm_inner.png", 4, false, false, 8, 9),
       arm_outer: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/sameli_witch_arm_outer.png", 2, false, false, 11, 8),
@@ -60,11 +67,19 @@ if global.rmml.__mod_controllers.palette_editor {
       head: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/sameli_witch_head.png", 4, false, false, 11, 15),
       skirt: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/sameli_witch_skirt.png", 3, false, false, 11, 7),
       torso: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/sameli_witch_torso.png", 7, false, false, 13, 20),
-      legs_idle: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/smaya_legs_idle.png", 2, false, false, 32, 32),
-      legs_run: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/smaya_legs_run.png", 8, false, false, 10, 15),
-      legs_jump: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/splayer_legs_jump_ameli.png", 4, false, false, 11, 15),
-      legs_crouching: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/splayer_maya_legs_crouching.png", 5, false, false, 16, 15),
-      wallhug_still: sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/splayer_witch_ameli_wallhug_still.png", 1, false, false, 22, 47),
     }
+    -- set legs
+    global.rm_mp.sprites_legs[2] = [
+      -- idle
+      sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/smaya_legs_idle.png", 2, false, false, 32, 32),
+      -- run
+      sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/smaya_legs_run.png", 8, false, false, 10, 15),
+      -- crouch
+      sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/splayer_maya_legs_crouching.png", 5, false, false, 16, 15),
+      -- jump
+      sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/splayer_legs_jump_ameli.png", 4, false, false, 11, 15),
+    ]
+    -- set wall hug
+    global.rm_mp.sprites_wallhug_render[2] = sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/splayer_witch_ameli_wallhug_still.png", 1, false, false, 22, 47)
   }
 }

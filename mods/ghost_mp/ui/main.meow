@@ -88,7 +88,7 @@ if lobby {
 }
 
 if global.component.button(
-  2, 2, 96, 22, if lobby { "Invite Players" } else { " Create Lobby" }
+  2, 2, 96, 22, if lobby { "Invite Friends" } else { " Create Lobby" }
 ) {
   if lobby {
     global.steam_lobby_activate_invite_overlay()
@@ -118,7 +118,17 @@ if global.component.button(
 }
 
 if global.component.button(
-  250, 2, 166, 22,
+  250, 2, 66, 22, if global.rm_mp.show_names { "[X] Names" } else { "[ ] Names"}
+) {
+  let enable = !global.rm_mp.show_names
+  global.rm_mp.show_names = enable
+  ini_open("mods/rmml/ghost_mp/config.ini")
+  ini_write_real("ghost_mp", "show_names", enable)
+  ini_close()
+}
+
+if global.component.button(
+  318, 2, 98, 22,
   "Emote: " + global.rm_mp.key_get_name(global.rm_mp.emote_button)
 ) {
   menu.state = -514

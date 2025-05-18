@@ -21,23 +21,40 @@ global.deb_trans_add = fun (roomA, roomB, _left, _right, _top, _bot) {
 }
 
 global.time = {
-  _window_index: 0,
-  _window: array_create(60, 0),
-  _total: 0,
-  _start: 0,
-  start: fun () {
-    global.time._start = get_timer();
+  _times: {},
+  start: fun (label) {
+    if !global.time._times[label] {
+      global.time._times[label] = {
+        window_index: 0,
+        window: array_create(600, 0),
+        total: 0,
+        start: 0,
+      }
+    }
+    let t = global.time._times[label]
+    t.start = get_timer()
   },
-  end: fun (label) {
-    let diff = get_timer() - global.time._start
+  end: fun (label, print) {
+    let t = get_timer()
+    let timer = global.time._times[label]
+    let diff = t - timer.start
     
-    global.time._total += diff
-    global.time._total -= global.time._window[global.time._window_index]
-    global.time._window[global.time._window_index] = diff
-    global.time._window_index = (global.time._window_index + 1) % 60
+    timer.total += diff
+    timer.total -= timer.window[timer.window_index]
+    timer.window[timer.window_index] = diff
+    timer.window_index = (timer.window_index + 1) % 600
 
-    global.deb.log(global.time._total / 60, label)
-  }
+    if print { global.rmml.log(diff) }
+  },
+  render: fun () {
+    let names = variable_struct_get_names(global.time._times)
+    let i = array_length(names) - 1
+    while i >= 0 {
+      let label = names[i]
+      global.deb.log(global.time._times[label].total / 600, label)
+      i -= 1
+    }
+  },
 }
 
 global.dump = {
@@ -351,6 +368,7 @@ if global.debug_unclamp_cam {
 ## draw_gui_end
 
 ```sp
+global.time.render()
 let y = 0
 while y < array_length(global.deb._log) and y < 100 {
   let log = global.deb._log[y]
