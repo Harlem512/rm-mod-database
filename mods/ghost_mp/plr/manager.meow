@@ -133,7 +133,7 @@ while global.steam_net_packet_receive() {
       }
 
       -- load backup palette
-      inst.safe_palette = global.rm_mp.sprites_default_palette[character - 1]
+      inst.safe_palette = global.rm_mp.sprites_default_palette[character]
 
       -- LOAD PALETTE
       if data & 128 and global.rm_mp.enable_palette_packets {
