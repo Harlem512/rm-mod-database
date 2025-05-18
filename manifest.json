@@ -22,9 +22,9 @@
     "display": "Ameli Palette",
     "description": "Obtain witchy drip. Lets you customize the colors used by Ameli.\n\nEdit `mods/rmml/maya_palette/palette.png` with your colors, similar to Fern. Example palettes and a list of what each color means is included.",
     "author": "Harlem512",
-    "version": 2,
+    "version": 2.1,
     "type": "zip",
-    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/pals-2/ameli_palette.zip"
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ameli-palette-2.1/ameli_palette.zip"
   },
   "maya_palette": {
     "name": "maya_palette",
