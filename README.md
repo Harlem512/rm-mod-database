@@ -25,6 +25,12 @@ Each mod is installed and managed separately, but can be installed together.
 
 # Ghost Multiplayer
 
+![Ghost Multiplayer](assets/ghost_mp.png)
+
+Multiplayer for Rusted Moss! Lets you see (but not interact with) your friends. Also press O (rebindable in the menu) to open the emote wheel.
+
+To use, download the mod, then press the Fern icon on the main menu to open the multiplayer menu. From there, create a lobby and invite your friends. Settings are also available in the menu.
+
 # Minify!
 
 ![Minify](assets/minify.png)

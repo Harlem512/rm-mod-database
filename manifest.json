@@ -108,12 +108,12 @@
     "url": "https://github.com/Iciclis/RustedMoss-PaletteEditor/releases/download/v0.2.1/palette_editor.zip"
   },
   "ghost_mp": {
-    "name": "ghost_mp",
+        "name": "ghost_mp",
     "display": "Ghost Multiplayer",
-    "description": "BETA THIS IS MOSTLY UNTESTED. IF YOU FIND ISSUES PLEASE MESSAGE ME ON DISCORD.\n\nAdds (bad) multiplayer to Rusted Moss.",
+    "description": "Adds (bad) multiplayer to Rusted Moss. Use the Fern icon on the main menu to make a lobby and add your steam friends.",
     "author": "Harlem512",
-    "version": 0.1,
+    "version": 1,
     "type": "zip",
-    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-0.1/ghost_mp.zip"
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.0/ghost_mp.zip"
   }
 }
