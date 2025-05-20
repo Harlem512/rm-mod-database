@@ -1,0 +1,6 @@
+,,room_lib/init.meow,room_library
+controller,room_start,room_lib/room_start.meow,room_library
+controller,create,do { global.room_lib.__init = false; self.depth = -9999 },room_library
+,,test_room/init.meow,
+controller,step,test_room/data_dump.meow,
+controller,room_start,test_room/room_start.meow,

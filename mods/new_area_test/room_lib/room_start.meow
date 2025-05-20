@@ -1,0 +1,70 @@
+if !global.room_lib.__init and global.map_data_ != undefined and ds_exists(global.map_grid_, ds_type_grid) {
+  global.room_lib.__init = true
+
+  let names = variable_struct_get_names(global.room_lib.__rooms)
+
+  let i = array_length(names) - 1
+  while i >= 0 {
+    let room_id = names[i]
+    let data = global.room_lib.__rooms[room_id]
+    global.map_data_[room_id] = [{
+      "xx": data.map_x,
+      "yy": data.map_y,
+      "color": 2,
+      "angle": 0,
+      "extra": false,
+      "index": 0,
+      "rom": room_id,
+      "found": false,
+    }]
+    ds_grid_set(global.map_grid_, data.map_x, data.map_y, room_id)
+    i -= 1
+  }
+}
+
+let data = global.room_lib.__rooms[room_get()]
+
+if !data { return } 
+
+-- add tile maps
+let i = array_length(data.tiles) - 1
+while i >= 0 {
+  -- unpack data struct
+  let tile_data = data.tiles[i]
+  let width = tile_data.width
+  let height = tile_data.height
+
+  -- build layer
+  let layer = layer_create(tile_data.depth, tile_data.name)
+  let tilemap = layer_tilemap_create(
+    layer,
+    0,0,
+    tile_data.tile_set_id,
+    width, height
+  )
+
+  -- place tiles
+  let ar = tile_data.tiles
+  let j = 0
+  let y = 0
+  while y < height {
+    let x = 0
+    while x < width {
+      tilemap_set(tilemap, ar[j], x, y)
+      j += 1
+      x += 1
+    }
+    y += 1
+  }
+  
+  i -= 1
+}
+
+-- add instances
+i = 0
+let len = array_length(data.inst)
+while i < len {
+  let inst = data.inst[i]
+  instance_create_depth(inst.x, inst.y, inst.depth, inst.obj, inst.var_struct)
+  i += 1
+}

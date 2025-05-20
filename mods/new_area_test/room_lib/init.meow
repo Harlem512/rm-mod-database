@@ -1,0 +1,58 @@
+global.room_lib = {
+  -- version
+  version: 0.1,
+  -- MARK: add
+  -- adds a new room declaration
+  add: fun (width, height, map_x, map_y) {
+    let new_room = room_add()
+    room_set_width(new_room, width)
+    room_set_height(new_room, height)
+    return global.room_lib.__add_raw(new_room, map_x, map_y)
+  },
+  -- MARK: tile
+  -- adds a tile layer to a room
+  tile: fun (room_id, depth, name, tile_set_id, width, height, tiles) {
+    let mod_tiles = tiles
+
+    if is_array(tiles[0]) {
+      -- flatten array
+      mod_tiles = []
+      let i = 0
+      while i < width {
+        array_copy(mod_tiles, width * i, tiles[i], 0, width)
+        i += 1
+      }
+    }
+
+    array_push(global.room_lib.__rooms[room_id].tiles, {
+      depth, name, tile_set_id, width, height, tiles: mod_tiles
+    })
+  },
+  -- MARK: inst
+  -- adds an instance to a room
+  inst: fun (room_id, x, y, depth, obj, var_struct) {
+    array_push(global.room_lib.__rooms[room_id].inst, {
+      x, y, depth, obj, var_struct
+    })
+  },
+  -- MARK: dupe
+  -- duplicates an existing room
+  -- does not copy initial instance data, so basically useless (many objects will crash if initialized improperly)
+  dupe: fun (dupe_id, map_x, map_y) {
+    let new_room = room_duplicate(dupe_id)
+    return global.room_lib.__add_raw(new_room, map_x, map_y)
+  },
+  -- room data
+  __rooms: {},
+  __init: false,
+  __camera: camera_create(),
+  __add_raw: fun (new_room, map_x, map_y) {
+    global.room_lib.__rooms[new_room] = {
+      map_x, map_y,
+      tiles: [],
+      inst: [],
+    }
+    room_set_camera(new_room, 0, global.room_lib.__camera)
+    return new_room
+  },
+}

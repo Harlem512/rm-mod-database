@@ -1,0 +1,12 @@
+return true
+
+global.deb_logger.append([room_get(), room_width_get(), room_height_get()], "room data")
+
+global.deb_logger.append([global.mousex, global.mousey], "mousex")
+global.deb_logger.append([global.mouse_gui_x_, global.mouse_gui_y_], "mouse_gui_x_")
+global.deb_logger.append([device_mouse_x_to_gui(0), device_mouse_y_to_gui(0)])
+global.deb_logger.append([display_get_gui_width(), display_get_gui_height()], "gui size")
+
+with oplayer {
+  global.deb_logger.append([self.x, self.y], "plr")
+}
