@@ -79,59 +79,66 @@ global.dump = {
     }
     global.rmml.log(str + "}")
   },
-}
-
-global.dump_tilemap = fun (tilemap) {
-  let dump = []
-  -- tilemap id
-  let tid = layer_tilemap_get_id(tilemap)
-  let tile_width = tilemap_get_width(tid)
-  let tile_height = tilemap_get_height(tid)
-  let x = 0
-  while x < tile_width {
-    dump[x] = []
-    let y = 0
-    while y < tile_height {
-      dump[x][y] = tile_get_index(tilemap_get(tid, x, y))
-      y += 1
+  tilemap: fun (tilemap) {
+    let dump = []
+    -- tilemap id
+    let tid = layer_tilemap_get_id(tilemap)
+    let tile_width = tilemap_get_width(tid)
+    let tile_height = tilemap_get_height(tid)
+    let x = 0
+    while x < tile_width {
+      dump[x] = []
+      let y = 0
+      while y < tile_height {
+        dump[x][y] = tile_get_index(tilemap_get(tid, x, y))
+        y += 1
+      }
+      x += 1
     }
-    x += 1
-  }
-  return dump
-}
+    return dump
+  },
+  layers: fun () {
+    global.rmml.log(["LAYYYYY", room_get(), room_get_name(room_get())])
+    let layers = layer_get_all()
+    let i = 0
+    while i < array_length(layers) {
+      -- global.rmml.log(["LAYER", layer_get_name(layers[i]), layer_get_depth(layers[i])])
+      let tilemap_id = layer_tilemap_get_id(layers[i])
+      -- global.rmml.log([
+      --   tilemap_get_x(tilemap_id), tilemap_get_y(tilemap_id),
+      --   tilemap_get_tileset(tilemap_id),
+      --   tilemap_get_width(tilemap_id), tilemap_get_height(tilemap_id),
+      -- ])
+      let dump = global.dump_tilemap(layers[i])
+      -- global.rmml.log(dump)
 
-global.dump_layers = fun () {
-  global.rmml.log(["LAYYYYY", room_get(), room_get_name(room_get())])
-  let layers = layer_get_all()
-  let i = 0
-  while i < array_length(layers) {
-    -- global.rmml.log(["LAYER", layer_get_name(layers[i]), layer_get_depth(layers[i])])
-    let tilemap_id = layer_tilemap_get_id(layers[i])
-    -- global.rmml.log([
-    --   tilemap_get_x(tilemap_id), tilemap_get_y(tilemap_id),
-    --   tilemap_get_tileset(tilemap_id),
-    --   tilemap_get_width(tilemap_id), tilemap_get_height(tilemap_id),
-    -- ])
-    let dump = global.dump_tilemap(layers[i])
-    -- global.rmml.log(dump)
-
-    global.rmml.log(
-      "global.room_lib.tile("
-      + "<<REPLACE>>, "
-      + string(layer_get_depth(layers[i]))
-      + ", \""
-      + layer_get_name(layers[i])
-      + "\", "
-      + string(tilemap_get_tileset(tilemap_id))
-      + ", "
-      + string(tilemap_get_width(tilemap_id))
-      + ", "
-      + string(tilemap_get_height(tilemap_id))
-      + ", "
-      + string(global.dump_tilemap(layers[i]))
-      + ")"
-    )
-    i += 1
+      global.rmml.log(
+        "global.room_lib.tile("
+        + "<<REPLACE>>, "
+        + string(layer_get_depth(layers[i]))
+        + ", \""
+        + layer_get_name(layers[i])
+        + "\", "
+        + string(tilemap_get_tileset(tilemap_id))
+        + ", "
+        + string(tilemap_get_width(tilemap_id))
+        + ", "
+        + string(tilemap_get_height(tilemap_id))
+        + ", "
+        + string(global.dump_tilemap(layers[i]))
+        + ")"
+      )
+      i += 1
+    }
+  },
+  dump_camera: fun (camera_id) {
+    global.rmml.log({
+      view_x: camera_get_view_x(camera_id),
+      view_y: camera_get_view_y(camera_id),
+      view_width: camera_get_view_width(camera_id),
+      view_height: camera_get_view_height(camera_id),
+      camera_get_view_target: camera_get_view_target(camera_id),
+    })
   }
 }
 
@@ -160,16 +167,6 @@ global.rebuild_cameras = fun (room, camera) {
     }
     i += 1
   }
-}
-
-global.dump_camera = fun (camera_id) {
-  global.rmml.log({
-    view_x: camera_get_view_x(camera_id),
-    view_y: camera_get_view_y(camera_id),
-    view_width: camera_get_view_width(camera_id),
-    view_height: camera_get_view_height(camera_id),
-    camera_get_view_target: camera_get_view_target(camera_id),
-  })
 }
 
 global.deb = {

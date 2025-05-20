@@ -26,6 +26,60 @@
     "type": "zip",
     "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ameli-palette-2.1/ameli_palette.zip"
   },
+  "archipelago": {
+    "name": "archipelago",
+    "display": "Archipelago Client",
+    "description": "The Archipelago Client for use with the Archipelago randomizer. View setup/usage information at https://github.com/dgrossmann144/\nRustedMossArchipelagoClient",
+    "author": "MrL",
+    "version": 1.0,
+    "type": "zip",
+    "url": "https://github.com/dgrossmann144/RustedMossArchipelagoClient/releases/download/v1.0.1/RustedMossArchipelagoClient.zip"
+  },
+  "cc_shark.md": {
+    "name": "cc_shark.md",
+    "display": "Demo: CC Shark",
+    "description": "Shows a rotating shark.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/qa/mods/cc_shark.md"
+  },
+  "checklist.md": {
+    "name": "checklist.md",
+    "display": "Checklist",
+    "description": "Adds icons to the map for each pickup you haven't collected. Works with Minimap and barely works with the Archipelago randomizer.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/checklist/checklist.md"
+  },
+  "debugger.md": {
+    "name": "debugger.md",
+    "display": "Cheat: Harlem's Debugger",
+    "description": "Upgrades and utilities for the game's standard debugger to be more useful for me specifically. Doesn't work without modifying the `data.win` file (use the UTMT script in the mod database releases tab).",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/qa/mods/debugger.md"
+  },
+  "ghost_mp": {
+    "name": "ghost_mp",
+    "display": "Ghost Multiplayer",
+    "description": "Adds (bad) multiplayer to Rusted Moss. Use the Fern icon on the main menu to make a lobby and add your steam friends.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "zip",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.0/ghost_mp.zip"
+  },
+  "gimmick.md": {
+    "name": "gimmick.md",
+    "display": "Gimmick",
+    "description": "\"Rusted Moss but Good,\" April Fools 2025 mod.\nReplaces Fern's movement abilities with mid-air jumps.",
+    "author": "Harlem512",
+    "version": 1.1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/gimmick/gimmick.md"
+  },
   "maya_palette": {
     "name": "maya_palette",
     "display": "Maya Palette",
@@ -53,6 +107,15 @@
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/minimap.md"
   },
+  "palette_editor": {
+    "name": "palette_editor",
+    "display": "Palette Editor",
+    "description": "Get that look you've ever wanted without exiting the game!\nWorks with Ameli and Maya palette mods (installed separately).",
+    "author": "Snowill",
+    "version": 0.2,
+    "type": "zip",
+    "url": "https://github.com/Iciclis/RustedMoss-PaletteEditor/releases/download/v0.2.1/palette_editor.zip"
+  },
   "puntable.md": {
     "name": "puntable.md",
     "display": "Puntable",
@@ -71,49 +134,31 @@
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/pursuit.md"
   },
-  "checklist.md": {
-    "name": "checklist.md",
-    "display": "Checklist",
-    "description": "Adds icons to the map for each pickup you haven't collected. Works with Minimap and barely works with the Archipelago randomizer.",
+  "ripper.md": {
+    "name": "ripper.md",
+    "display": "Tool: Ripper",
+    "description": "Prints every asset (sprite, room, object, function, etc) to the RMML log, then crashes the game.",
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/checklist/checklist.md"
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/qa/mods/ripper.md"
   },
-  "archipelago": {
-    "name": "archipelago",
-    "display": "Archipelago Client",
-    "description": "The Archipelago Client for use with the Archipelago randomizer. View setup/usage information at https://github.com/dgrossmann144/\nRustedMossArchipelagoClient",
-    "author": "MrL",
-    "version": 1.0,
-    "type": "zip",
-    "url": "https://github.com/dgrossmann144/RustedMossArchipelagoClient/releases/download/v1.0.1/RustedMossArchipelagoClient.zip"
-  },
-  "gimmick.md": {
-    "name": "gimmick.md",
-    "display": "Gimmick",
-    "description": "\"Rusted Moss but Good,\" April Fools 2025 mod.\nReplaces Fern's movement abilities with mid-air jumps.",
-    "author": "Harlem512",
-    "version": 1.1,
-    "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/gimmick/gimmick.md"
-  },
-  "palette_editor": {
-    "name": "palette_editor",
-    "display": "Palette Editor",
-    "description": "Get that look you've ever wanted without exiting the game!\nWorks with Ameli and Maya palette mods (installed separately).",
-    "author": "Snowill",
-    "version": 0.2,
-    "type": "zip",
-    "url": "https://github.com/Iciclis/RustedMoss-PaletteEditor/releases/download/v0.2.1/palette_editor.zip"
-  },
-  "ghost_mp": {
-    "name": "ghost_mp",
-    "display": "Ghost Multiplayer",
-    "description": "Adds (bad) multiplayer to Rusted Moss. Use the Fern icon on the main menu to make a lobby and add your steam friends.",
+  "whereami.md": {
+    "name": "whereami.md",
+    "display": "Tool: whereami",
+    "description": "Shows internal information about the player location on the escape menu.",
     "author": "Harlem512",
     "version": 1,
-    "type": "zip",
-    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.0/ghost_mp.zip"
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/qa/mods/whereami.md"
+  },
+  "zebedee.md": {
+    "name": "zebedee.md",
+    "display": "Dev Mode",
+    "description": "Enables RMML developer mode. Not for human consumption. [slant]slant[/slant] [wave]wave[/wave] [shake]shake[/shake] [wobble]wobble[/wobble] [pulse]pulse[/pulse] [wheel]wheel[/wheel] [jitter]jitter[/jitter] [blink]blink[/blink]",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/puntable.md"
   }
 }

@@ -26,6 +26,42 @@
     "type": "zip",
     "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ameli-palette-2.1/ameli_palette.zip"
   },
+  "archipelago": {
+    "name": "archipelago",
+    "display": "Archipelago Client",
+    "description": "The Archipelago Client for use with the Archipelago randomizer. View setup/usage information at https://github.com/dgrossmann144/\nRustedMossArchipelagoClient",
+    "author": "MrL",
+    "version": 1.0,
+    "type": "zip",
+    "url": "https://github.com/dgrossmann144/RustedMossArchipelagoClient/releases/download/v1.0.1/RustedMossArchipelagoClient.zip"
+  },
+  "checklist.md": {
+    "name": "checklist.md",
+    "display": "Checklist",
+    "description": "Adds icons to the map for each pickup you haven't collected. Works with Minimap and barely works with the Archipelago randomizer.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/checklist/checklist.md"
+  },
+  "ghost_mp": {
+    "name": "ghost_mp",
+    "display": "Ghost Multiplayer",
+    "description": "Adds (bad) multiplayer to Rusted Moss. Use the Fern icon on the main menu to make a lobby and add your steam friends.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "zip",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.0/ghost_mp.zip"
+  },
+  "gimmick.md": {
+    "name": "gimmick.md",
+    "display": "Gimmick",
+    "description": "\"Rusted Moss but Good,\" April Fools 2025 mod.\nReplaces Fern's movement abilities with mid-air jumps.",
+    "author": "Harlem512",
+    "version": 1.1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/gimmick/gimmick.md"
+  },
   "maya_palette": {
     "name": "maya_palette",
     "display": "Maya Palette",
@@ -53,6 +89,15 @@
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/minimap.md"
   },
+  "palette_editor": {
+    "name": "palette_editor",
+    "display": "Palette Editor",
+    "description": "Get that look you've ever wanted without exiting the game!\nWorks with Ameli and Maya palette mods (installed separately).",
+    "author": "Snowill",
+    "version": 0.2,
+    "type": "zip",
+    "url": "https://github.com/Iciclis/RustedMoss-PaletteEditor/releases/download/v0.2.1/palette_editor.zip"
+  },
   "puntable.md": {
     "name": "puntable.md",
     "display": "Puntable",
@@ -71,49 +116,13 @@
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/pursuit.md"
   },
-  "checklist.md": {
-    "name": "checklist.md",
-    "display": "Checklist",
-    "description": "Adds icons to the map for each pickup you haven't collected. Works with Minimap and barely works with the Archipelago randomizer.",
+  "zebedee": {
+    "name": "zebedee",
+    "display": "Dev Mode",
+    "description": "Enables RMML developer mode. Not for human consumption.\n\n Should be reordered to the top of your mod list.",
     "author": "Harlem512",
-    "version": 1,
+    "version": 0,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/checklist/checklist.md"
-  },
-  "archipelago": {
-    "name": "archipelago",
-    "display": "Archipelago Client",
-    "description": "The Archipelago Client for use with the Archipelago randomizer. View setup/usage information at https://github.com/dgrossmann144/\nRustedMossArchipelagoClient",
-    "author": "MrL",
-    "version": 1.0,
-    "type": "zip",
-    "url": "https://github.com/dgrossmann144/RustedMossArchipelagoClient/releases/download/v1.0.1/RustedMossArchipelagoClient.zip"
-  },
-  "gimmick.md": {
-    "name": "gimmick.md",
-    "display": "Gimmick",
-    "description": "\"Rusted Moss but Good,\" April Fools 2025 mod.\nReplaces Fern's movement abilities with mid-air jumps.",
-    "author": "Harlem512",
-    "version": 1.1,
-    "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/gimmick/gimmick.md"
-  },
-  "palette_editor": {
-    "name": "palette_editor",
-    "display": "Palette Editor",
-    "description": "Get that look you've ever wanted without exiting the game!\nWorks with Ameli and Maya palette mods (installed separately).",
-    "author": "Snowill",
-    "version": 0.2,
-    "type": "zip",
-    "url": "https://github.com/Iciclis/RustedMoss-PaletteEditor/releases/download/v0.2.1/palette_editor.zip"
-  },
-  "ghost_mp": {
-        "name": "ghost_mp",
-    "display": "Ghost Multiplayer",
-    "description": "Adds (bad) multiplayer to Rusted Moss. Use the Fern icon on the main menu to make a lobby and add your steam friends.",
-    "author": "Harlem512",
-    "version": 1,
-    "type": "zip",
-    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.0/ghost_mp.zip"
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/dev.md"
   }
 }
