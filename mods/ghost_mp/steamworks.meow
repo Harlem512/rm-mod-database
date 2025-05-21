@@ -425,7 +425,7 @@ global.rm_mp = {
   },
   -- gets the wallhug sprite for the character
   sprites_wallhug_render: [
-    splayer_wallhug_still,
+    splayer_wallhug_still_palette,
     splayer_maya_wallhug_still,
     splayer_witch_ameli_wallhug_still,
   ],

@@ -104,12 +104,14 @@ sprite_delete(palette)
 ## room_start
 
 ```sp
-shader_replace_simple_set_hook(shd_palette)
-shader_set_uniform_f_array(
-  shader_get_uniform(shd_palette, "palette_uvs"),
-  if global.ameli_mode_ { [0,0, 0,0] } else { [0,0, 1,1] }
-)
-shader_replace_simple_reset_hook()
+if !global.__mod_controllers.palette_editor {
+  shader_replace_simple_set_hook(shd_palette)
+  shader_set_uniform_f_array(
+    shader_get_uniform(shd_palette, "palette_uvs"),
+    if global.ameli_mode_ { [0,0, 0,0] } else { [0,0, 1,1] }
+  )
+  shader_replace_simple_reset_hook()
+}
 ```
 
 ## draw_begin
