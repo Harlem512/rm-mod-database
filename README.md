@@ -1,20 +1,30 @@
 # Rusted Moss Mod Database
 
+![RMML Latest Downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-manager/1.3/rmml_6_13.zip?color=blue&label=latest)
+![RMML Historical Downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-manager/1.2/rmml_6_12.zip?color=blue&label=historical)
+
 Data source for [Rusted Moss Mod Manager](https://github.com/Harlem512/rm-mod-manager). Most of these mods can be downloaded in-game, once it's installed.
 
 You can check out my [modding documentation](https://harlem512.github.io/rm-docs/) for information on how this works or how to install RMML. Example mods are included in the `demo` folder.
 
-Here's all the (publicly) included mods and their authors:
+Here's all the (publicly) included mods and their authors. If an author isn't shown, I (Harlem512) made it.
 
 # Archipelago Client (MrL)
+
+![Archipelago Downloads](https://img.shields.io/github/downloads/dgrossmann144/RustedMossArchipelagoClient/total?color=blue)
 
 The Archipelago Client for use with the [Archipelago randomizer](https://archipelago.gg/). View setup/usage information at [MrL's repo](https://github.com/dgrossmann144/RustedMossArchipelagoClient).
 
 # Palette Editor (Snowill)
 
+![Palette Editor Downloads](https://img.shields.io/github/downloads/Iciclis/RustedMoss-PaletteEditor/total?color=blue)
+
 In-game editor for character palettes. Supports Maya and Ameli Palette (installed separately). More information available at [Snowill's repo](https://github.com/Iciclis/RustedMoss-PaletteEditor).
 
 # Maya and Ameli Palette
+
+![maya Palette downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-database/maya_palette.zip?color=blue)
+![Ameli Palette downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-database/ameli_palette.zip?color=blue)
 
 ![Ameli Palette](assets/ameli_thumbnail.png)
 ![Maya Palette](assets/maya_thumbnail.png)
@@ -24,6 +34,8 @@ Lets you customize the color palette for Maya and Ameli, like you can with Fern.
 Each mod is installed and managed separately, but can be installed together.
 
 # Ghost Multiplayer
+
+![Ghost Multiplayer downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-database/ghost_mp.zip?color=blue)
 
 ![Ghost Multiplayer](assets/ghost_mp.png)
 
