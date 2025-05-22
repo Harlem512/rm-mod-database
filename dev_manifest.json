@@ -53,15 +53,6 @@
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/checklist/checklist.md"
   },
-  "debugger.md": {
-    "name": "debugger.md",
-    "display": "Cheat: Harlem's Debugger",
-    "description": "Upgrades and utilities for the game's standard debugger to be more useful for me specifically. Doesn't work without modifying the `data.win` file (use the UTMT script in the mod database releases tab).",
-    "author": "Harlem512",
-    "version": 1,
-    "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/qa/mods/debugger.md"
-  },
   "ghost_mp": {
     "name": "ghost_mp",
     "display": "Ghost Multiplayer",
