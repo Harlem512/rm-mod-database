@@ -104,7 +104,7 @@ sprite_delete(palette)
 ## room_start
 
 ```sp
-if !global.__mod_controllers.palette_editor {
+if !global.rmml.__mod_controllers.palette_editor {
   shader_replace_simple_set_hook(shd_palette)
   shader_set_uniform_f_array(
     shader_get_uniform(shd_palette, "palette_uvs"),
