@@ -1,0 +1,6 @@
+-- MARK: grapple point
+if global.rm_mp.enable_grapple_players {
+  self.grapple_point = instance_create_depth(0, 0, 1, ohook_dragger_still,
+    { visible: false, persistent: true }
+  )
+}

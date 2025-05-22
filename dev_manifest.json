@@ -67,9 +67,9 @@
     "display": "Ghost Multiplayer",
     "description": "Adds (bad) multiplayer to Rusted Moss. Use the Fern icon on the main menu to make a lobby and add your steam friends.",
     "author": "Harlem512",
-    "version": 1,
+    "version": 1.1,
     "type": "zip",
-    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.0/ghost_mp.zip"
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.1/ghost_mp.zip"
   },
   "gimmick.md": {
     "name": "gimmick.md",

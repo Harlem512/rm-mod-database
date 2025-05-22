@@ -30,6 +30,12 @@ if self.lerp_counter <= self.time_to_lerp {
   }
 }
 
+-- hook management
+if instance_exists(self.grapple_point) {
+  self.grapple_point.x = self.x
+  self.grapple_point.y = self.y - 20
+}
+
 self.dx -= self.x
 self.dy -= self.y
 

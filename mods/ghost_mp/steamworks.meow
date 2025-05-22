@@ -36,12 +36,15 @@ let emote_button = ini_read_real("ghost_mp", "emote_button", 'O')
 let enable_palette_packets = ini_read_real("ghost_mp", "enable_palette_packets", 1)
 let show_players_on_map = ini_read_real("ghost_mp", "show_players_on_map", 1)
 let show_names = ini_read_real("ghost_mp", "show_names", 1)
+let enable_grapple_players = ini_read_real("ghost_mp", "enable_grapple_players", 0)
 ini_close()
 
 -- MARK: ==MP Struct==
 global.rm_mp = {
   -- this is the main mp handler
   -- contains most helpers and persistent data
+
+  version: 1.1
   
   -- MARK: EMOTES
   -- button to open the emote wheel
@@ -205,6 +208,9 @@ global.rm_mp = {
           safe_palette: global.rm_mp.sprites_default_palette[character_id],
           -- wave offset
           wave_offset: (user_id % 100) / 100,
+
+          -- grapple point
+          grapple_point: undefined,
         })
         -- get user name
         global.rm_mp.then(
@@ -440,6 +446,8 @@ global.rm_mp = {
 
 
   -- MARK: MISC
+  -- true if ghost players should be grapple-able
+  enable_grapple_players,
   -- true if the map should show player locations
   show_players_on_map,
   -- true if names should be rendered
