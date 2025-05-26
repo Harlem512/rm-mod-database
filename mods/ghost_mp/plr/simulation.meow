@@ -32,8 +32,13 @@ if self.lerp_counter <= self.time_to_lerp {
 
 -- hook management
 if instance_exists(self.grapple_point) {
-  self.grapple_point.x = self.x
-  self.grapple_point.y = self.y - 20
+  if self.room == room_get() {
+    self.grapple_point.x = self.x
+    self.grapple_point.y = self.y - 20
+  } else {
+    self.grapple_point.x = -100
+    self.grapple_point.y = -100
+  }
 }
 
 self.dx -= self.x
