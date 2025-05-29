@@ -42,7 +42,7 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/qa/mods/cc_shark.md"
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/cc_shark.md"
   },
   "checklist.md": {
     "name": "checklist.md",
@@ -132,7 +132,16 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/qa/mods/ripper.md"
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/ripper.md"
+  },
+  "speedrun_timer.md": {
+    "name": "speedrun_timer.md",
+    "display": "Speedrun Timer Control",
+    "description": "Lets you turn the speedrun timer on for normal mode and disable the timer when playing Fern speedrun mode using an icon on the pause menu.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/speedrun_timer.md"
   },
   "whereami.md": {
     "name": "whereami.md",
@@ -141,7 +150,7 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/qa/mods/whereami.md"
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/whereami.md"
   },
   "zebedee.md": {
     "name": "zebedee.md",

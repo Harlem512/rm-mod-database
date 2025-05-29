@@ -76,3 +76,7 @@ Adds icons to the map for each pickup you haven't collected. Works with Minimap 
 ![Gimmick](assets/gimmick.png)
 
 Aprils Fools joke mod for 2025. Replaces (most) movement upgrades with additional mid-air jumps and forces the player to use the bolt caster.
+
+# Speedrun Timer Control
+
+Lets you turn the speedrun timer on for normal mode and disable the timer when playing Fern speedrun mode using an icon on the pause menu.
