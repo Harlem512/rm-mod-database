@@ -94,9 +94,9 @@
     "display": "Palette Editor",
     "description": "Get that look you've ever wanted without exiting the game!\nWorks with Ameli and Maya palette mods (installed separately).",
     "author": "Snowill",
-    "version": 0.2,
+    "version": 2.2,
     "type": "zip",
-    "url": "https://github.com/Iciclis/RustedMoss-PaletteEditor/releases/download/v0.2.1/palette_editor.zip"
+    "url": "https://github.com/Iciclis/RustedMoss-PaletteEditor/releases/download/v0.2.2/palette_editor.zip"
   },
   "puntable.md": {
     "name": "puntable.md",
