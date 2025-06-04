@@ -36,6 +36,7 @@ let emote_button = ini_read_real("ghost_mp", "emote_button", 'O')
 let enable_palette_packets = ini_read_real("ghost_mp", "enable_palette_packets", 1)
 let show_players_on_map = ini_read_real("ghost_mp", "show_players_on_map", 1)
 let show_names = ini_read_real("ghost_mp", "show_names", 1)
+let show_player_offscreen = ini_read_real("ghost_mp", "show_player_offscreen", 1)
 let enable_grapple_players = ini_read_real("ghost_mp", "enable_grapple_players", 0)
 ini_close()
 
@@ -394,7 +395,11 @@ global.rm_mp = {
   ],
   -- map sprites
   sprites_map: [
-    smap_player, smap_player_maya, smap_player_ameli
+    smap_player, smap_player_maya, smap_player_ameli,
+  ],
+  -- offscreen sprites
+  sprites_offscreen: [
+    splayer_offscreen, splayer_maya_offscreen, splayer_ameli_offscreen,
   ],
   -- leg sprites
   sprites_legs: [
@@ -452,12 +457,22 @@ global.rm_mp = {
   show_players_on_map,
   -- true if names should be rendered
   show_names,
+  -- true if an offscreen icon should be shown for players that are in the same room
+  show_player_offscreen,
   -- true if palettes should be read/sent by this peer
   enable_palette_packets,
   -- true if the delayed init has happened
   delayed_init: false,
   -- uniform for palette uv
   palette_uv_uniform: shader_get_uniform(shd_palette, "palette_uvs"),
+  -- toggles a setting
+  toggle_setting: fun (setting) {
+    let enable = !global.rm_mp[setting]
+    global.rm_mp[setting] = enable
+    ini_open("mods/rmml/ghost_mp/config.ini")
+    ini_write_real("ghost_mp", setting, enable)
+    ini_close()
+  },
   -- converts a key code to a label
   key_get_name: fun (key) {
     if key > 48 and key < 91 { return chr(key) }

@@ -1,0 +1,31 @@
+-- MARK: offscreen icon
+if 
+  room_get() == self.room
+  and global.spayer_spawned
+  and !global.trinket_active_[1]
+  and !global.debug_ui_
+  and global.rm_mp.show_player_offscreen
+{
+  let cam = instance_find(ocamera)
+  if cam {
+    let x = self.x
+    let y = self.y - 20
+
+    let min_x = cam.xpos
+    let min_y = cam.ypos
+    let max_x = cam.xpos + 444
+    let max_y = cam.ypos + 250
+
+    if !point_in_rectangle(x, y, min_x - 16, min_y - 20, max_x + 16, max_y + 20) {
+      let plr = instance_find(oplayer)
+      if plr {
+        let icon_x = clamp(x, min_x + 16, max_x - 16)
+        let icon_y = clamp(y, min_y + 16, max_y - 16)
+        let sprite = global.rm_mp.sprites_offscreen[self.character]
+        let dir = point_direction(plr.x, plr.y, x, y)
+        draw_sprite_ext(sprite, 0, icon_x, icon_y, 1, 1, dir, c_white, 1)
+        draw_sprite_ext(sprite, 1, icon_x, icon_y, 1, 1, 1, c_white, 1)
+      }
+    }
+  }
+}

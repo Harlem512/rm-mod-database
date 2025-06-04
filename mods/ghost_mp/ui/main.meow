@@ -8,8 +8,10 @@ let lobby = global.steam_lobby_get_lobby_id()
 
 -- MARK: Main Menu
 if menu.state == 14 {
+  let col = draw_get_color()
+  draw_set_color(c_black)
   if global.component.button(
-    418, 26, 22, 24
+    418, 26, 22, 24, undefined, "Ghost Multiplayer"
   ) {
     menu.state = -513
   }
@@ -19,6 +21,7 @@ if menu.state == 14 {
     1, 1, 0,
     if lobby { c_white } else { c_gray }, 1
   )
+  draw_set_color(col)
   return
 }
 
@@ -107,71 +110,51 @@ if global.component.button(
 }
 
 -- y = i*24 + 2
+let y = 2
 
 if global.component.button(
-  2, 2, 84, 22, if global.rm_mp.enable_palette_packets { "[X] Palettes" } else { "[ ] Palettes"},
+  2, y, 84, 22,
+  if global.rm_mp.enable_palette_packets { "[X] Palettes" } else { "[ ] Palettes"},
   "If ghost players should use palette colors."
 ) {
-  let enable = !global.rm_mp.enable_palette_packets
-  global.rm_mp.enable_palette_packets = enable
-  ini_open("mods/rmml/ghost_mp/config.ini")
-  ini_write_real("ghost_mp", "enable_palette_packets", enable)
-  ini_close()
+  global.rm_mp.toggle_setting("enable_palette_packets")
 }
+y += 24
 
 if global.component.button(
-  2, 26, 84, 22, if global.rm_mp.show_players_on_map { "[X] Map Icon" } else { "[ ] Map Icon"},
+  2, y, 84, 22,
+  if global.rm_mp.show_players_on_map { "[X] Map Icon" } else { "[ ] Map Icon"},
   "If players should show up on the map."
 ) {
-  let enable = !global.rm_mp.show_players_on_map
-  global.rm_mp.show_players_on_map = enable
-  ini_open("mods/rmml/ghost_mp/config.ini")
-  ini_write_real("ghost_mp", "show_players_on_map", enable)
-  ini_close()
+  global.rm_mp.toggle_setting("show_players_on_map")
 }
+y += 24
 
 if global.component.button(
-  2, 50, 84, 22, if global.rm_mp.show_names { "[X] Names" } else { "[ ] Names"},
+  2, y, 84, 22,
+  if global.rm_mp.show_names { "[X] Names" } else { "[ ] Names"},
   "If ghosts should have player names."
 ) {
-  let enable = !global.rm_mp.show_names
-  global.rm_mp.show_names = enable
-  ini_open("mods/rmml/ghost_mp/config.ini")
-  ini_write_real("ghost_mp", "show_names", enable)
-  ini_close()
+  global.rm_mp.toggle_setting("show_names")
 }
+y += 24
 
 if global.component.button(
-  2, 74, 84, 22, if global.rm_mp.enable_grapple_players { "[X] Hookable" } else { "[ ] Hookable"},
+  2, y, 84, 22,
+  if global.rm_mp.show_player_offscreen { "[X] Off Icon" } else { "[ ] Off Icon"},
+  "If ghosts should show an offscreen icon."
+) {
+  global.rm_mp.toggle_setting("show_player_offscreen")
+}
+y += 24
+
+if global.component.button(
+  2, y, 84, 22,
+  if global.rm_mp.enable_grapple_players { "[X] Hookable" } else { "[ ] Hookable"},
   "If ghost players should be hookable."
 ) {
-  let enable = !global.rm_mp.enable_grapple_players
-  global.rm_mp.enable_grapple_players = enable
-  ini_open("mods/rmml/ghost_mp/config.ini")
-  ini_write_real("ghost_mp", "enable_grapple_players", enable)
-  ini_close()
+  global.rm_mp.toggle_setting("enable_grapple_players")
 }
-
--- if global.component.button(
---   2, 98, 84, 22, if global.rm_mp.enable_grapple_players { "[X] Boss HP" } else { "[ ] Boss HP"},
---   "If boss HP (but not boss completion) should be synced"
--- ) {
---   let enable = !global.rm_mp.enable_grapple_players
---   global.rm_mp.enable_grapple_players = enable
---   ini_open("mods/rmml/ghost_mp/config.ini")
---   ini_write_real("ghost_mp", "enable_grapple_players", enable)
---   ini_close()
--- }
-
--- if global.component.button(
---   2, 122, 84, 22, if global.rm_mp.enable_grapple_players { "[X] Upgrades" } else { "[ ] Upgrades"},
---   "If map reveal, boss kills, upgrades, etc should be synced"
--- ) {
---   let enable = !global.rm_mp.enable_grapple_players
---   global.rm_mp.enable_grapple_players = enable
---   ini_open("mods/rmml/ghost_mp/config.ini")
---   ini_write_real("ghost_mp", "enable_grapple_players", enable)
---   ini_close()
--- }
+y += 24
 
 draw_set_color(col)
