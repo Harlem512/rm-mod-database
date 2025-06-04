@@ -220,18 +220,6 @@ with oplayer {
           + global.weapon_data[4].found
       }
     }
-
-    -- archipelago
-    if self.endless_hook {
-      if global.rmml.__mod_controllers.archipelago {
-        -- archipelago requires all 4 jumps
-        if self.__gimmick_jumps == 4 {
-          self.__gimmick_jumps = infinity
-        }
-      } else {
-        self.__gimmick_jumps = infinity
-      }
-    }
     -- reset cooldown
     self.__gimmick_cd = 0
     return
@@ -309,7 +297,7 @@ with oplayer {
     instance_create_depth(x, y, -1, osmoke)
     i -= 1
   }
-  global.shake++
+  global.shake += 1
   audio_play_sound_pitch(66, 0.75, random_range(0.9, 1.1), 0)
 
   -- reset cooldown, subtract jump counter
