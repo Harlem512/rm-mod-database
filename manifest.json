@@ -49,16 +49,16 @@
     "display": "Ghost Multiplayer",
     "description": "Adds (bad) multiplayer to Rusted Moss. Use the Fern icon on the main menu to make a lobby and add your steam friends.",
     "author": "Harlem512",
-    "version": 1.2,
+    "version": 1.3,
     "type": "zip",
-    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.2/ghost_mp.zip"
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.3/ghost_mp.zip"
   },
   "gimmick.md": {
     "name": "gimmick.md",
     "display": "Gimmick",
     "description": "\"Rusted Moss but Good,\" April Fools 2025 mod.\nReplaces Fern's movement abilities with mid-air jumps.",
     "author": "Harlem512",
-    "version": 1.1,
+    "version": 1.2,
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/gimmick/gimmick.md"
   },
@@ -112,7 +112,7 @@
     "display": "Pursuit",
     "description": "Rusted Moss but there's a [pulse]cool guy[/pulse] chasing you the whole time. [shake][jitter]RUN[/jitter][/shake].",
     "author": "Harlem512",
-    "version": 1.1,
+    "version": 1.2,
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/pursuit.md"
   },

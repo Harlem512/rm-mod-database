@@ -266,7 +266,7 @@ with oroom_transition {
 }
 ```
 
-## draw
+## draw_end
 
 ```sp
 if global.deb_quickboot {
@@ -275,6 +275,7 @@ if global.deb_quickboot {
     global.current_file = 8
     self.start_timer = 100
     global.speedrun_mode_ = 1
+    global.speedrun_timer = 0
   }
   global.deb_quickboot = false
 }
@@ -315,6 +316,8 @@ if global.debug_draw_hitboxes__ {
   with oroom_transition {
     draw_rectangle(self.bbox_left, self.bbox_top, self.bbox_right, self.bbox_bottom, true)
     draw_text(self.x, self.y, string([self.dir, self.marg, self.y_off]))
+    draw_text(self.x, self.y - 12, string(room_get_name(self.target_room)))
+    draw_text(self.x, self.y - 24, string(self.id))
 
     -- adjacent rooms
     if global.deb_trans[room_get()] {
@@ -379,4 +382,30 @@ while y < array_length(global.deb._log) and y < 100 {
   y += 1
 }
 if global.deb.should_clear { global.deb.clear() }
+
+-- gimmick debug options
+-- if keyboard_check_pressed(vk_f1) {
+--   global.trinket_active_[24] = !global.trinket_active_[24]
+-- }
+-- if keyboard_check_pressed(vk_f2) {
+--   global.reload_[2] = 0
+-- }
+-- if global.trinket_active_ != undefined {
+--   global.deb.log(global.trinket_active_[24], "f1 heavy ammo")
+--   global.deb.log(0, "f2 reload")
+--   global.deb.log(global.deb__test, "f3 disable gimmick")
+--   global.deb.log(global.trinket_active_[4], "f5 slippers")
+--   global.deb.log(room_get_name(room_get()), "room")
+-- }
+-- if keyboard_check_pressed(vk_f3) {
+--   global.deb__test = !global.deb__test
+-- }
+-- if global.deb__test {
+--   with oplayer {
+--     self.__gimmick_jumps = 0
+--   }
+-- }
+-- if keyboard_check_pressed(vk_f5) {
+--   global.trinket_active_[4] = !global.trinket_active_[4]
+-- }
 ```
