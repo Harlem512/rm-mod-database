@@ -33,6 +33,7 @@ match room_get() {
   -- intro room
   case rm_start_0 {
     -- checks if intro dialogue should be played
+    -- yes it is actually called "spayer_spawned"
     if instance_exists(ospawn_point) and global.gamestate != 29 and !global.spayer_spawned {
       -- intro dialogue manager
       alarm_set(0, 1)
@@ -42,12 +43,14 @@ match room_get() {
   case rm_boss_test {
     -- dialogue manager
     instance_create_depth(0,0, 0, omod_instance)
-    -- block entrance into tutorial area (it's unbeatable)
-    let foreground_tiles = layer_tilemap_get_id("Tiles_1")
-    tilemap_set(foreground_tiles, 8, 0, 9)
-    tilemap_set(foreground_tiles, 8, 0, 10)
-    tilemap_set(foreground_tiles, 8, 0, 11)
-    tilemap_set(foreground_tiles, 8, 0, 12)
+    if !global.rmml.__mod_controllers.archipelago {
+      -- block entrance into tutorial area (it's unbeatable)
+      let foreground_tiles = layer_tilemap_get_id("Tiles_1")
+      tilemap_set(foreground_tiles, 8, 0, 9)
+      tilemap_set(foreground_tiles, 8, 0, 10)
+      tilemap_set(foreground_tiles, 8, 0, 11)
+      tilemap_set(foreground_tiles, 8, 0, 12)
+    }
   }
   -- elfhame bell room
   case rm_underhang_tunnel_start {
@@ -77,25 +80,27 @@ with odialogue_box {
   instance_destroy(self)
 }
 -- custom intro dialogue
-global.__gimmick_dialogue([
-  [sface_orb, 0, "Hey, wake up!"],
-  [sface_player, 0, "Ugh.. my.. wait a minute.."],
-  [sface_climb, 7, "[wave]Hey guys :3[/wave]"],
-  [sface_player, 4, ".[delay].[delay].[delay]"],
-  [sface_player, 13, "Who are you? And why are you in my head?"],
-  [sface_climb, 5, "I thought you might want a [wave]challenge![/wave]"],
-  [sface_climb, 6, "Most of your weapons are lame, so I replaced them with something more [wave]fun![/wave]"],
-  [sface_player, 4, ".[delay].[delay].[delay]"],
-  [sface_player, 29, "Why?"],
-  [sface_climb, 8, "[shake]Because I can.[/shake]"],
-  [sface_climb, 3, "I also told Bonnie to give you something more [wave]fun![/wave] It'll get more [shake]powerful[/shake] as you collect upgrades, too!"],
-  [sface_player, 4, ".[delay].[delay].[delay]"],
-  [sface_player, 26, "If you're trying to stop me, it won't work."],
-  [sface_climb, 7, "Good luck with your plans! [wave]Everything is possible![/wave]"],
-  [sface_orb, 0, ".[delay].[delay].[delay]"],
-  [sface_orb, 1, "Are you even [shake]LISTENING[/shake] to me? And [shake]who[/shake] were you talking to?"],
-  [sface_player, 12, "Shut up. I know where I'm going."],
-]).back_dark = 1
+if !(global.rmml.__mod_controllers.archipelago and global.speedrun_mode_) {
+  global.__gimmick_dialogue([
+    [sface_orb, 0, "Hey, wake up!"],
+    [sface_player, 0, "Ugh.. my.. wait a minute.."],
+    [sface_climb, 7, "[wave]Hey guys :3[/wave]"],
+    [sface_player, 4, ".[delay].[delay].[delay]"],
+    [sface_player, 13, "Who are you? And why are you in my head?"],
+    [sface_climb, 5, "I thought you might want a [wave]challenge![/wave]"],
+    [sface_climb, 6, "Most of your weapons are lame, so I replaced them with something more [wave]fun![/wave]"],
+    [sface_player, 4, ".[delay].[delay].[delay]"],
+    [sface_player, 29, "Why?"],
+    [sface_climb, 8, "[shake]Because I can.[/shake]"],
+    [sface_climb, 3, "I also told Bonnie to give you something more [wave]fun![/wave] It'll get more [shake]powerful[/shake] as you collect upgrades, too!"],
+    [sface_player, 4, ".[delay].[delay].[delay]"],
+    [sface_player, 26, "If you're trying to stop me, it won't work."],
+    [sface_climb, 7, "Good luck with your plans! [wave]Everything is possible![/wave]"],
+    [sface_orb, 0, ".[delay].[delay].[delay]"],
+    [sface_orb, 1, "Are you even [shake]LISTENING[/shake] to me? And [shake]who[/shake] were you talking to?"],
+    [sface_player, 12, "Shut up. I know where I'm going."],
+  ]).back_dark = 1
+}
 ```
 
 ## draw_begin
@@ -187,17 +192,46 @@ with oplayer {
   -- OR if ledge grabbing (5)
   -- OR colliding with an active (0) hook refresher
   if gr or self.__gimmick_cd == undefined or self.state == 5 or global.__gimmick_check_refresh() {
-    self.__gimmick_jumps =
-      -- ... if the hook is unlocked
-      global.HOOK_UNLOCKED_
-      -- ... if retraction grapple is unlocked
-      + global.HOOK_UPGRADE_0_
-      -- ... if shotgun is unlocked
-      + global.weapon_data[1].found
-      -- ... if rocket launcher is unlocked
-      + global.weapon_data[4].found
-    -- infinite jumps if infinite upgrade
-    if self.endless_hook { self.__gimmick_jumps = infinity }
+    if global.rmml.__mod_controllers.archipelago {
+      let arch = global.archipelago
+      self.__gimmick_jumps =
+        -- ... if hook is unlocked
+        array_contains(arch.save.receivedItems, "Grappling_Hook")
+        + arch.grappleUpgradeEnabled
+        + array_contains(arch.save.receivedItems, "Shotgun")
+        + array_contains(arch.save.receivedItems, "Rocket_Launcher")
+      -- infinite grapple
+      if self.__gimmick_jumps == 4 and arch.infiniteGrappleEnabled {
+        self.__gimmick_jumps = infinity
+      }
+    } else {
+      -- infinite jumps if infinite upgrade
+      if self.endless_hook {
+        self.__gimmick_jumps = infinity
+      } else {
+        self.__gimmick_jumps =
+          -- ... if the hook is unlocked
+          global.HOOK_UNLOCKED_
+          -- ... if retraction grapple is unlocked
+          + global.HOOK_UPGRADE_0_
+          -- ... if shotgun is unlocked
+          + global.weapon_data[1].found
+          -- ... if rocket launcher is unlocked
+          + global.weapon_data[4].found
+      }
+    }
+
+    -- archipelago
+    if self.endless_hook {
+      if global.rmml.__mod_controllers.archipelago {
+        -- archipelago requires all 4 jumps
+        if self.__gimmick_jumps == 4 {
+          self.__gimmick_jumps = infinity
+        }
+      } else {
+        self.__gimmick_jumps = infinity
+      }
+    }
     -- reset cooldown
     self.__gimmick_cd = 0
     return
@@ -285,6 +319,15 @@ with oplayer {
 ```
 
 # instance
+
+## create
+
+```sp
+-- disable dialogue when using archipelago on speedrun mode
+if global.rmml.__mod_controllers.archipelago and global.speedrun_mode_ {
+  instance_destroy(self)
+}
+```
 
 ## draw
 
