@@ -1,10 +1,72 @@
+-- MARK: Debugging
+if global.rm_mp.enable_debugging {
+  let peers = global.rm_mp.peer_instances
+  ---
+  --- general info
+  ---
+  let ids = variable_struct_get_names(peers)
+  let i = array_length(ids) - 1
+  while i >= 0 {
+    let inst = peers[ids[i]]
+    if instance_exists(inst) {
+      draw_text(0, i*12, string(inst.name) + "::name")
+    } else {
+      draw_text(0, i*12, ids[i])
+    }
+    i -= 1
+  }
+  ---
+  --- render peer information
+  ---
+  let my_id = global.steam_get_user_steam_id()
+  i = global.steam_lobby_get_member_count() - 1
+  while i >= 0 {
+    let user_id = global.steam_lobby_get_member_id(i)
+    if user_id == my_id {
+      draw_text(200, i*12, string([
+        "SELF",
+        global.rm_mp.frames,
+        global.rm_mp.player_last_character,
+        global.rm_mp.player_fell,
+        room_get(),
+      ]))
+    } else {
+      let inst = peers[user_id]
+      if instance_exists(inst) {
+        draw_text(200, i*12, string([
+          inst.since_last_packet,
+          inst.time_to_lerp,
+          inst.room,
+          inst.character,
+          inst.name,
+        ]))
+      } else {
+        draw_text(200, i*12, string(["???", user_id]))
+      }
+    }
+    i -= 1
+  }
+  ---
+  --- dump debug queue
+  ---
+  let clone = ds_queue_create()
+  ds_queue_copy(clone, global.rm_mp.debug_message_queue)
+  i = ds_queue_size(clone)
+  while i > 0 {
+    let msg = ds_queue_dequeue(clone)
+    draw_text(0, 250 - i*12, msg)
+    i -= 1
+  }
+  ds_queue_destroy(clone)
+}
+
 -- MARK: Map
 if global.rm_mp.show_players_on_map and global.map_data_ != undefined {
   let game = instance_find(ogame)
   -- if the map is open
   if game and game.draw_map and global.map_ui_state == 0 {
     let num_rooms = array_length(global.map_data_)
-    let all = global.rm_mp.player_peers
+    let all = global.rm_mp.peer_instances
     let user_ids = variable_struct_get_names(all)
     let i = array_length(user_ids) - 1
     while i >= 0 {

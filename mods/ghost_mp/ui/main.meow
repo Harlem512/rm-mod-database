@@ -9,7 +9,17 @@ let lobby = global.steam_lobby_get_lobby_id()
 -- MARK: Main Menu
 if menu.state == 14 {
   let col = draw_get_color()
+  draw_set_color(c_red)
+
+  if !global.steam_initialised() {
+    global.component.label(0,0,200,22, "ERROR: Steam is not initialized")
+  }
+  if !global.steam_is_user_logged_on() {
+    global.component.label(0,24,200,22, "ERROR: Steam not logged on")
+  }
+
   draw_set_color(c_black)
+
   if global.component.button(
     418, 26, 22, 24, undefined, "Ghost Multiplayer"
   ) {
@@ -48,10 +58,6 @@ if menu.state == -514 {
 let col = draw_get_color()
 draw_set_color(c_black)
 
--- version
-draw_sprite_stretched(sui_9slice, 0, 376, 226, 66, 22)
-draw_text(382, 232, "MP " + string(global.rm_mp.version))
-
 -- back button
 if global.component.button(
   418, 2, 22, 22,
@@ -70,7 +76,7 @@ if lobby {
 
   let my_id = global.steam_get_user_steam_id()
   let i = count - 1
-  let all = global.rm_mp.player_peers
+  let all = global.rm_mp.peer_instances
   while i >= 0 {
     let user_id = global.steam_lobby_get_member_id(i)
     let inst = all[user_id]
@@ -107,6 +113,13 @@ if global.component.button(
   "Emote: " + global.rm_mp.key_get_name(global.rm_mp.emote_button)
 ) {
   menu.state = -514
+}
+
+-- version
+if global.component.button(
+  376, 226, 66, 22, "MP " + string(global.rm_mp.version)
+) {
+  global.rm_mp.toggle_setting("enable_debugging")
 }
 
 -- y = i*24 + 2
@@ -154,6 +167,20 @@ if global.component.button(
   "If ghost players should be hookable."
 ) {
   global.rm_mp.toggle_setting("enable_grapple_players")
+}
+y += 24
+
+if global.component.button(
+  2, y, 84, 22,
+  if global.rm_mp.steam_packet_type { "Safe Packets" } else { "Fast Packets"},
+  "If you have connection issues, switch every player to safe packets."
+) {
+  let setting = "steam_packet_type"
+  let enable = !global.rm_mp[setting] * 2
+  global.rm_mp[setting] = enable
+  ini_open("mods/rmml/ghost_mp/config.ini")
+  ini_write_real("ghost_mp", setting, enable)
+  ini_close()
 }
 y += 24
 

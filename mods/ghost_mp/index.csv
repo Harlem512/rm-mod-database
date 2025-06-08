@@ -1,6 +1,8 @@
-,,steamworks.meow
+,,startup.meow
 controller,create,init.meow
-controller,step,plr/manager.meow
+controller,alarm_0,steamworks.meow
+controller,step_end,plr/receive.meow
+controller,draw_gui,plr/broadcast.meow
 controller,draw,ui/emote_self.meow
 controller,draw_end,ui/main.meow
 controller,draw_gui_end,ui/emote.meow

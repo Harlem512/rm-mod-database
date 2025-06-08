@@ -1,0 +1,75 @@
+if global.steam_lobby_get_lobby_id() == 0 { return }
+
+-- MARK: Character
+-- get the current character
+let character = if global.maya_mode { 1 } else if global.ameli_mode_ { 2 } else { 0 }
+-- character has changed, broadcast
+if character != global.rm_mp.player_last_character {
+  global.rm_mp.log(">> plr pal", character)
+  -- update character
+  global.rm_mp.player_last_character = character
+  -- build character palette
+  global.rm_mp.build_character_packet()
+  -- send to all peers
+  global.rm_mp.broadcast(450)
+}
+
+-- respawn check
+if global.gamestate == 24 or global.gamestate == 29 {
+  global.rm_mp.player_fell = true
+}
+
+-- handle frame counter
+global.rm_mp.frames += 1
+-- don't spam requests and don't send when in a respawning state
+if global.rm_mp.frames < 10 and global.gamestate != 24 and global.gamestate != 29 {
+  return
+}
+
+-- MARK: Position
+with oplayer {
+  -- reset frame counter
+  global.rm_mp.frames = 0
+
+  let is_hugging = global.rm_mp.sprites_wallhug_check[self.sprite_index] != undefined
+  let net_buffer = global.rm_mp.net_buffer
+
+  buffer_seek(net_buffer, buffer_seek_start, 0)
+  buffer_write(net_buffer, buffer_u8, 0x01)
+  buffer_write(net_buffer, buffer_u16, room_get())
+  buffer_write(net_buffer, buffer_s16, round(self.x))
+  buffer_write(net_buffer, buffer_s16, round(self.y))
+  buffer_write(net_buffer, buffer_f16,
+    clamp(
+      (self.aim_dir + 90) * self.draw_xscale * 2 / 3 + 120,
+      0, 240
+    )
+  )
+  -- hook position
+  let hook = instance_find(ohook)
+  if hook {
+    buffer_write(net_buffer, buffer_s16, floor(hook.x))
+    buffer_write(net_buffer, buffer_s16, floor(hook.y))
+  } else {
+    buffer_write(net_buffer, buffer_s16, -255)
+    buffer_write(net_buffer, buffer_s16, -255)
+  }
+
+  -- emote
+  buffer_write(net_buffer, buffer_u8, global.rm_mp.emote_packet + 1)
+  global.rm_mp.emote_packet = -1
+
+  let data = if self.crouching { 2 }
+      else if !is_hugging { 0 }
+      else if self.draw_xscale > 0 { 3 }
+      else { 1 }
+  data = data
+    | (global.rm_mp.player_fell << 2)
+    -- check if ameli is flying
+    | ((self.state == 14) << 3)
+    | (global.current_weapon_ << 5)
+  buffer_write(net_buffer, buffer_u8, data)
+
+  global.rm_mp.broadcast(15)
+  global.rm_mp.player_fell = false
+}

@@ -1,22 +1,32 @@
+-- MARK: RESET
 global.rm_mp._global_cb_recycle()
 global.rm_mp.frames = 0
 -- render after rmmm
 self.depth = -1
 self.selected_emote = -1
 -- reset instances
-global.rm_mp.player_peers = {}
+global.rm_mp.peer_instances = {}
 
--- if in a lobby, broadcast that we're back on the main menu
-if global.steam_lobby_get_lobby_id() != 0 {
-  let net_buffer = global.rm_mp.net_buffer
-  buffer_seek(net_buffer, buffer_seek_start, 0)
-  buffer_write(net_buffer, buffer_u8, 0x01)
-  buffer_write(net_buffer, buffer_u16, room_get())
-  global.rm_mp.broadcast(3)
+if global.rm_mp.delayed_init {
+  -- ensure p2p is accepted
+  global.steam_net_set_auto_accept_p2p_sessions(true)
+  -- if in a lobby, broadcast that we're back on the main menu
+  if global.steam_lobby_get_lobby_id() != 0 {
+    global.rm_mp.log(">> menu")
+    let net_buffer = global.rm_mp.net_buffer
+    buffer_seek(net_buffer, buffer_seek_start, 0)
+    buffer_write(net_buffer, buffer_u8, 0x01)
+    buffer_write(net_buffer, buffer_u16, room_get())
+    global.rm_mp.broadcast(3)
+  }
+  -- init check
+  return
 }
 
--- run delayed init
-if global.rm_mp.delayed_init { return }
+-- MARK: Init Stage 2
+global.rm_mp.delayed_init = true
+-- set up steam api
+alarm_set(0, 1)
 
 if global.rmml.__mod_controllers.palette_editor {
   -- if palette editor is installed and ameli palette is installed,

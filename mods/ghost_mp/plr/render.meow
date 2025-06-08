@@ -1,3 +1,18 @@
+if global.rm_mp.enable_debugging and self.last_x != undefined {
+  let aim_radians = (self.aim_dir - 120) / 120 * 3.14159
+  let aim_x = sin(aim_radians) * 10
+  let aim_y = cos(aim_radians) * 10
+  draw_rectangle(self.last_x - 8, self.last_y - 8, self.last_x + 8, self.last_y + 8, true)
+  draw_rectangle(self.x - 2, self.y - 2, self.x + 2, self.y + 2, true)
+  draw_rectangle(self.next_x - 4, self.next_y - 4, self.next_x + 4, self.next_y + 4, true)
+
+  draw_line(self.x, self.y, self.x + aim_x, self.y + aim_y)
+
+  if self.hook_x != -255 {
+    draw_line(self.x, self.y, self.hook_x, self.hook_y)
+  }
+}
+
 -- skip rendering if rooms don't match
 if room_get() != self.room { return }
 
@@ -498,21 +513,6 @@ while true {
         arm_x, arm_y,
         draw_xscale, 1, arm_angle, c_white, 1
       )
-    }
-    -- MARK: ===DEBUG===
-    case -1 {
-      let aim_radians = (self.aim_dir - 120) / 120 * 3.14159
-      let aim_x = sin(aim_radians) * 10
-      let aim_y = cos(aim_radians) * 10
-      draw_rectangle(self.last_x - 8, self.last_y - 8, self.last_x + 8, self.last_y + 8, true)
-      draw_rectangle(self.x - 2, self.y - 2, self.x + 2, self.y + 2, true)
-      draw_rectangle(self.next_x - 4, self.next_y - 4, self.next_x + 4, self.next_y + 4, true)
-
-      draw_line(self.x, self.y, self.x + aim_x, self.y + aim_y)
-
-      if self.hook_x != -255 {
-        draw_line(self.x, self.y, self.hook_x, self.hook_y)
-      }
     }
   }
   break
