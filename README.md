@@ -10,15 +10,31 @@ You can check out my [modding documentation](https://harlem512.github.io/rm-docs
 
 Here's all the (publicly) included mods and their authors. If an author isn't shown, I (Harlem512) made it.
 
+- [Archipelago Client](#archipelago-client-mrl)
+- [Palette Editor](#palette-editor-snowill)
+- [Maya and Ameli Palette](#maya-and-ameli-palette)
+- [Ghost Multiplayer](#ghost-multiplayer)
+- [Checklist](#checklist)
+- [Gimmick](#gimmick)
+- [Grapple Preview](#grapple-preview)
+- [Minify!](#minify)
+- [Minimap](#minimap)
+- [Pursuit](#pursuit)
+- [Speedrun Timer Control](#speedrun-timer-control)
+
 # Archipelago Client (MrL)
 
 ![Archipelago Downloads](https://img.shields.io/github/downloads/dgrossmann144/RustedMossArchipelagoClient/total?color=blue)
+
+![Archipelago](assets/archipelago.png)
 
 The Archipelago Client for use with the [Archipelago randomizer](https://archipelago.gg/). View setup/usage information at [MrL's repo](https://github.com/dgrossmann144/RustedMossArchipelagoClient).
 
 # Palette Editor (Snowill)
 
 ![Palette Editor Downloads](https://img.shields.io/github/downloads/Iciclis/RustedMoss-PaletteEditor/total?color=blue)
+
+![Palette Editor](assets/palette_editor.png)
 
 In-game editor for character palettes. Supports Maya and Ameli Palette (installed separately). More information available at [Snowill's repo](https://github.com/Iciclis/RustedMoss-PaletteEditor).
 
@@ -44,6 +60,24 @@ Multiplayer for Rusted Moss! Lets you see (but not interact with) your friends. 
 
 To use, download the mod, then press the Fern icon on the main menu to open the multiplayer menu. From there, create a lobby and invite your friends. Settings are also available in the menu.
 
+# Checklist
+
+![Checklist](assets/checklist.png)
+
+Adds icons to the map for each pickup you haven't collected. Works with Minimap and Archipelago!
+
+# Gimmick
+
+![Gimmick](assets/gimmick.png)
+
+Aprils Fools joke mod for 2025. Replaces (most) movement upgrades with additional mid-air jumps and forces the player to use the bolt caster.
+
+# Grapple Preview
+
+![Grapple Preview](assets/grapple_preview.png)
+
+Adds an option on the Grapple Settings menu to always see the (approximate) range of the grapple.
+
 # Minify!
 
 ![Minify](assets/minify.png)
@@ -51,6 +85,8 @@ To use, download the mod, then press the Fern icon on the main menu to open the 
 Makes Fern 50% smaller and 30% faster. Applies to _all_ Fern saves, yes all of them.
 
 # Minimap
+
+![Minimap](assets/minimap.png)
 
 Adds a minimap to the bottom-left of the screen.
 
@@ -66,18 +102,8 @@ Makes all NPCs grapple-able by the player.
 
 Rusted Moss but there's a _cool guy_ chasing you the whole time. **_RUN_**.
 
-# Checklist
-
-![Checklist](assets/checklist.png)
-
-Adds icons to the map for each pickup you haven't collected. Works with Minimap and Archipelago!
-
-# Gimmick
-
-![Gimmick](assets/gimmick.png)
-
-Aprils Fools joke mod for 2025. Replaces (most) movement upgrades with additional mid-air jumps and forces the player to use the bolt caster.
-
 # Speedrun Timer Control
+
+![Speedrun Timer](assets/speedrun_timer.png)
 
 Lets you turn the speedrun timer on for normal mode and disable the timer when playing Fern speedrun mode using an icon on the pause menu.

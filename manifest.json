@@ -62,6 +62,15 @@
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/gimmick/gimmick.md"
   },
+  "grapple_preview": {
+    "name": "grapple_preview",
+    "display": "Grapple Preview",
+    "description": "Adds an option on the Grapple Settings menu to always see the (approximate) range of the grapple.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "zip",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/grapple-preview-1.0/grapple_preview.zip"
+  },
   "maya_palette": {
     "name": "maya_palette",
     "display": "Maya Palette",
