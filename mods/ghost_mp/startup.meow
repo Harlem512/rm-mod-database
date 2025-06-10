@@ -509,8 +509,6 @@ global.rm_mp = {
   palette_uv_uniform: shader_get_uniform(shd_palette, "palette_uvs"),
   -- maximum number of players allowed in the lobby
   lobby_max_players,
-  -- manual lobby id to join on
-  lobby_join_id,
   -- delay between netcode frames
   frame_delay,
   -- toggles a setting
