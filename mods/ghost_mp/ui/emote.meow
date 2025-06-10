@@ -9,7 +9,7 @@ if global.rm_mp.enable_debugging {
   while i >= 0 {
     let inst = peers[ids[i]]
     if instance_exists(inst) {
-      draw_text(0, i*12, string(inst.name) + "::name")
+      draw_text(0, i*12, string(inst.name))
     } else {
       draw_text(0, i*12, ids[i])
     }
@@ -41,7 +41,7 @@ if global.rm_mp.enable_debugging {
           inst.name,
         ]))
       } else {
-        draw_text(200, i*12, string(["???", user_id]))
+        draw_text(200, i*12, string(["no inst for", user_id]))
       }
     }
     i -= 1

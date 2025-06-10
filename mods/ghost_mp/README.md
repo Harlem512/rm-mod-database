@@ -6,14 +6,21 @@ Technical details of how ghost multiplayer works.
 
 The following steps occur every frame, in order.
 
-1. STEP_BEGIN Sync peers
+1. STEP_END Sync peers
    - For each player in lobby, create an instance to track that player
    - Delete any instances for players not in the lobby
-1. STEP_BEGIN Receive packets
-1. STEP Simulate player movement
+1. STEP_END Receive packets
+   - This needs to run after `step` so `osteam_handler` can run the steam sync
+1. DRAW_BEGIN Simulate player movement
+   - Runs after receiving packets, so the draw doesn't crash
 1. DRAW Render ghost players
+   - Render the ghost
+   - Runs in draw so it renders before tiles
 1. DRAW_GUI Broadcast the player's position
+   - (also broadcasts other info)
+   - runs late so player updates are sent immediately
 1. DRAW_GUI_END UI rendering
+   - emotes, map icons, debug info, etc
 
 # Packets
 

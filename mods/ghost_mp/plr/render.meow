@@ -1,4 +1,7 @@
-if global.rm_mp.enable_debugging and self.last_x != undefined {
+-- skip all rendering if lerping hasn't run
+if self.last_x == undefined { return }
+
+if global.rm_mp.enable_debugging {
   let aim_radians = (self.aim_dir - 120) / 120 * 3.14159
   let aim_x = sin(aim_radians) * 10
   let aim_y = cos(aim_radians) * 10

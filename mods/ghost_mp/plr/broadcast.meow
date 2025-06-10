@@ -22,7 +22,7 @@ if global.gamestate == 24 or global.gamestate == 29 {
 -- handle frame counter
 global.rm_mp.frames += 1
 -- don't spam requests and don't send when in a respawning state
-if global.rm_mp.frames < 10 and global.gamestate != 24 and global.gamestate != 29 {
+if global.rm_mp.frames < global.rm_mp.frame_delay and global.gamestate != 24 and global.gamestate != 29 {
   return
 }
 

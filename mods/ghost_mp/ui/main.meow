@@ -70,6 +70,10 @@ draw_sprite_ext(
 )
 
 if lobby {
+  global.component.label(
+    88, 2, 328, 22, "Lobby ID: " + string(lobby)
+  )
+
   let count = global.steam_lobby_get_member_count()
 
   draw_sprite_stretched(sui_9slice, 0, 88, 26, 328, count * 12 + 11)
@@ -98,21 +102,30 @@ if lobby {
   }
 }
 
+-- create/join lobby
 if global.component.button(
   2, 226, 96, 22, if lobby { "Invite Friends" } else { " Create Lobby" }
 ) {
   if lobby {
     global.steam_lobby_activate_invite_overlay()
   } else {
-    global.steam_lobby_create(1, 50)
+    global.steam_lobby_create(1, global.rm_mp.lobby_max_players)
   }
 }
 
+-- emote
 if global.component.button(
   100, 226, 96, 22,
   "Emote: " + global.rm_mp.key_get_name(global.rm_mp.emote_button)
 ) {
   menu.state = -514
+}
+
+-- leave lobby
+if lobby and global.component.button(
+  294, 226, 80, 22, "Leave Lobby"
+) {
+  global.steam_lobby_leave()
 }
 
 -- version

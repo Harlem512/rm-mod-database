@@ -6,7 +6,7 @@ controller,draw_gui,plr/broadcast.meow
 controller,draw,ui/emote_self.meow
 controller,draw_end,ui/main.meow
 controller,draw_gui_end,ui/emote.meow
-instance,step,plr/simulation.meow
+instance,draw_begin,plr/simulation.meow
 instance,draw,plr/render.meow
 instance,room_start,plr/room_start.meow
 instance,draw_end,plr/ui.meow

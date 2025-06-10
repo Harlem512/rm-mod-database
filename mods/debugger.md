@@ -59,15 +59,18 @@ global.time = {
 
 global.dump = {
   ds_map: fun (map) {
-    let keys = ds_map_keys_to_array(map)
     let str = string(map) + ": ds_map = {\n"
+    if !ds_exists(map, ds_type_map) { return "dne" }
+    let keys = ds_map_keys_to_array(map)
+    if array_length(keys) == undefined { return "no keys" }
     let i = array_length(keys) - 1
     while i >= 0 {
       let val = ds_map_find_value(map, keys[i])
       str += string(keys[i]) + ":" + string(val) + "\n"
       i -= 1
     }
-    global.rmml.log(str + "}")
+    -- global.rmml.log(str + "}")
+    return str + "}"
   },
   buffer: fun (buffer) {
     let size = buffer_get_size(buffer)

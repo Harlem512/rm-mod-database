@@ -10,6 +10,8 @@ let enable_grapple_players = ini_read_real("ghost_mp", "enable_grapple_players",
 let enable_logging = ini_read_real("ghost_mp", "enable_logging", 1)
 let enable_debugging = ini_read_real("ghost_mp", "enable_debugging", 1)
 let steam_packet_type = ini_read_real("ghost_mp", "steam_packet_type", 0)
+let lobby_max_players = ini_read_real("advanced", "lobby_max_players", 50)
+let frame_delay = ini_read_real("advanced", "frame_delay", 10)
 ini_close()
 
 -- MARK: ==MP Struct==
@@ -17,7 +19,7 @@ global.rm_mp = {
   -- this is the main mp handler
   -- contains most helpers and persistent data
 
-  version: 1.4,
+  version: 1.5,
   
   -- MARK: EMOTES
   -- button to open the emote wheel
@@ -263,36 +265,38 @@ global.rm_mp = {
     let packet_type = buffer_peek(global.rm_mp.net_buffer, 0, buffer_u8)
     global.rm_mp.log(["WAR: received unknown packet type", packet_type])
   },
-  -- these next two are responsible for handling coming steam async events
+  -- this is responsible for handling coming steam async events
   -- `osteam_handler` intercepts these events, but doesn't do anything to them
   -- so this code lets us hook into it for evil purposes (joining lobbies)
-  -- internal callback handler
-  _global_cb_recycle: fun () {
-    global.rm_mp.then(undefined, global.rm_mp._global_cb)
-  },
-  -- callback handler
-  _global_cb: fun (raw) {
+  -- to properly use this, this function needs to be loaded into the callback
+  -- map every frame, which is done in the `plr/receive.meow` file
+  callback_handler: fun (raw) {
     let response = raw.data
     match response.event_type {
       case "lobby_join_requested" {
         let success = global.steam_lobby_join_id(response.lobby_id)
         if !success {
-          global.rm_mp.log("ERR: lobby join request")
+          global.rm_mp.log("ERR: lobby_join_requested", response)
+        } else {
+          global.rm_mp.log(["Accepted join request", response])
         }
+      }
+      case "lobby_joined" {
+        if response.success {
+          global.rm_mp.log("ERR: lobby_joined", response)
+        }
+        global.rm_mp.log(["Joined lobby", response.lobby_id])
       }
       case "lobby_created" {
-        if !response.success {
-          global.rm_mp.log("ERR: Unable to make lobby", response.result)
-        }
+        global.rm_mp.log(["Lobby created", response])
       }
       case "lobby_chat_update" {
-        global.rm_mp.log(["Lobby chat update", response.change_flags, response.user_id])
+        global.rm_mp.log(["Lobby chat update", response.change_flags, response.user_id, response])
       }
       else {
         global.rm_mp.log(["WAR: Unhandled callback", response.event_type, response])
       }
     }
-    global.rm_mp._global_cb_recycle()
   },
 
   -- MARK: PEERS
@@ -503,6 +507,12 @@ global.rm_mp = {
   delayed_init: false,
   -- uniform for palette uv
   palette_uv_uniform: shader_get_uniform(shd_palette, "palette_uvs"),
+  -- maximum number of players allowed in the lobby
+  lobby_max_players,
+  -- manual lobby id to join on
+  lobby_join_id,
+  -- delay between netcode frames
+  frame_delay,
   -- toggles a setting
   toggle_setting: fun (setting) {
     let enable = !global.rm_mp[setting]

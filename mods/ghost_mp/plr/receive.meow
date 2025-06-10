@@ -1,3 +1,6 @@
+-- recycle the steam handler
+global.rm_mp.then(undefined, global.rm_mp.callback_handler)
+
 if global.steam_lobby_get_lobby_id() == 0 { return }
 let net_buffer = global.rm_mp.net_buffer
 

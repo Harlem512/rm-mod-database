@@ -1,5 +1,4 @@
 -- MARK: RESET
-global.rm_mp._global_cb_recycle()
 global.rm_mp.frames = 0
 -- render after rmmm
 self.depth = -1
