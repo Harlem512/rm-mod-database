@@ -112,7 +112,7 @@ global.dump = {
       --   tilemap_get_tileset(tilemap_id),
       --   tilemap_get_width(tilemap_id), tilemap_get_height(tilemap_id),
       -- ])
-      let dump = global.dump_tilemap(layers[i])
+      let dump = global.dump.tilemap(layers[i])
       -- global.rmml.log(dump)
 
       global.rmml.log(
@@ -128,13 +128,13 @@ global.dump = {
         + ", "
         + string(tilemap_get_height(tilemap_id))
         + ", "
-        + string(global.dump_tilemap(layers[i]))
+        + string(global.dump.tilemap(layers[i]))
         + ")"
       )
       i += 1
     }
   },
-  dump_camera: fun (camera_id) {
+  camera: fun (camera_id) {
     global.rmml.log({
       view_x: camera_get_view_x(camera_id),
       view_y: camera_get_view_y(camera_id),
