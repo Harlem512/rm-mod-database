@@ -42,7 +42,7 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/cc_shark.md"
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/demo/cc_shark.md"
   },
   "checklist.md": {
     "name": "checklist.md",
@@ -106,6 +106,15 @@
     "version": 1.1,
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/minimap.md"
+  },
+  "more_saves.md": {
+    "name": "more_saves.md",
+    "display": "More Saves",
+    "description": "Adds 43 additional save slots.",
+    "author": "Harlem512",
+    "version": 1,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/more_saves/more_saves.md"
   },
   "palette_editor": {
     "name": "palette_editor",

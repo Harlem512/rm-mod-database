@@ -19,6 +19,7 @@ Here's all the (publicly) included mods and their authors. If an author isn't sh
 - [Grapple Preview](#grapple-preview)
 - [Minify!](#minify)
 - [Minimap](#minimap)
+- [More Saves](#more-saves)
 - [Pursuit](#pursuit)
 - [Speedrun Timer Control](#speedrun-timer-control)
 
@@ -89,6 +90,12 @@ Makes Fern 50% smaller and 30% faster. Applies to _all_ Fern saves, yes all of t
 ![Minimap](assets/minimap.png)
 
 Adds a minimap to the bottom-left of the screen.
+
+# More Saves
+
+![More Saves](assets/more_saves.png)
+
+Adds 43 additional save slots.
 
 # Puntable
 
