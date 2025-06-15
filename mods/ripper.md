@@ -42,14 +42,19 @@ while i < global.ripper.max {
     case 2 {
       name = object_get_name(global.ripper.saved_index)
       exists = object_exists(global.ripper.saved_index)
+      next = "audio"
+    }
+    case 4 {
+      name = audio_get_name(global.ripper.saved_index)
+      exists = audio_exists(global.ripper.saved_index)
       next = "script"
     }
-    case 3 {
+    case 5 {
       name = script_get_name(global.ripper.saved_index)
       exists = is_string(name) and name != "<unknown>"
       next = "END"
     }
-    case 4 {
+    case 6 {
       file_text_close(log)
       global.rmml.throw("done")
     }

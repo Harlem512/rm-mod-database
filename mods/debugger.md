@@ -142,7 +142,44 @@ global.dump = {
       view_height: camera_get_view_height(camera_id),
       camera_get_view_target: camera_get_view_target(camera_id),
     })
+  },
+  struct: fun (struct, names_only) {
+    let s = ""
+    let names = struct_get_names(struct)
+    array_sort(names, true)
+    let len = array_length(names)
+    let i = 0
+    let log = file_text_open_append(global.rmml.log_name)
+    while i < len {
+      let k = names[i]
+      if names_only {
+        file_text_write_string(log, string(k) + ": " + typeof(struct[k]) + "\n")
+      } else if string_starts_with(k, "__catspeak") {
+        file_text_write_string(log, string(k) + ": [[ catspeak internal ]]\n")
+      } else if string_starts_with(k, "gml_") {
+        file_text_write_string(log, string(k) + ": [[ gamemaker live internal ]]\n")
+      } else if string_starts_with(k, "__scribble") {
+        file_text_write_string(log, string(k) + ": [[ scribble internal ]]\n")
+      } else if k == "rmml" {
+        file_text_write_string(log, string(k) + ": [[ rmml internal ]]\n")
+      } else {
+        file_text_write_string(log, string(k) + ": " + string(struct[k]) + "\n")
+      }
+      i += 1
+    }
+    file_text_close(log)
+    return s
   }
+  instance: fun (inst, names_only) {
+    with inst {
+      global.rmml.log("INSTANCE:\n")
+      global.dump.struct(self, names_only)
+    }
+  },
+  global: fun (names_only) {
+    global.rmml.log("GLOBALS:\n")
+    global.dump.struct(global, names_only)
+  },
 }
 
 global.tilemap_load = fun (tilemap_id, data) {
@@ -183,6 +220,37 @@ global.deb = {
   },
   clear: fun () { global.deb._log = [] },
   should_clear: true,
+  color: c_white,
+}
+
+global.infinite = {
+  event: fun (event_code) {
+    method_get_self(
+      ds_map_find_value(global.mod_map, event_code)
+    ).callTime = infinity
+    method_get_self(
+      global.rmml_map[event_code][global.rmml_current_mod]
+    ).callTime = infinity
+  },
+  fn: fun (function) {
+    method_get_self(function).callTime = infinity
+  },
+  call: fun (function, a,b,c,d,e,f,g,h) {
+    method_get_self(global.infinite.call).callTime = infinity
+    method_get_self(function).callTime = infinity
+    function(a,b,c,d,e,f,g,h)
+  },
+  call_in: fun (event_code, function, a,b,c,d,e,f,g,h) {
+    method_get_self(
+      ds_map_find_value(global.mod_map, event_code)
+    ).callTime = infinity
+    method_get_self(
+      global.rmml_map[event_code][global.rmml_current_mod]
+    ).callTime = infinity
+    method_get_self(global.infinite.call_in).callTime = infinity
+    method_get_self(function).callTime = infinity
+    function(a,b,c,d,e,f,g,h)
+  }
 }
 ```
 
@@ -246,7 +314,7 @@ debugger.debug_add_function("O", "Quickboot", "[c_red]", fun (a0, a1) {
 })
 debugger.debug_add_function("P", "_Reset Dev", "[c_red]", fun (a0, a1) {
   if a1 {
-    file_delete(map_get_string(8))
+    file_delete(map_get_string(6))
     global.gamestate = 22
     game_restart()
     global.deb_quickboot = true
@@ -275,12 +343,12 @@ with oroom_transition {
 if global.deb_quickboot {
   with omenu_new {
     self.state = 8
-    global.current_file = 8
+    global.current_file = 6
     self.start_timer = 100
-    global.speedrun_mode_ = 1
-    global.speedrun_timer = 0
+    global.speedrun_mode_ = true
+    global.speedrun_timer_ = false
+    global.deb_quickboot = false
   }
-  global.deb_quickboot = false
 }
 
 if global.debug_draw_hitboxes__ {
@@ -372,6 +440,8 @@ if global.debug_unclamp_cam {
 
 ```sp
 global.time.render()
+let col = draw_get_color()
+draw_set_color(global.deb.color)
 let y = 0
 while y < array_length(global.deb._log) and y < 100 {
   let log = global.deb._log[y]
@@ -384,6 +454,7 @@ while y < array_length(global.deb._log) and y < 100 {
   draw_text(0, y * 10, string(label) + ": " + string(text))
   y += 1
 }
+draw_set_color(col)
 if global.deb.should_clear { global.deb.clear() }
 
 -- gimmick debug options
