@@ -4,9 +4,9 @@
     "display": "Rusted Moss Mod Loader",
     "description": "Invisible middleware that loads mods (It's already installed)",
     "author": "Harlem512",
-    "version": 6.1,
+    "version": 6.2,
     "type": "meow",
-    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1.4/rmml.meow"
+    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1.4b/rmml.meow"
   },
   "rmmm.md": {
     "name": "rmmm.md",
@@ -15,7 +15,7 @@
     "author": "Harlem512",
     "version": 1.4,
     "type": "md",
-    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1.4/rmmm.md"
+    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1.4b/rmmm.md"
   },
   "ameli_palette": {
     "name": "ameli_palette",
