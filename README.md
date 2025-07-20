@@ -14,6 +14,7 @@ Here's all the (publicly) included mods and their authors. If an author isn't sh
 - [Palette Editor](#palette-editor-snowill)
 - [Maya and Ameli Palette](#maya-and-ameli-palette)
 - [Ghost Multiplayer](#ghost-multiplayer)
+- [Bugfix](#bugfix)
 - [Checklist](#checklist)
 - [Gimmick](#gimmick)
 - [Grapple Preview](#grapple-preview)
@@ -60,6 +61,14 @@ Each mod is installed and managed separately, but can be installed together.
 Multiplayer for Rusted Moss! Lets you see (but not interact with) your friends. Also press O (rebindable in the menu) to open the emote wheel.
 
 To use, download the mod, then press the Fern icon on the main menu to open the multiplayer menu. From there, create a lobby and invite your friends. Settings are also available in the menu.
+
+# Bugfix
+
+Fixes a few bugs with Rusted Moss.
+
+- Saws in the Winter DLC invisible for Ameli
+- Voidwretch enemies in the Winter DLC are invisible for Ameli
+- One-shotting Elicia (ie with Ameli #5 combo) causes a crash
 
 # Checklist
 

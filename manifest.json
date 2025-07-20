@@ -35,6 +35,15 @@
     "type": "zip",
     "url": "https://github.com/dgrossmann144/RustedMossArchipelagoClient/releases/download/v1.0.1/RustedMossArchipelagoClient.zip"
   },
+  "bugfix": {
+    "name": "bugfix.md",
+    "display": "Bugfix",
+    "description": "Fixes a few bugs with Rusted Moss.",
+    "author": "Harlem512",
+    "version": 1.0,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/bugfix.md"
+  },
   "checklist.md": {
     "name": "checklist.md",
     "display": "Checklist",
