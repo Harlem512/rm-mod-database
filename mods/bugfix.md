@@ -3,7 +3,7 @@
 ## room_start
 
 ```sp
-if global.ameli_mode_ and global.player_map_x_ > 85 {
+if global.ameli_mode_ and global.player_map_x_ > 109 {
   with obullet_9slice_library {
     let copy = instance_create_depth(self.x, self.y, 25, obullet_9slice_hazard, {
       image_xscale: self.image_xscale,
@@ -21,7 +21,7 @@ if global.ameli_mode_ and global.player_map_x_ > 85 {
 ## draw
 
 ```sp
-if global.ameli_mode_ and global.player_map_x_ > 85 {
+if global.ameli_mode_ and global.player_map_x_ > 109 {
   with oenemy_voidwretch {
     self.depth = 25
   }
