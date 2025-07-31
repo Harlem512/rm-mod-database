@@ -66,9 +66,9 @@ To use, download the mod, then press the Fern icon on the main menu to open the 
 
 Fixes a few bugs with Rusted Moss.
 
-- Saws in the Winter DLC invisible for Ameli
-- Voidwretch enemies in the Winter DLC are invisible for Ameli
 - One-shotting Elicia (ie with Ameli #5 combo) causes a crash
+- ~~Saws in the Winter DLC invisible for Ameli~~ Fixed in RM 3.95
+- ~~Voidwretch enemies in the Winter DLC are invisible for Ameli~~ Fixed in RM 3.95
 
 # Checklist
 
