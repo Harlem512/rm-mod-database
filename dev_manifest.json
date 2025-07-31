@@ -125,6 +125,15 @@
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/more_saves/more_saves.md"
   },
+  "ms_archipelago.md": {
+    "name": "ms_archipelago.md",
+    "display": "More Saves: Arch Plugin",
+    "description": "Adds archipelago information (slot name, port) to the save slot screen.",
+    "author": "Harlem512",
+    "version": 0,
+    "type": "md",
+    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/more_saves/ms_archipelago.md"
+  },
   "palette_editor": {
     "name": "palette_editor",
     "display": "Palette Editor",
