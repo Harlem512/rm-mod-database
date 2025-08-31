@@ -1,0 +1,7 @@
+,,init.meow
+controller,step,main.meow
+controller,draw_end,draw.meow
+controller,create,do { global.portal_p = []; global.portal_deb = [] }
+instance,create,portal_create.meow
+instance,draw_end,portal.meow
+instance,destroy,portal_die.meow

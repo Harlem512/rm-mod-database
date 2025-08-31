@@ -1,0 +1,50 @@
+self.normal_angle = self.side * 90 - 90
+self.matrix = matrix_build(self.x, self.y, 0, 0, 0, self.normal_angle, 1, 1, 1)
+
+self.tile_offsets = array_create(12, 0)
+self.replaced_tiles = array_create(6, 0)
+
+-- bbox for portal teleport check
+let tl = matrix_transform_vertex(
+  self.matrix,
+  -24, 4, 0,
+)
+let br = matrix_transform_vertex(
+  self.matrix,
+  24, -24, 0,
+)
+let center = matrix_transform_vertex(
+  self.matrix,
+  0, 8, 0
+)
+self.bbox = [
+  min(tl[0], br[0]), min(tl[1], br[1]),
+  max(tl[0], br[0]), max(tl[1], br[1]),
+  center[0], center[1]
+]
+
+let tilemap = layer_tilemap_get_id(layer_get_id("Tiles_1"))
+
+let global_offsets = global.portal.tile_offsets
+let i = 0
+while i < 6 {
+  let x_index = i * 2
+  let y_index = i * 2 + 1
+
+  let transformed = matrix_transform_vertex(
+    self.matrix,
+    global_offsets[x_index],
+    global_offsets[y_index],
+    0,
+  )
+
+  let offset_x = transformed[0]
+  let offset_y = transformed[1]
+  self.tile_offsets[x_index] = offset_x
+  self.tile_offsets[y_index] = offset_y
+
+  self.replaced_tiles[i] = tilemap_get_at_pixel(tilemap, offset_x, offset_y)
+  tilemap_set_at_pixel(tilemap, 0, offset_x, offset_y)
+
+  i += 1
+}

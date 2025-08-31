@@ -1,0 +1,193 @@
+if !keyboard_check_pressed(vk_f1) and !keyboard_check_pressed(vk_f2) { return }
+
+let is_a = keyboard_check_pressed(vk_f1)
+
+let plr = instance_find(oplayer)
+if !instance_exists(plr) { return }
+
+-- player data
+let plr_x = plr.x
+let plr_y = plr.y
+let gun_height = plr.gun_height
+let collide_fn = plr.gen_col
+
+-- raycast
+let drr = point_direction(
+  plr_x, plr_y - gun_height,
+  global.mousex, global.mousey
+)
+let start_x = plr_x + lengthdir_x(16, drr)
+let start_y = plr_y - gun_height + lengthdir_y(16, drr)
+
+global.portal_p = []
+
+let collide_x = start_x
+let collide_y = start_y
+let layer = layer_get_id("Tiles_1")
+
+-- fake object to fool `tplace_meeting_walls_general`
+let fake_obj = {
+  x: start_x,
+  y: start_y,
+  bbox_left: start_x,
+  bbox_right: start_x,
+  bbox_top: start_y,
+  bbox_bottom: start_y,
+  layer_col: layer
+}
+
+let tile_x
+let tile_y
+let dx
+let dy
+let side
+
+with fake_obj {
+  let iterations = 300
+  let has_collided = false
+  while iterations >= 0 {
+    array_push(global.portal_p, [collide_x, collide_y])
+    has_collided = script_execute(collide_fn, collide_x, collide_y)
+    if has_collided { break }
+    collide_x += lengthdir_x(5, drr)
+    collide_y += lengthdir_y(5, drr)
+    iterations -= 1
+  }
+
+  if !has_collided { return }
+
+  let tilemap = layer_tilemap_get_id(layer_get_id("Tiles_1"))
+  tile_x = tilemap_get_cell_x_at_pixel(
+    tilemap,
+    collide_x, collide_y
+  )
+  tile_y = tilemap_get_cell_y_at_pixel(
+    tilemap,
+    collide_x, collide_y
+  )
+
+  if tile_x == -1 or tile_y == -1 { return }
+
+  let tile_center_x = tile_x * 16 + 8
+  let tile_center_y = tile_y * 16 + 8
+
+  -- calculate angle between center of tile and intersection
+  let angle_of_intersect = point_direction(
+    collide_x, collide_y,
+    tile_center_x, tile_center_y
+  )
+
+  -- calculate angle between center of tile and player
+  let angle_of_vision = point_direction(
+    start_x, start_y,
+    tile_center_x, tile_center_y
+  )
+
+  -- clamped angle of intersect, based on view angle
+  -- ensures that only the two sides facing the player can be intersected
+  let clamped_angle_of_intersect = clamp(
+    angle_of_intersect,
+    angle_of_vision - 45,
+    angle_of_vision + 45
+  )
+
+  -- side of the tile that was intersected, according to angle of intersect
+  side = ((clamped_angle_of_intersect + 45) // 90) % 4
+  -- deltas for the selected tile
+  dx = (side % 2) * (2 - side)
+  dy = ((side + 1) % 2) * (side - 1)
+
+  -- check if normal face is in a wall
+  if script_execute(collide_fn, collide_x + dy * 16, collide_y + dx * 16) {
+    let angle = angle_of_vision // 90
+    let side_a = angle % 4
+    let side_b = (angle + 1) % 4
+
+    -- recalculate
+    side = if side == side_a { side_b } else { side_a }
+    dx = (side % 2) * (2 - side)
+    dy = ((side + 1) % 2) * (side - 1)
+
+    -- if normal face is still colliding, ray penetrated twice. usually a corner
+    if script_execute(collide_fn, collide_x + dy * 16, collide_y + dx * 16) {
+      return
+    }
+  }
+
+  let dx16 = dx * 16
+  let dy16 = dy * 16
+  let adjusted = 0
+
+  -- check "left"
+  if
+    !script_execute(collide_fn, collide_x + dx16, collide_y + dy16)
+    or script_execute(collide_fn, collide_x + dx16 + dy16, collide_y + dy16 + dx16)
+    or script_execute(collide_fn, collide_x + dx16 + dy16*2, collide_y + dy16 + dx16*2)
+  {
+    tile_x -= dx
+    tile_y -= dy
+    collide_x -= dx16
+    collide_y -= dy16
+    adjusted += 1
+
+    -- can't move further "left"
+    if
+      !script_execute(collide_fn, collide_x - dx16, collide_y - dy16)
+      or script_execute(collide_fn, collide_x - dx16 + dy16, collide_y - dy16 + dx16)
+      or script_execute(collide_fn, collide_x - dx16 + dy16*2, collide_y - dy16 + dx16*2)
+    {
+      return
+    }
+  }
+
+  -- check "right"
+  if
+    !script_execute(collide_fn, collide_x - dx16, collide_y - dy16)
+    or script_execute(collide_fn, collide_x - dx16 + dy16, collide_y - dy16 + dx16)
+    or script_execute(collide_fn, collide_x - dx16 + dy16*2, collide_y - dy16 + dx16*2)
+  {
+    tile_x += dx
+    tile_y += dy
+    collide_x += dx16
+    collide_y += dy16
+    adjusted += 2
+
+    -- can't move further "right"
+    if !script_execute(collide_fn, collide_x + dx16, collide_y + dy16)
+    or script_execute(collide_fn, collide_x + dx16 + dy16, collide_y + dy16 + dx16)
+    or script_execute(collide_fn, collide_x + dx16 + dy16*2, collide_y + dy16 + dx16*2)
+    {
+      return
+    }
+  }
+
+  -- portal was adjusted left and right (back to center)
+  if adjusted == 3 { return }
+
+  global.portal_x = collide_x
+  global.portal_y = collide_y
+
+  global.portal_tile_1 = [tile_x - dx, tile_y - dy]
+  global.portal_tile_2 = [tile_x, tile_y]
+  global.portal_tile_3 = [tile_x + dx, tile_y + dy]
+  global.portal_tile_4 = [tile_x + dy, tile_y + dx]
+  global.portal_tile_5 = [tile_x + dx + dy, tile_y + dy + dx]
+  global.portal_tile_6 = [tile_x - dx + dy, tile_y - dy + dx]
+
+  global.portal_deb = [angle_of_intersect, angle_of_vision, clamped_angle_of_intersect, if angle_of_intersect != clamped_angle_of_intersect { "CLAMP" } else { 0 }, failed_both, dx, dy]
+}
+
+let portal = instance_create_depth(
+  tile_x * 16 + 8, tile_y * 16 + 8, 0, omod_instance,
+  {
+    dx, dy, is_a, side
+  }
+)
+
+let var = if is_a { "portal_a" } else { "portal_b" }
+
+if instance_exists(global[var]) {
+  instance_destroy(global[var])
+}
+global[var] = portal
+

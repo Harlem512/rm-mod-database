@@ -1,0 +1,73 @@
+let col = draw_get_color()
+draw_set_color(if self.is_a { c_blue } else { c_orange })
+
+let bbox = self.bbox
+draw_rectangle(
+  bbox[0], bbox[1],
+  bbox[2], bbox[3],
+)
+
+let other_portal = if self.is_a { global.portal_b } else { global.portal_a }
+let portal_normal_angle = self.normal_angle
+
+if instance_exists(other_portal) {
+  with oplayer {
+    if point_in_rectangle(
+      self.x, self.y,
+      bbox[0], bbox[1],
+      bbox[2], bbox[3],
+    ) {
+      self.x = other_portal.bbox[4]
+      self.y = other_portal.bbox[5]
+
+      -- convert velocity
+      let velocity = point_distance(0, 0, self.vsp, self.hsp)
+      let velocity_angle = point_direction(0, 0, self.vsp, self.hsp)
+      let diff_angle = angle_difference(velocity_angle, portal_normal_angle)
+      let new_angle = other_portal.normal_angle + diff_angle + 90
+      self.hsp = lengthdir_x(velocity, new_angle)
+      self.vsp = lengthdir_y(velocity, new_angle)
+
+      global.deb.log("HI")
+    }
+  }
+}
+
+let old_matrix = matrix_get(matrix_world)
+matrix_stack_push(self.matrix)
+matrix_set(matrix_world, matrix_stack_top())
+-- negative Y points out of the portal
+
+global.deb.log(self.matrix)
+
+draw_rectangle(
+  24, 10,
+  -25, 8,
+)
+
+-- draw_rectangle(self.x - 8, self.y - 8, self.x + 8, self.y + 8, true)
+
+-- draw_rectangle(
+--   self.x - 8 - self.dx * 16,
+--   self.y - 8 - self.dy * 16,
+--   self.x + 8 - self.dx * 16,
+--   self.y + 8 - self.dy * 16,
+--   true
+-- )
+
+-- draw_rectangle(
+--   self.x - self.dx * 22 + self.dy * 12,
+--   self.y - self.dy * 22 + self.dx * 10,
+--   self.x + self.dx * 22 + self.dy * 10,
+--   self.y + self.dy * 22 + self.dx * 12,
+--   false
+-- )
+
+with oplayer {
+  global.deb.log(self.x)
+}
+
+draw_set_color(col)
+
+matrix_stack_pop()
+matrix_set(matrix_world, old_matrix)

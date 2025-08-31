@@ -1,0 +1,14 @@
+let tilemap = layer_tilemap_get_id(layer_get_id("Tiles_1"))
+
+let i = 0
+while i < 6 {
+  let x_index = i * 2
+  let y_index = i * 2 + 1
+
+  let offset_x = self.tile_offsets[i * 2]
+  let offset_y = self.tile_offsets[i * 2 + 1]
+
+  tilemap_set_at_pixel(tilemap, self.replaced_tiles[i], offset_x, offset_y)
+
+  i += 1
+}
