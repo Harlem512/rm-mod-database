@@ -94,9 +94,9 @@
     "display": "Languages",
     "description": "Modding Utility to support translating mods to different languages",
     "author": "Tereneckla",
-    "version": 1.1,
+    "version": 1.0,
     "type": "zip",
-    "url": "https://github.com/Tereneckla/rm-mod-languages/releases/download/1.1/languages.zip"
+    "url": "https://codeberg.org/Tereneckla/rm-mod-languages/releases/download/1.0/languages.zip"
   },
   "maya_palette": {
     "name": "maya_palette",
