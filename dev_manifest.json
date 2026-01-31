@@ -89,6 +89,15 @@
     "type": "zip",
     "url": "https://github.com/Harlem512/rm-mod-database/releases/download/grapple-preview-1.0/grapple_preview.zip"
   },
+  "languages": {
+    "name": "languages",
+    "display": "Languages",
+    "description": "Modding Utility to support translating mods to different languages",
+    "author": "Tereneckla",
+    "version": 1.0,
+    "type": "zip",
+    "url": "https://codeberg.org/Tereneckla/rm-mod-languages/releases/download/1.0/languages.zip"
+  },
   "maya_palette": {
     "name": "maya_palette",
     "display": "Maya Palette",
