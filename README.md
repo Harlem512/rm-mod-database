@@ -11,11 +11,12 @@ You can check out my [modding documentation](https://harlem512.github.io/rm-docs
 
 Here's all the (publicly) included mods and their authors. If an author isn't shown, I (Harlem512) made it.
 
-- [Archipelago Client](#archipelago-client-mrl)
-- [Palette Editor](#palette-editor-snowill)
+- [Archipelago Client (Mr L.)](#archipelago-client-mrl)
+- [Palette Editor (Snowill)](#palette-editor-snowill)
 - [Maya and Ameli Palette](#maya-and-ameli-palette)
 - [Ghost Multiplayer](#ghost-multiplayer)
-- [Bugfix](#bugfix)
+- [Froy (Elire, Astra, Vei)](#froy)
+- [Golden (Elire, Astra, Vei)](#golden)
 - [Checklist](#checklist)
 - [Gimmick](#gimmick)
 - [Grapple Preview](#grapple-preview)
@@ -67,13 +68,17 @@ Multiplayer for Rusted Moss! Lets you see (but not interact with) your friends. 
 
 To use, download the mod, then press the Fern icon on the main menu to open the multiplayer menu. From there, create a lobby and invite your friends. Settings are also available in the menu.
 
-# Bugfix
+# Froy (Elire, Astra, Vei)
 
-Fixes a few bugs with Rusted Moss.
+![Froy downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-database/froy.md?color=blue)
 
-- One-shotting Elicia (ie with Ameli #5 combo) causes a crash
-- ~~Saws in the Winter DLC invisible for Ameli~~ Fixed in RM 3.95
-- ~~Voidwretch enemies in the Winter DLC are invisible for Ameli~~ Fixed in RM 3.95
+Adds someone who just wants to say hi~ RUN.
+
+# Golden (Elire, Astra, Vei)
+
+![Golden downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-database/golden.zip?color=blue)
+
+Hope you like restarting, because you're going to do it a lot.
 
 # Checklist
 

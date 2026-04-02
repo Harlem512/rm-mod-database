@@ -38,7 +38,7 @@
   "bugfix": {
     "name": "bugfix.md",
     "display": "Bugfix",
-    "description": "Fixes a few bugs with Rusted Moss.",
+    "description": "DELISTED: USE AT YOUR OWN PERIL.\nFixes a few bugs with Rusted Moss.",
     "author": "Harlem512",
     "version": 1.2,
     "type": "md",
@@ -70,6 +70,24 @@
     "version": 1.5,
     "type": "zip",
     "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.5/ghost_mp.zip"
+  },
+  "froy": {
+    "name": "froy.md",
+    "display": "Froy",
+    "description": "Adds someone who just wants to say hi~ [shake][jitter]RUN[/jitter][/shake].",
+    "author": "Elire, Astra, Vei",
+    "version": 1,
+    "type": "md",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/elire-astra-vei/froy.md"
+  },
+  "golden": {
+    "name": "golden",
+    "display": "Golden",
+    "description": "Hope you like restarting, because you're going to do it a lot.",
+    "author": "Elire, Astra, Vei",
+    "version": 1,
+    "type": "zip",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/elire-astra-vei/golden.zip"
   },
   "gimmick.md": {
     "name": "gimmick.md",

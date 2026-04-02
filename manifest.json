@@ -35,15 +35,6 @@
     "type": "zip",
     "url": "https://github.com/dgrossmann144/RustedMossArchipelagoClient/releases/download/v1.1.0/RustedMossArchipelagoClient.zip"
   },
-  "bugfix": {
-    "name": "bugfix.md",
-    "display": "Bugfix",
-    "description": "Fixes a few bugs with Rusted Moss.",
-    "author": "Harlem512",
-    "version": 1.2,
-    "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/bugfix.md"
-  },
   "checklist.md": {
     "name": "checklist.md",
     "display": "Checklist",
@@ -52,6 +43,15 @@
     "version": 1.1,
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/checklist/checklist.md"
+  },
+  "froy": {
+    "name": "froy.md",
+    "display": "Froy",
+    "description": "Adds someone who just wants to say hi~ [shake][jitter]RUN[/jitter][/shake].",
+    "author": "Elire, Astra, Vei",
+    "version": 1,
+    "type": "md",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/elire-astra-vei/froy.md"
   },
   "ghost_mp": {
     "name": "ghost_mp",
@@ -70,6 +70,15 @@
     "version": 1.2,
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/gimmick/gimmick.md"
+  },
+  "golden": {
+    "name": "golden",
+    "display": "Golden",
+    "description": "Hope you like restarting, because you're going to do it a lot.",
+    "author": "Elire, Astra, Vei",
+    "version": 1,
+    "type": "zip",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/elire-astra-vei/golden.zip"
   },
   "grapple_preview": {
     "name": "grapple_preview",
