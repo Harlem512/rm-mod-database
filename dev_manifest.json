@@ -4,9 +4,9 @@
     "display": "Rusted Moss Mod Loader",
     "description": "Invisible middleware that loads mods (It's already installed)",
     "author": "Harlem512",
-    "version": 6.2,
+    "version": 6.3,
     "type": "meow",
-    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1.4b/rmml.meow"
+    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1.4c/rmml.meow"
   },
   "rmmm.md": {
     "name": "rmmm.md",
@@ -15,7 +15,7 @@
     "author": "Harlem512",
     "version": 1.4,
     "type": "md",
-    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1.4b/rmmm.md"
+    "url": "https://github.com/Harlem512/rm-mod-manager/releases/download/1.4c/rmmm.md"
   },
   "ameli_palette": {
     "name": "ameli_palette",
@@ -67,9 +67,9 @@
     "display": "Ghost Multiplayer",
     "description": "Adds (bad) multiplayer to Rusted Moss. Use the Fern icon on the main menu to make a lobby and add your steam friends.",
     "author": "Harlem512",
-    "version": 1.5,
+    "version": 1.6,
     "type": "zip",
-    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.5/ghost_mp.zip"
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/ghost-mp-1.6/ghost_mp.zip"
   },
   "froy": {
     "name": "froy.md",

@@ -1,3 +1,7 @@
+-- make this event run forever
+method_get_self(ds_map_find_value(global.mod_map,"controller_events_create")).callTime = infinity
+method_get_self(global.rmml_map["controller_events_create"]["ghost_mp"]).callTime = infinity
+
 -- MARK: RESET
 global.rm_mp.frames = 0
 -- render after rmmm
@@ -90,5 +94,16 @@ if global.rmml.__mod_controllers.palette_editor {
     ]
     -- set wall hug
     global.rm_mp.sprites_wallhug_render[2] = sprite_add("mods/rmml/ameli_palette/DO_NOT_TOUCH/splayer_witch_ameli_wallhug_still.png", 1, false, false, 22, 47)
+  }
+}
+
+do {
+  let x = 0
+  while x < 5999 {
+    let y = 0
+    while y < 999 {
+      y += 1
+    }
+    x += 1
   }
 }
