@@ -62,6 +62,15 @@
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/checklist/checklist.md"
   },
+  "cracked_bone_whip": {
+    "name": "cracked_bone_whip",
+    "display": "Cracked Bone Whip",
+    "description": "Isn't it unrealistic that enemies can't hit the grappling hook?\nBullets, saws and spikes destroy the grappling hook.",
+    "author": "Tereneckla",
+    "version": 1.0,
+    "type": "zip",
+    "url": "https://codeberg.org/Tereneckla/rm-mod-cracked_bone_whip/releases/download/1.0/cracked_bone_whip.zip"
+  },
   "ghost_mp": {
     "name": "ghost_mp",
     "display": "Ghost Multiplayer",
