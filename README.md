@@ -92,6 +92,10 @@ Adds icons to the map for each pickup you haven't collected. Works with Minimap 
 
 Aprils Fools joke mod for 2025. Replaces (most) movement upgrades with additional mid-air jumps and forces the player to use the bolt caster.
 
+# Cracked Bone Whip (Tereneckla)
+
+Isn't it unrealistic that enemies don't hit the grappling hook? Bullets, saws and spikes destroy the grappling hook.
+
 # Grapple Preview
 
 ![Grapple Preview](assets/grapple_preview.png)
