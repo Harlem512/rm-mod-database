@@ -71,6 +71,15 @@
     "type": "zip",
     "url": "https://codeberg.org/Tereneckla/rm-mod-cracked_bone_whip/releases/download/1.0/cracked_bone_whip.zip"
   },
+  "E!": {
+    "name": "E!",
+    "display": "E!",
+    "description": "Puck: E!",
+    "author": "Tereneckla",
+    "version": 1.0,
+    "type": "md",
+    "url": "https://codeberg.org/Tereneckla/rm-mod-E/releases/download/1.0/E%21"
+  },
   "ghost_mp": {
     "name": "ghost_mp",
     "display": "Ghost Multiplayer",

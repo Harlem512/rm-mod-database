@@ -19,6 +19,8 @@ Here's all the (publicly) included mods and their authors. If an author isn't sh
 - [Golden (Elire, Astra, Vei)](#golden)
 - [Checklist](#checklist)
 - [Gimmick](#gimmick)
+- [Cracked Bone Whip (Tereneckla)](#cracked-bone-whip-tereneckla)
+- [E! (Tereneckla)](#e-tereneckla)
 - [Grapple Preview](#grapple-preview)
 - [Minify!](#minify)
 - [Minimap](#minimap)
@@ -95,6 +97,12 @@ Aprils Fools joke mod for 2025. Replaces (most) movement upgrades with additiona
 # Cracked Bone Whip (Tereneckla)
 
 Isn't it unrealistic that enemies don't hit the grappling hook? Bullets, saws and spikes destroy the grappling hook.
+
+# E! (Tereneckla)
+
+![E!](https://codeberg.org/Tereneckla/rm-mod-E/raw/branch/main/E%21.png)
+
+Puck: E!
 
 # Grapple Preview
 
