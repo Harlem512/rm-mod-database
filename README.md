@@ -1,6 +1,7 @@
 # Rusted Moss Mod Database
 
-![RMML Latest Downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-manager/1.4b/rmml_6_14b.zip?color=blue&label=latest)
+![RMML Latest Downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-manager/1.4b/rmml_6-3_1-4.zip?color=blue&label=latest)
+![RMML Historical Downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-manager/1.4b/rmml_6_14b.zip?color=blue&label=latest)
 ![RMML Historical Downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-manager/1.4/rmml_6_14.zip?color=blue&label=latest)
 ![RMML Historical Downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-manager/1.3/rmml_6_13.zip?color=blue&label=historical)
 ![RMML Historical Downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-manager/1.2/rmml_6_12.zip?color=blue&label=historical)
@@ -82,6 +83,22 @@ Adds someone who just wants to say hi~ RUN.
 
 Hope you like restarting, because you're going to do it a lot.
 
+# Cursor Accessible (Elire, Astra, Vei)
+
+![Cursor Accessible downloads](https://img.shields.io/github/downloads/Harlem512/rm-mod-database/cursor_accessible.zip?color=blue)
+
+Replaces the cursor with a pinker variant for easier visibility.
+
+# Cracked Bone Whip (Tereneckla)
+
+Isn't it unrealistic that enemies don't hit the grappling hook? Bullets, saws and spikes destroy the grappling hook.
+
+# E! (Tereneckla)
+
+![E!](https://codeberg.org/Tereneckla/rm-mod-E/raw/branch/main/E%21.png)
+
+Puck: E!
+
 # Checklist
 
 ![Checklist](assets/checklist.png)
@@ -93,16 +110,6 @@ Adds icons to the map for each pickup you haven't collected. Works with Minimap 
 ![Gimmick](assets/gimmick.png)
 
 Aprils Fools joke mod for 2025. Replaces (most) movement upgrades with additional mid-air jumps and forces the player to use the bolt caster.
-
-# Cracked Bone Whip (Tereneckla)
-
-Isn't it unrealistic that enemies don't hit the grappling hook? Bullets, saws and spikes destroy the grappling hook.
-
-# E! (Tereneckla)
-
-![E!](https://codeberg.org/Tereneckla/rm-mod-E/raw/branch/main/E%21.png)
-
-Puck: E!
 
 # Grapple Preview
 

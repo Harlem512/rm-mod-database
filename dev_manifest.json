@@ -62,6 +62,15 @@
     "type": "md",
     "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/checklist/checklist.md"
   },
+  "cursor_accessible": {
+    "name": "cursor_accessible",
+    "display": "Cursor Accessible",
+    "description": "Replaces the cursor with a pinker variant for easier visibility.",
+    "author": "Elire, Astra, Vei",
+    "version": 1.0,
+    "type": "zip",
+    "url": "https://github.com/Harlem512/rm-mod-database/releases/download/cursor_accessible/cursor_accessible.zip"
+  },
   "cracked_bone_whip": {
     "name": "cracked_bone_whip",
     "display": "Cracked Bone Whip",
