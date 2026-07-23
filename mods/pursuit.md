@@ -1,4 +1,5 @@
 # controller
+
 <!-- MARK: Controller -->
 
 ## room_start
@@ -69,13 +70,14 @@ draw_set_color(col)
 ```
 
 <!-- MARK: Basic -->
+
 # basic
 
 ## create
+
 ```sp
 -- prevent crashing in the wind area
 self.windable = false
-self.persistent = true
 alarm_set(0, 30)
 ```
 
@@ -90,9 +92,9 @@ if !instance_exists(plr) { return }
 
 -- create the worm
 if !self.pursuit {
-  event_perform_object(oworm, ev_create, 0)
   self.x = plr.x
   self.y = plr.y
+  event_perform_object(oworm, ev_create, 0)
   self.last_x = plr.x
   self.last_y = plr.y
   self.pursuit = true
@@ -119,6 +121,7 @@ self.last_state = self.state
 ```
 
 ## step
+
 ```sp
 if !self.pursuit { return }
 event_perform_object(oworm, ev_step, ev_step_normal)
@@ -130,6 +133,7 @@ if global.worm_easy and global.invis {
 ```
 
 ## room_end
+
 ```sp
 if !self.pursuit { return }
 event_perform_object(oworm, ev_other, ev_room_end)
@@ -137,6 +141,7 @@ self.transitioning = true
 ```
 
 ## room_start
+
 ```sp
 if !self.pursuit { return }
 if instance_number(oworm) > 0 {
@@ -149,6 +154,7 @@ event_perform_object(oworm, ev_other, ev_room_start)
 ```
 
 ## draw
+
 ```sp
 if !self.pursuit { return }
 event_perform_object(oworm, ev_draw, 0)
