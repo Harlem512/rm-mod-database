@@ -175,9 +175,9 @@
     "display": "No Grapple",
     "description": "Toggle various grapplable Objects (including tiles) on or off.\n\nDetailed information at https://codeberg.org/Tereneckla/\nrm-mod-no_grapple",
     "author": "Tereneckla",
-    "version": 1,
+    "version": 1.1,
     "type": "zip",
-    "url": "https://codeberg.org/Tereneckla/rm-mod-no_grapple/releases/download/1.0/no_grapple.zip"
+    "url": "https://codeberg.org/Tereneckla/rm-mod-no_grapple/releases/download/1.1/no_grapple.zip"
   },
   "palette_editor": {
     "name": "palette_editor",
