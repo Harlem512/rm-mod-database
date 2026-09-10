@@ -62,6 +62,15 @@
     "type": "zip",
     "url": "https://codeberg.org/Tereneckla/rm-mod-cracked_bone_whip/releases/download/1.0/cracked_bone_whip.zip"
   },
+  "dlc_bonus_options.md": {
+    "name": "dlc_bonus_options.md",
+    "display": "DLC Bonus Options",
+    "description": "Exposes the options in Fern_custom/dlc_bonus_options.ini as an ingame menu.",
+    "author": "Tereneckla",
+    "version": 1.0,
+    "type": "md",
+    "url": "https://codeberg.org/Tereneckla/rm-mod-small_things/raw/branch/main/dlc_bonus_options.md"
+  },
   "E!": {
     "name": "E!",
     "display": "E!",
@@ -157,9 +166,9 @@
     "display": "Mod Option Manager",
     "description": "Adds an ingame option menu mod authors can register to.",
     "author": "Tereneckla",
-    "version": 1.0,
+    "version": 1.1,
     "type": "zip",
-    "url": "https://codeberg.org/Tereneckla/rm-mod-mom/releases/download/1.0/mom.zip"
+    "url": "https://codeberg.org/Tereneckla/rm-mod-mom/releases/download/1.1/mom.zip"
   },
   "more_saves.md": {
     "name": "more_saves.md",
