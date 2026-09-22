@@ -38,7 +38,7 @@ global.time = {
     let t = get_timer()
     let timer = global.time._times[label]
     let diff = t - timer.start
-    
+
     timer.total += diff
     timer.total -= timer.window[timer.window_index]
     timer.window[timer.window_index] = diff
@@ -57,7 +57,35 @@ global.time = {
   },
 }
 
+global.map_reveal = fun () {
+  let i = 0
+  while i < array_length(global.map_data_) {
+    let d = global.map_data_[i][0]
+    i += 1
+    if d == -1 { continue }
+    d.found = true
+  }
+}
+
 global.dump = {
+  ds_grid: fun (grid) {
+    let str = string(grid) + ": ds_grid = [\n"
+    if !ds_exists(grid, ds_type_grid) { return "dne" }
+    let w = ds_grid_width(grid)
+    let h = ds_grid_height(grid)
+
+    let y = 0
+    while y < h {
+      let x = 0
+      while x < w {
+        str += string(ds_grid_get(grid, x, y)) + "\t"
+        x += 1
+      }
+      y += 1
+      str += "\n"
+    }
+    return str + "]"
+  },
   ds_map: fun (map) {
     let str = string(map) + ": ds_map = {\n"
     if !ds_exists(map, ds_type_map) { return "dne" }
@@ -82,18 +110,20 @@ global.dump = {
     }
     global.rmml.log(str + "}")
   },
-  tilemap: fun (tilemap) {
+  layer_tilemap: fun (layer_id) {
+    return global.dump.tilemap(layer_tilemap_get_id(layer_id))
+  },
+  tilemap: fun (tilemap_id) {
     let dump = []
     -- tilemap id
-    let tid = layer_tilemap_get_id(tilemap)
-    let tile_width = tilemap_get_width(tid)
-    let tile_height = tilemap_get_height(tid)
+    let tile_width = tilemap_get_width(tilemap_id)
+    let tile_height = tilemap_get_height(tilemap_id)
     let x = 0
     while x < tile_width {
       dump[x] = []
       let y = 0
       while y < tile_height {
-        dump[x][y] = tile_get_index(tilemap_get(tid, x, y))
+        dump[x][y] = tile_get_index(tilemap_get(tilemap_id, x, y))
         y += 1
       }
       x += 1
@@ -105,22 +135,60 @@ global.dump = {
     let layers = layer_get_all()
     let i = 0
     while i < array_length(layers) {
+      let layer_id = layers[i]
       -- global.rmml.log(["LAYER", layer_get_name(layers[i]), layer_get_depth(layers[i])])
-      let tilemap_id = layer_tilemap_get_id(layers[i])
+      let tilemap_id = layer_tilemap_get_id(layer_id)
       -- global.rmml.log([
       --   tilemap_get_x(tilemap_id), tilemap_get_y(tilemap_id),
       --   tilemap_get_tileset(tilemap_id),
       --   tilemap_get_width(tilemap_id), tilemap_get_height(tilemap_id),
       -- ])
-      let dump = global.dump.tilemap(layers[i])
       -- global.rmml.log(dump)
+
+      -- let elements = layer_get_all_elements(layer_id)
+      -- let elem_i = 0
+      -- while elem_i < array_length(elements) {
+      --   let element = elements[elem_i]
+      --   let type = layer_get_element_type(element)
+      --   match type {
+      --     case layerelementtype_background {
+      --       global.rmml.log("Layer Background")
+      --     }
+      --     case layerelementtype_instance {
+      --       global.rmml.log("layerelementtype_instance")
+      --     }
+      --     case layerelementtype_sprite {
+      --       global.rmml.log("layerelementtype_sprite")
+      --     }
+      --     case layerelementtype_tilemap {
+      --       global.rmml.log("layerelementtype_tilemap")
+      --       -- global.rmml.log(global.dump.tilemap(element))
+      --     }
+      --     case layerelementtype_oldtilemap {
+      --       global.rmml.log("layerelementtype_oldtilemap")
+      --     }
+      --     case layerelementtype_particlesystem {
+      --       global.rmml.log("layerelementtype_particlesystem")
+      --     }
+      --     case layerelementtype_tile {
+      --       global.rmml.log("layerelementtype_tile")
+      --     }
+      --     case layerelementtype_sequence {
+      --       global.rmml.log("layerelementtype_sequence")
+      --     }
+      --     case layerelementtype_undefined {
+      --       global.rmml.log("layerelementtype_undefined")
+      --     }
+      --   }
+      --   elem_i += 1
+      -- }
 
       global.rmml.log(
         "global.room_lib.tile("
         + "<<REPLACE>>, "
-        + string(layer_get_depth(layers[i]))
+        + string(layer_get_depth(layer_id))
         + ", \""
-        + layer_get_name(layers[i])
+        + layer_get_name(layer_id)
         + "\", "
         + string(tilemap_get_tileset(tilemap_id))
         + ", "
@@ -128,7 +196,7 @@ global.dump = {
         + ", "
         + string(tilemap_get_height(tilemap_id))
         + ", "
-        + string(global.dump.tilemap(layers[i]))
+        + string(global.dump.layer_tilemap(layer_id))
         + ")"
       )
       i += 1
@@ -451,7 +519,7 @@ while y < array_length(global.deb._log) and y < 100 {
   if run and typeof(text) == "method" {
     text = text()
   }
-  draw_text(0, y * 10, string(label) + ": " + string(text))
+  draw_text(0, y * 12, string(label) + ": " + string(text))
   y += 1
 }
 draw_set_color(col)
