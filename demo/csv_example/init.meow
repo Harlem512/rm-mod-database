@@ -1,7 +1,0 @@
-live_snippet_call(live_snippet_create("
-global.fixed = function() {
-  with " + string(oplayer) + " {
-    event_inherited()
-  }
-}
-"))
