@@ -284,7 +284,7 @@
     "description": "Lets you control the game's sprites using JSON files. Go find the mod files (or go to the Codeberg) for more information.",
     "author": "Harlem512",
     "version": 1,
-    "type": "md",
+    "type": "zip",
     "url": "https://codeberg.org/Harlem512/rm-mod-database/releases/download/sprite-replace-1.0/sprite_replace.zip"
   },
   "whereami.md": {
