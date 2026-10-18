@@ -42,7 +42,7 @@
     "author": "Harlem512",
     "version": 1.2,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/bugfix.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/bugfix.md"
   },
   "cc_shark.md": {
     "name": "cc_shark.md",
@@ -51,7 +51,7 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/demo/cc_shark.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/src/branch/qa/demo/cc_shark.md"
   },
   "checklist.md": {
     "name": "checklist.md",
@@ -60,7 +60,7 @@
     "author": "Harlem512",
     "version": 1.1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/checklist/checklist.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/checklist/checklist.md"
   },
   "cursor_accessible": {
     "name": "cursor_accessible",
@@ -132,7 +132,7 @@
     "author": "Harlem512",
     "version": 1.2,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/gimmick/gimmick.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/gimmick/gimmick.md"
   },
   "grapple_preview": {
     "name": "grapple_preview",
@@ -168,7 +168,7 @@
     "author": "Harlem512",
     "version": 2,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/minify.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/minify.md"
   },
   "minimap.md": {
     "name": "minimap.md",
@@ -177,7 +177,7 @@
     "author": "Harlem512",
     "version": 1.1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/minimap.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/minimap.md"
   },
   "mom": {
     "name": "mom",
@@ -195,7 +195,7 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/more_saves/more_saves.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/more_saves/more_saves.md"
   },
   "ms_archipelago.md": {
     "name": "ms_archipelago.md",
@@ -204,7 +204,7 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/more_saves/ms_archipelago.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/more_saves/ms_archipelago.md"
   },
   "no_grapple": {
     "name": "no_grapple",
@@ -240,7 +240,7 @@
     "author": "Harlem512",
     "version": 1.1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/puntable.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/puntable.md"
   },
   "pursuit.md": {
     "name": "pursuit.md",
@@ -249,7 +249,7 @@
     "author": "Harlem512",
     "version": 1.4,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/pursuit.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/pursuit.md"
   },
   "robin_chase": {
     "name": "robin_chase",
@@ -267,7 +267,7 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/ripper.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/ripper.md"
   },
   "speedrun_timer.md": {
     "name": "speedrun_timer.md",
@@ -276,7 +276,7 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/speedrun_timer.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/speedrun_timer.md"
   },
   "sprite_replace": {
     "name": "sprite_replace",
@@ -294,7 +294,7 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/qa/mods/whereami.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/src/branch/qa/mods/whereami.md"
   },
   "zebedee.md": {
     "name": "zebedee.md",
@@ -303,6 +303,6 @@
     "author": "Harlem512",
     "version": 1,
     "type": "md",
-    "url": "https://raw.githubusercontent.com/Harlem512/rm-mod-database/refs/heads/main/mods/puntable.md"
+    "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/zebedee.md"
   }
 }
