@@ -251,6 +251,15 @@
     "type": "md",
     "url": "https://codeberg.org/Harlem512/rm-mod-database/raw/branch/qa/mods/pursuit.md"
   },
+  "risk_of_moss": {
+    "name": "risk_of_moss",
+    "display": "Risk of Moss",
+    "description": "A complete Roguelike overhaul. Clear randomized floors of increasingly difficult enemies, buy items, and kill bosses. All [shake]without dying[/shake].",
+    "author": "Harlem512",
+    "version": 1.0,
+    "type": "zip",
+    "url": "https://codeberg.org/Harlem512/risk-of-moss/releases/download/1.0.0/risk_of_moss.zip"
+  },
   "robin_chase": {
     "name": "robin_chase",
     "display": "Robin Chase",
